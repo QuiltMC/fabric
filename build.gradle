@@ -269,7 +269,7 @@ loom {
 }
 test.dependsOn runGametest
 
-subprojects {false
+subprojects {
 	dependencies {
 		testmodImplementation sourceSets.main.output
 

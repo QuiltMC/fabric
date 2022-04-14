@@ -102,7 +102,7 @@ allprojects {
 	apply plugin: "java-library"
 	apply plugin: "checkstyle"
 	apply plugin: "maven-publish"
-	apply plugin: "fabric-loom"
+	apply plugin: "org.quiltmc.loom"
 	apply plugin: "io.github.juuxel.loom-quiltflower"
 	apply plugin: "org.cadixdev.licenser"
 	apply plugin: "me.modmuss50.remotesign"
@@ -142,7 +142,7 @@ allprojects {
 	dependencies {
 		minecraft "com.mojang:minecraft:$rootProject.minecraft_version"
 		mappings "net.fabricmc:yarn:${rootProject.minecraft_version}${project.yarn_version}:v2"
-		modApi "org.quiltmc.quilt_loader:${project.loader_version}"
+		modApi "org.quiltmc:quilt-loader:${project.loader_version}"
 	}
 
 	loom {

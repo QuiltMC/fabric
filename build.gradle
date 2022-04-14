@@ -103,7 +103,6 @@ allprojects {
 	apply plugin: "checkstyle"
 	apply plugin: "maven-publish"
 	apply plugin: "org.quiltmc.loom"
-	apply plugin: "io.github.juuxel.loom-quiltflower"
 	apply plugin: "org.cadixdev.licenser"
 	apply plugin: "me.modmuss50.remotesign"
 

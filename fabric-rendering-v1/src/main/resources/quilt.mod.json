@@ -1,0 +1,43 @@
+{
+	"schema_version": 1,
+	"quilt_loader": {
+		"group": "org.quiltmc",
+		"id": "quilted-fabric-rendering-v1",
+		"version": "${version}",
+		"metadata": {
+			"name": "Quilted Fabric Rendering (v1)",
+			"description": "Hooks and registries for rendering-related things.",
+			"contributors": {
+				"Owner": "QuiltMC: QSL Team",
+				"Former Owner": "FabricMC"
+			},
+			"contact": {
+				"homepage": "https://quiltmc.org",
+				"issues": "https://github.com/QuiltMC/fabric-api-qsl/issues",
+				"sources": "https://github.com/QuiltMC/fabric-api-qsl"
+			},
+			"license": "Apache-2.0",
+			"icon": "assets/fabric-rendering-v1/icon.png"
+		},
+		"intermediate_mappings": "net.fabricmc:intermediary",
+		"depends": [
+			"quilt-loader",
+			"quilted-fabric-api-base",
+			"quilt_tooltip"
+		],
+		"provides": [
+			{
+				"id": "fabric-rendering-v1",
+				"version": "1.10.7"
+			}
+		]
+	},
+	"mixin": "fabric-rendering-v1.mixins.json",
+	"fabric-api:module-lifecycle": "deprecated",
+	"modmenu": {
+		"badges": [
+			"library",
+			"deprecated"
+		]
+	}
+}

@@ -1,0 +1,59 @@
+{
+	"schema_version": 1,
+	"quilt_loader": {
+		"group": "org.quiltmc",
+		"id": "quilted-fabric-command-api-v1",
+		"version": "${version}",
+		"metadata": {
+			"name": "Quilted Fabric Command API (v1)",
+			"description": "Adds command-related hooks.",
+			"contributors": {
+				"Owner": "QuiltMC: QSL Team",
+				"Former Owner": "FabricMC"
+			},
+			"contact": {
+				"homepage": "https://quiltmc.org",
+				"issues": "https://github.com/QuiltMC/fabric-api-qsl/issues",
+				"sources": "https://github.com/QuiltMC/fabric-api-qsl"
+			},
+			"license": "Apache-2.0",
+			"icon": "assets/fabric-command-api-v1/icon.png"
+		},
+		"intermediate_mappings": "net.fabricmc:intermediary",
+		"entrypoints": {
+			"client_events": [
+				"net.fabricmc.fabric.impl.command.client.ClientCommandInternals"
+			]
+		},
+		"depends": [
+			"quilt-loader",
+			"quilted-fabric-api-base",
+			{
+				"id": "quilted-fabric-resource-loader-v0",
+				"versions": ">=1.0.0"
+			},
+			{
+				"id": "quilt_resource_loader",
+				"versions": ">=1.0.0"
+			},
+			{
+				"id": "quilt_lifecycle_events",
+				"versions": ">=1.0.0"
+			}
+		],
+		"provides": [
+			{
+				"id": "fabric-command-api-v1",
+				"version": "1.1.9"
+			}
+		]
+	},
+	"mixin": "fabric-command-api-v1.mixins.json",
+	"fabric-api:module-lifecycle": "deprecated",
+	"modmenu": {
+		"badges": [
+			"library",
+			"deprecated"
+		]
+	}
+}

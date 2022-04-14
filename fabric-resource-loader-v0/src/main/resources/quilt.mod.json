@@ -1,0 +1,47 @@
+{
+	"schema_version": 1,
+	"quilt_loader": {
+		"group": "org.quiltmc",
+		"id": "quilted-fabric-resource-loader-v0",
+		"version": "${version}",
+		"metadata": {
+			"name": "Quilted Fabric Resource Loader (v0)",
+			"description": "Asset and data resource loading.",
+			"contributors": {
+				"Owner": "QuiltMC: QSL Team",
+				"Former Owner": "FabricMC"
+			},
+			"contact": {
+				"homepage": "https://quiltmc.org",
+				"issues": "https://github.com/QuiltMC/fabric-api-qsl/issues",
+				"sources": "https://github.com/QuiltMC/fabric-api-qsl"
+			},
+			"license": "Apache-2.0",
+			"icon": "assets/fabric-resource-loader-v0/icon.png"
+		},
+		"intermediate_mappings": "net.fabricmc:intermediary",
+		"depends": [
+			"quilt-loader",
+			"quilted-fabric-api-base",
+			{
+				"id": "quilt_resource_loader",
+				"versions": ">=1.0.0"
+			}
+		],
+		"provides": [
+			{
+				"id": "fabric-resource-loader-v0",
+				"version": "0.4.18"
+			}
+		]
+	},
+	"mixin": "fabric-resource-loader-v0.mixins.json",
+	"fabric-api:module-lifecycle": "deprecated",
+	"modmenu": {
+		"badges": [
+			"library",
+			"deprecated"
+		]
+	}
+}
+

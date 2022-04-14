@@ -1,0 +1,51 @@
+{
+	"schema_version": 1,
+	"quilt_loader": {
+		"group": "org.quiltmc",
+		"id": "quilted-fabric-registry-sync-v0",
+		"version": "${version}",
+		"metadata": {
+			"name": "Quilted Fabric Registry Sync (v0)",
+			"description": "Syncs registry mappings.",
+			"contributors": {
+				"Owner": "QuiltMC: QSL Team",
+				"Former Owner": "FabricMC"
+			},
+			"contact": {
+				"homepage": "https://quiltmc.org",
+				"issues": "https://github.com/QuiltMC/fabric-api-qsl/issues",
+				"sources": "https://github.com/QuiltMC/fabric-api-qsl"
+			},
+			"license": "Apache-2.0",
+			"icon": "assets/fabric-registry-sync-v0/icon.png"
+		},
+		"intermediate_mappings": "net.fabricmc:intermediary",
+		"entrypoints": {
+			"main": [
+				"net.fabricmc.fabric.impl.registry.sync.FabricRegistryInit"
+			],
+			"client": [
+				"net.fabricmc.fabric.impl.registry.sync.FabricRegistryClientInit"
+			]
+		},
+		"depends": [
+			"quilt-loader",
+			"quilted-fabric-api-base",
+			"fabric-networking-api-v1"
+		],
+		"provides": [
+			{
+				"id": "fabric-registry-sync-v0",
+				"version": "0.9.8"
+			}
+		]
+	},
+	"mixin": "fabric-registry-sync-v0.mixins.json",
+	"fabric-api:module-lifecycle": "deprecated",
+	"modmenu": {
+		"badges": [
+			"library",
+			"deprecated"
+		]
+	}
+}

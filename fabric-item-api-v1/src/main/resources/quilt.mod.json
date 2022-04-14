@@ -1,0 +1,43 @@
+{
+	"schema_version": 1,
+	"quilt_loader": {
+		"group": "org.quiltmc",
+		"id": "quilted-fabric-item-api-v1",
+		"version": "${version}",
+		"metadata": {
+			"name": "Quilted Fabric Item API (v1)",
+			"description": "Hooks for items",
+			"contributors": {
+				"Owner": "QuiltMC: QSL Team",
+				"Former Owner": "FabricMC"
+			},
+			"contact": {
+				"homepage": "https://quiltmc.org",
+				"issues": "https://github.com/QuiltMC/fabric-api-qsl/issues",
+				"sources": "https://github.com/QuiltMC/fabric-api-qsl"
+			},
+			"license": "Apache-2.0",
+			"icon": "assets/fabric-item-api-v1/icon.png"
+		},
+		"intermediate_mappings": "net.fabricmc:intermediary",
+		"depends": [
+			"quilt-loader",
+			"quilted-fabric-api-base",
+			"quilt_tooltip",
+			"quilt_item_settings"
+		],
+		"provides": [
+			{
+				"id": "fabric-item-api-v1",
+				"version": "1.3.3"
+			}
+		]
+	},
+	"fabric-api:module-lifecycle": "deprecated",
+	"modmenu": {
+		"badges": [
+			"library",
+			"deprecated"
+		]
+	}
+}

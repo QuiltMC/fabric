@@ -1,0 +1,62 @@
+{
+	"schema_version": 1,
+	"quilt_loader": {
+		"group": "org.quiltmc",
+		"id": "quilted-fabric-command-api-v1",
+		"version": "${version}",
+		"metadata": {
+			"name": "Quilted Fabric Command API (v1)",
+			"description": "Events for the game's lifecycle.",
+			"contributors": {
+				"Owner": "QuiltMC: QSL Team",
+				"Former Owner": "FabricMC"
+			},
+			"contact": {
+				"homepage": "https://quiltmc.org",
+				"issues": "https://github.com/QuiltMC/fabric-api-qsl/issues",
+				"sources": "https://github.com/QuiltMC/fabric-api-qsl"
+			},
+			"license": "Apache-2.0",
+			"icon": "assets/fabric-lifecycle-events-v1/icon.png"
+		},
+		"intermediate_mappings": "net.fabricmc:intermediary",
+		"entrypoints": {
+			"main": [
+				"net.fabricmc.fabric.impl.event.lifecycle.LifecycleEventsImpl"
+			],
+			"client": [
+				"net.fabricmc.fabric.impl.event.lifecycle.ClientLifecycleEventsImpl"
+			]
+		},
+		"depends": [
+			"quilt-loader",
+			"quilted-fabric-api-base",
+			{
+				"id": "quilted-fabric-resource-loader-v0",
+				"versions": ">=1.0.0"
+			},
+			{
+				"id": "quilt-command",
+				"versions": ">=1.0.0"
+			},
+			{
+				"id": "quilt-client-command",
+				"versions": ">=1.0.0"
+			}
+		],
+		"provides": [
+			{
+				"id": "fabric-lifecycle-events-v1",
+				"version": "2.0.2"
+			}
+		]
+	},
+	"mixin": "fabric-lifecycle-events-v1.mixins.json",
+	"fabric-api:module-lifecycle": "deprecated",
+	"modmenu": {
+		"badges": [
+			"library",
+			"deprecated"
+		]
+	}
+}

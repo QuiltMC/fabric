@@ -1,0 +1,50 @@
+{
+	"schema_version": 1,
+	"quilt_loader": {
+		"group": "org.quiltmc",
+		"id": "quilted-fabric-blockrenderlayer-v1",
+		"version": "${version}",
+		"metadata": {
+			"name": "Quilted Fabric BlockRenderLayer Registration (v1)",
+			"description": "Registration utility for block and fluid render layers.",
+			"contributors": {
+				"Owner": "QuiltMC: QSL Team",
+				"Former Owner": "FabricMC"
+			},
+			"contact": {
+				"homepage": "https://quiltmc.org",
+				"issues": "https://github.com/QuiltMC/fabric-api-qsl/issues",
+				"sources": "https://github.com/QuiltMC/fabric-api-qsl"
+			},
+			"license": "Apache-2.0",
+			"icon": "assets/fabric-blockrenderlayer-v1/icon.png"
+		},
+		"intermediate_mappings": "net.fabricmc:intermediary",
+		"depends": [
+			"quilt-loader",
+			{
+				"id": "minecraft",
+				"versions": ">=1.15-alpha.19.38.b"
+			},
+			"quilted-fabric-api-base",
+			"quilt_block_extensions"
+		],
+		"provides": [
+			{
+				"id": "fabric-blockrenderlayer-v1",
+				"version": "1.1.12"
+			}
+		]
+	},
+	"minecraft": {
+		"environment": "client"
+	},
+	"mixin": "fabric-blockrenderlayer-v1.mixins.json",
+	"fabric-api:module-lifecycle": "deprecated",
+	"modmenu": {
+		"badges": [
+			"library",
+			"deprecated"
+		]
+	}
+}

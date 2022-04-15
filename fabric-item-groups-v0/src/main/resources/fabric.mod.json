@@ -19,6 +19,9 @@
     "FabricMC",
     "QuiltMC"
   ],
+  "mixins": [
+    "fabric-item-groups-v0.mixins.json"
+  ],
   "depends": {
     "fabricloader": ">=0.6.0",
     "minecraft": ">=1.15-",

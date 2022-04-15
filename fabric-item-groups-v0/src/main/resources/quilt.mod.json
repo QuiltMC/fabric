@@ -21,7 +21,7 @@
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"depends": [
-			"quilt-loader",
+			"quilt_loader",
 			{
 				"id": "minecraft",
 				"versions": ">=1.15-"

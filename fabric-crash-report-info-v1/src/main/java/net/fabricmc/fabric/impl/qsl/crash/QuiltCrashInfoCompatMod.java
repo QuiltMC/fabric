@@ -16,10 +16,9 @@
 
 package net.fabricmc.fabric.impl.qsl.crash;
 
+import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
 import org.quiltmc.qsl.crash.api.CrashReportEvents;
-
-import net.fabricmc.loader.api.ModContainer;
 
 public class QuiltCrashInfoCompatMod implements ModInitializer {
 	@Override

@@ -29,7 +29,7 @@
 			]
 		},
 		"depends": [
-			"quilt-loader",
+			"quilt_loader",
 			"quilted-fabric-api-base",
 			"fabric-networking-api-v1"
 		],

@@ -16,12 +16,11 @@
 
 package net.fabricmc.fabric.test.item;
 
+import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
 
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-
-import net.fabricmc.loader.api.ModContainer;
 
 public class ItemUpdateAnimationTest implements ModInitializer {
 	@Override

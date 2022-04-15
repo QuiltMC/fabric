@@ -16,6 +16,7 @@
 
 package net.fabricmc.fabric.test.item.client;
 
+import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
 
 import net.minecraft.text.LiteralText;
@@ -24,7 +25,6 @@ import net.minecraft.util.Formatting;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
-import net.fabricmc.loader.api.ModContainer;
 
 @Environment(EnvType.CLIENT)
 public class TooltipTests implements ClientModInitializer {

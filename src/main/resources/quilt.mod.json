@@ -21,10 +21,10 @@
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"depends": [
-			"quilt-loader",
+			"quilt_loader",
 			{
 				"id": "java",
-				"versions": "17"
+				"versions": ">=17"
 			},
 			{
 					"id": "minecraft",

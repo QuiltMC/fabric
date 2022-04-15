@@ -5,7 +5,7 @@
 		"id": "quilted-fabric-object-builder-api-v1",
 		"version": "${version}",
 		"metadata": {
-			"name": "Quilted Fabric Networking API (v1)",
+			"name": "Quilted Fabric Object Builder API (v1)",
 			"description": "Builders for objects vanilla has locked down.",
 			"contributors": {
 				"Owner": "QuiltMC: QSL Team",
@@ -21,7 +21,7 @@
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"depends": [
-			"quilt-loader",
+			"quilt_loader",
 			"quilted-fabric-api-base"
 		],
 		"provides": [

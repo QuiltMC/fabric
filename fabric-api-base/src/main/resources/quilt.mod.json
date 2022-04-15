@@ -21,7 +21,7 @@
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"depends": [
-			"quilt-loader",
+			"quilt_loader",
 			{
 				"id": "quilt-base",
 				"versions": ">=1.0.0"

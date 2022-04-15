@@ -1,5 +1,6 @@
 archivesBaseName = "fabric-object-builder-api-v1"
-version = getSubprojectVersion(project)
+version = getSubprojectVersion(project, true)
+upstream_version = getSubprojectUpstreamVersion(project)
 
 dependencies {
 	include modApi(getQslModule("block", "block_extensions", "1.0.0"))

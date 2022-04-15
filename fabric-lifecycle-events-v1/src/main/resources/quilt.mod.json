@@ -47,7 +47,7 @@
 		"provides": [
 			{
 				"id": "fabric-lifecycle-events-v1",
-				"version": "2.0.2"
+				"version": "${upstream_version}"
 			}
 		]
 	},

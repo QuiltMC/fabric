@@ -1,5 +1,5 @@
 archivesBaseName = "fabric-dimensions-v1"
-version = getSubprojectVersion(project)
+version = getSubprojectVersion(project, false)
 
 dependencies {
 	testmodImplementation project(path: ':fabric-command-api-v1', configuration: 'namedElements')

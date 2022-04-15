@@ -1,5 +1,5 @@
 archivesBaseName = "fabric-screen-handler-api-v1"
-version = getSubprojectVersion(project)
+version = getSubprojectVersion(project, false)
 
 loom {
 	accessWidenerPath = file('src/main/resources/fabric-screen-handler-api-v1.accesswidener')

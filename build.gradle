@@ -9,7 +9,7 @@ plugins {
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
-	id "org.quiltmc.loom" version "0.12.17" apply false
+	id "org.quiltmc.loom" version "0.12.+" apply false
 	id "org.cadixdev.licenser" version "0.6.1"
 	id "org.ajoberstar.grgit" version "3.1.0"
 	id "com.matthewprenger.cursegradle" version "1.4.0"
@@ -31,9 +31,9 @@ def getQslModule(String library, String module, String version) {
 	return "org.quiltmc.qsl.${library}:${module}:${version}+${project.minecraft_version}-SNAPSHOT";
 }
 
-def getSubprojectVersion(project) {
+def getSubprojectVersion(project, boolean isQuilted) {
 	// Get the version from the gradle.properties file
-	def version = project.properties["${project.name}-version"]
+	def version = project.properties[isQuilted ? "quilted-${project.name}-version" : "${project.name}-version"]
 
 	if (!version) {
 		throw new NullPointerException("Could not find version for " + project.name)
@@ -54,6 +54,17 @@ def getSubprojectVersion(project) {
 	}
 
 	return version + "+" + latestCommits.get(0).id.substring(0, 8) + DigestUtils.sha256Hex(project.rootProject.minecraft_version).substring(0, 2)
+}
+
+// Same as above, but for QMJ provides and unported modules
+def getSubprojectUpstreamVersion(project) {
+	def version = project.properties["${project.name}-version"]
+
+	if (!version) {
+		throw new NullPointerException("Could not find upstream version for " + project.name)
+	}
+
+	return version;
 }
 
 def getBranch() {
@@ -158,9 +169,15 @@ allprojects {
 
 	processResources {
 		inputs.property "version", project.version
+		inputs.property "upstream_version", project.upstream_version
 
 		filesMatching("fabric.mod.json") {
 			expand "version": project.version
+		}
+
+		filesMatching("quilt.mod.json") {
+			expand "version": project.version
+			expand "version": project.upstream_version
 		}
 	}
 

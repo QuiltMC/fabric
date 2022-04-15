@@ -1,5 +1,6 @@
 archivesBaseName = "fabric-api-base"
-version = getSubprojectVersion(project)
+version = getSubprojectVersion(project, true)
+upstream_version = getSubprojectUpstreamVersion(project)
 
 dependencies {
 	include modApi(getQslModule("core", "qsl_base", "1.0.0"))

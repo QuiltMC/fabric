@@ -35,7 +35,7 @@
 		"provides": [
 			{
 				"id": "fabric-item-groups-v0",
-				"version": "0.3.10"
+				"version": "${upstream_version}"
 			}
 		]
 	},

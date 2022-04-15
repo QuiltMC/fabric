@@ -1,5 +1,5 @@
 archivesBaseName = "fabric-key-binding-api-v1"
-version = getSubprojectVersion(project)
+version = getSubprojectVersion(project, false)
 
 dependencies {
 	testmodImplementation project(path: ':fabric-api-base', configuration: 'namedElements')

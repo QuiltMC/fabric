@@ -1,5 +1,5 @@
 archivesBaseName = "fabric-mining-level-api-v1"
-version = getSubprojectVersion(project)
+version = getSubprojectVersion(project, false)
 
 moduleDependencies(project, [
 		'fabric-api-base',

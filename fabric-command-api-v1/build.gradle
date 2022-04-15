@@ -1,5 +1,6 @@
 archivesBaseName = "fabric-command-api-v1"
-version = getSubprojectVersion(project)
+version = getSubprojectVersion(project, true)
+upstream_version = getSubprojectUpstreamVersion(project)
 
 dependencies {
 	testmodImplementation project(path: ':fabric-lifecycle-events-v1', configuration: 'namedElements')

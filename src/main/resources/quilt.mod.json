@@ -31,6 +31,11 @@
 					"versions": "~1.18.2-alpha.22.5.a"
 			}
 		],
-		"provides": ["fabric"]
+		"provides": [
+			{
+				"id": "fabric",
+				"version": "${upstream_version}"
+			}
+		]
 	}
 }

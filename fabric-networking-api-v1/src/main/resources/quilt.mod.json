@@ -28,7 +28,7 @@
 		"provides": [
 			{
 				"id": "fabric-networking-api-v1",
-				"version": "1.0.21"
+				"version": "${upstream_version}"
 			}
 		]
 	},

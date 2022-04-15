@@ -28,7 +28,7 @@
 		"provides": [
 			{
 				"id": "fabric-rendering-v1",
-				"version": "1.10.7"
+				"version": "${upstream_version}"
 			}
 		]
 	},

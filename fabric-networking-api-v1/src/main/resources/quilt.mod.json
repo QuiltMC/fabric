@@ -17,7 +17,7 @@
 				"sources": "https://github.com/QuiltMC/quilted-fabric-api"
 			},
 			"license": "Apache-2.0",
-			"icon": "assets/fabric-networking-api-v1/icon.png"
+			"icon": "assets/quilted-fabric-networking-api-v1/icon.png"
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"depends": [

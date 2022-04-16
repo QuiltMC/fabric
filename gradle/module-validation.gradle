@@ -31,7 +31,7 @@ class ValidateModuleTask extends DefaultTask {
 	@TaskAction
 	void validate() {
 		def quiltModJsonFile = project.file("src/main/resources/quilt.mod.json") as File
-		if (quiltModJsonFile) {
+		if (quiltModJsonFile.size() > 0) {
 			def quiltModJson = new JsonSlurper().parse(quiltModJsonFile) as Map<String, String>;
 
 			def moduleLifecycle = quiltModJson.get("fabric-api:module-lifecycle")

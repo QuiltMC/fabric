@@ -25,7 +25,7 @@ import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 
 import net.fabricmc.fabric.impl.resource.loader.ResourceManagerHelperImpl;
-import net.fabricmc.loader.api.ModContainer;	
+import net.fabricmc.loader.api.ModContainer;
 
 /**
  * Helper for working with {@link ResourceManager} instances, and other resource loader generalities.

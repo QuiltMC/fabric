@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "fabric-biome-api-v1",
   "name": "Fabric Biome API (v1)",
-  "version": "${version}",
+  "version": "${upstream_version}",
   "environment": "*",
   "license": "Apache-2.0",
   "icon": "assets/fabric-biome-api-v1/icon.png",

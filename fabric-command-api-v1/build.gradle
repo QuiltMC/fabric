@@ -1,5 +1,5 @@
 archivesBaseName = "quilted-fabric-command-api-v1"
-version = getSubprojectVersion(project, true)
+version = getSubprojectVersion(project)
 upstream_version = getSubprojectUpstreamVersion(project)
 
 dependencies {

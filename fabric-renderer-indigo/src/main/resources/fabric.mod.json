@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "fabric-renderer-indigo",
   "name": "Fabric Renderer - Indigo",
-  "version": "${version}",
+  "version": "${upstream_version}",
   "environment": "client",
   "license": "Apache-2.0",
   "icon": "assets/fabric-renderer-indigo/icon.png",

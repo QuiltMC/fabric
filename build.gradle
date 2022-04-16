@@ -9,7 +9,7 @@ plugins {
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
-	id "org.quiltmc.loom" version "0.12.17" apply false
+	id "org.quiltmc.loom" version "0.12-SNAPSHOT" apply false
 	id "org.cadixdev.licenser" version "0.6.1"
 	id "org.ajoberstar.grgit" version "3.1.0"
 	id "com.matthewprenger.cursegradle" version "1.4.0"
@@ -20,7 +20,7 @@ plugins {
 def ENV = System.getenv()
 def signingEnabled = ENV.SIGNING_SERVER
 
-version = project.version + "+" + (ENV.GITHUB_RUN_NUMBER ? "" : "local-") + getBranch() + (ENV.SNAPSHOTS_URL ? "-SNAPSHOT" : "")
+version = project.version + "+" + (ENV.GITHUB_RUN_NUMBER ? "" : "local-") + project.upstream_version + "-" + getBranch() + (ENV.SNAPSHOTS_URL ? "-SNAPSHOT" : "")
 logger.lifecycle("Building Fabric: " + version)
 
 

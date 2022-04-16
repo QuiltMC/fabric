@@ -23,6 +23,10 @@
 		"depends": [
 			"quilt_loader",
 			{
+				"id": "java",
+				"versions": ">=17"
+			},
+			{
 					"id": "minecraft",
 					"versions": "~1.18.2-alpha.22.5.a"
 			}

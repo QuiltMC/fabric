@@ -39,6 +39,7 @@
 			}
 		]
 	},
+	"mixin": "fabric-item-groups-v0.mixins.json",
 	"fabric-api:module-lifecycle": "deprecated",
 	"modmenu": {
 		"badges": [

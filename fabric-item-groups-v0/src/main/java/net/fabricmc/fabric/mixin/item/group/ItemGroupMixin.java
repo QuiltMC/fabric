@@ -14,10 +14,14 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.impl.item.group;
+package net.fabricmc.fabric.mixin.item.group;
 
-public interface ItemGroupExtensions extends org.quiltmc.qsl.item.group.impl.ItemGroupExtensions {
-	default void fabric_expandArray() {
-		this.quilt$expandArray();
-	}
-}
+import org.spongepowered.asm.mixin.Mixin;
+
+import net.minecraft.item.ItemGroup;
+
+import net.fabricmc.fabric.impl.item.group.ItemGroupExtensions;
+
+//this should be all that's necessary to monkeypatch ItemGroupExtensions back onto ItemGroup!
+@Mixin(ItemGroup.class)
+public class ItemGroupMixin implements ItemGroupExtensions {}

@@ -25,6 +25,12 @@
   ],
   "accessWidener" : "fabric-biome-api-v1.accesswidener",
   "custom": {
-    "fabric-api:module-lifecycle": "experimental"
+    "fabric-api:module-lifecycle": "experimental",
+    "modmenu": {
+      "badges": [
+        "library"
+      ],
+      "parent": "quilted_fabric_api"
+    }
   }
 }

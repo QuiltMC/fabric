@@ -30,6 +30,12 @@
   },
   "description": "Legacy Networking packet hooks and registries, superseded by fabric-networking-api-v1.",
   "custom": {
-    "fabric-api:module-lifecycle": "deprecated"
+    "fabric-api:module-lifecycle": "deprecated",
+    "modmenu": {
+      "badges": [
+        "library"
+      ],
+      "parent": "quilted_fabric_api"
+    }
   }
 }

@@ -5,19 +5,19 @@
 		"id": "quilted_fabric_api",
 		"version": "${version}",
 		"metadata": {
-			"name": "Fabric API QSL",
-			"description": "Core API module providing key hooks and intercompatibility features.",
+			"name": "Quilted Fabric API",
+			"description": "A reimplementation of Fabric API on top of Quilt Standard Libraries.",
 			"contributors": {
 				"Owner": "QuiltMC: QSL Team",
-				"Former Owner": "FabricMC"
+				"Original Owner": "FabricMC"
 			},
 			"contact": {
 				"homepage": "https://quiltmc.org",
-				"issues": "https://github.com/QuiltMC/fabric-api-qsl/issues",
-				"sources": "https://github.com/QuiltMC/fabric-api-qsl"
+				"issues": "https://github.com/QuiltMC/quilted-fabric-api/issues",
+				"sources": "https://github.com/QuiltMC/quilted-fabric-api"
 			},
 			"license": "Apache-2.0",
-			"icon": "assets/fabric/icon.png"
+			"icon": "assets/quilted_fabric_api/icon.png"
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"depends": [
@@ -36,6 +36,11 @@
 				"id": "fabric",
 				"version": "${upstream_version}"
 			}
+		]
+	},
+	"modmenu": {
+		"badges": [
+			"library"
 		]
 	}
 }

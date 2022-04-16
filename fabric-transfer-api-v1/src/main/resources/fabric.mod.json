@@ -25,6 +25,12 @@
     "fabric-transfer-api-v1.mixins.json"
   ],
   "custom": {
-    "fabric-api:module-lifecycle": "experimental"
+    "fabric-api:module-lifecycle": "experimental",
+    "modmenu": {
+      "badges": [
+        "library"
+      ],
+      "parent": "quilted_fabric_api"
+    }
   }
 }

@@ -24,10 +24,10 @@ public class QuiltCrashInfoCompatMod implements ModInitializer {
 	@Override
 	public void onInitialize(ModContainer mod) {
 		CrashReportEvents.SYSTEM_DETAILS.register(details -> {
-			details.addSection("QSL-FabricAPI", "!! WARNING !! This instance is using Fabric API modules "
-					+ "that got re-implemented with QSL. If the issue comes from Fabric API/QSL, "
-					+ "DO NOT report to Fabric, report to Quilt or the organization maintaining "
-					+ "the reimplementation instead.");
+			details.addSection("QuiltedFabricAPI", "!! WARNING !! This instance is using Fabric API modules "
+					+ "that got re-implemented with QSL. If the issue comes from Quilted Fabric API, "
+					+ "DO NOT report to Fabric, report it to Quilt instead, they are the current "
+					+ "maintainers of this reimplementation.");
 		});
 	}
 }

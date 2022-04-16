@@ -9,12 +9,12 @@
 			"description": "Contains the essentials for Fabric API modules.",
 			"contributors": {
 				"Owner": "QuiltMC: QSL Team",
-				"Former Owner": "FabricMC"
+				"Original Owner": "FabricMC"
 			},
 			"contact": {
 				"homepage": "https://quiltmc.org",
-				"issues": "https://github.com/QuiltMC/fabric-api-qsl/issues",
-				"sources": "https://github.com/QuiltMC/fabric-api-qsl"
+				"issues": "https://github.com/QuiltMC/quilted-fabric-api/issues",
+				"sources": "https://github.com/QuiltMC/quilted-fabric-api"
 			},
 			"license": "Apache-2.0",
 			"icon": "assets/fabric-api-base/icon.png"
@@ -37,8 +37,8 @@
 	"fabric-api:module-lifecycle": "deprecated",
 	"modmenu": {
 		"badges": [
-			"library",
-			"deprecated"
-		]
+			"library"
+		],
+		"parent": "quilted_fabric_api"
 	}
 }

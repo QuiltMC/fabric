@@ -121,7 +121,7 @@ allprojects {
 		it.options.release = 17
 	}
 
-	group = "org.quiltmc.fabric_api_qsl"
+	group = "org.quiltmc.quilted_fabric_api"
 
 	sourceSets {
 		testmod {

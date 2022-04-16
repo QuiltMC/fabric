@@ -28,6 +28,12 @@
   },
   "description": "Hooks and registries for rendering-related things.",
   "custom": {
-    "fabric-api:module-lifecycle": "deprecated"
+    "fabric-api:module-lifecycle": "deprecated",
+    "modmenu": {
+      "badges": [
+        "library"
+      ],
+      "parent": "quilted_fabric_api"
+    }
   }
 }

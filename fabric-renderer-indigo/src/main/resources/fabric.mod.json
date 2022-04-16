@@ -31,6 +31,12 @@
     ]
   },
   "custom": {
-    "fabric-api:module-lifecycle": "stable"
+    "fabric-api:module-lifecycle": "stable",
+    "modmenu": {
+      "badges": [
+        "library"
+      ],
+      "parent": "quilted_fabric_api"
+    }
   }
 }

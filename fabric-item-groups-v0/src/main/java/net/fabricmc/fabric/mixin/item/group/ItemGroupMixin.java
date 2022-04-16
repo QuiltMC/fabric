@@ -24,4 +24,4 @@ import net.fabricmc.fabric.impl.item.group.ItemGroupExtensions;
 
 //this should be all that's necessary to monkeypatch ItemGroupExtensions back onto ItemGroup!
 @Mixin(ItemGroup.class)
-public class ItemGroupMixin implements ItemGroupExtensions {}
+public abstract class ItemGroupMixin implements ItemGroupExtensions {}

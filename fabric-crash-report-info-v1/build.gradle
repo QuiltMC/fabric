@@ -1,4 +1,4 @@
-archivesBaseName = "fabric-crash-report-info-v1"
+archivesBaseName = "quilted-fabric-crash-report-info-v1"
 version = getSubprojectVersion(project, true)
 upstream_version = getSubprojectUpstreamVersion(project)
 

@@ -23,7 +23,7 @@
 		"depends": [
 			"quilt_loader",
 			"quilted-fabric-api-base",
-			"quilt-networking"
+			"quilt_networking"
 		],
 		"provides": [
 			{

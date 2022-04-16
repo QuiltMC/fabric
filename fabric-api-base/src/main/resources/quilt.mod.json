@@ -23,7 +23,7 @@
 		"depends": [
 			"quilt_loader",
 			{
-				"id": "quilt-base",
+				"id": "quilt_base",
 				"versions": ">=1.0.0"
 			}
 		],

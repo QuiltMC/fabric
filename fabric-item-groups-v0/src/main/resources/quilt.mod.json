@@ -22,10 +22,6 @@
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"depends": [
 			"quilt_loader",
-			{
-				"id": "minecraft",
-				"versions": ">=1.15-"
-			},
 			"quilted-fabric-api-base",
 			{
 				"id": "quilt_item_group",

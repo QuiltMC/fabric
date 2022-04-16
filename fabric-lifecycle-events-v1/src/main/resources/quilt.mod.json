@@ -33,14 +33,14 @@
 			"quilted-fabric-api-base",
 			{
 				"id": "quilted-fabric-resource-loader-v0",
+				"versions": "*"
+			},
+			{
+				"id": "quilt_command",
 				"versions": ">=1.0.0"
 			},
 			{
-				"id": "quilt-command",
-				"versions": ">=1.0.0"
-			},
-			{
-				"id": "quilt-client-command",
+				"id": "quilt_client_command",
 				"versions": ">=1.0.0"
 			}
 		],

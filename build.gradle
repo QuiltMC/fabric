@@ -21,7 +21,7 @@ def ENV = System.getenv()
 def signingEnabled = ENV.SIGNING_SERVER
 
 version = project.version + "+" + (ENV.GITHUB_RUN_NUMBER ? "" : "local-") + project.upstream_version + "-" + getBranch() + (ENV.SNAPSHOTS_URL ? "-SNAPSHOT" : "")
-logger.lifecycle("Building Fabric: " + version)
+logger.lifecycle("Building Quilted Fabric FAPI: " + version)
 
 
 import org.apache.commons.codec.digest.DigestUtils

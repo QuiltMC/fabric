@@ -1,4 +1,4 @@
-archivesBaseName = "fabric-entity-events-v1"
+archivesBaseName = "quilted_fabric_entity_events_v1"
 version = getSubprojectVersion(project)
 upstream_version = getSubprojectUpstreamVersion(project)
 

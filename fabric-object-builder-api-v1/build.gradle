@@ -1,4 +1,4 @@
-archivesBaseName = "quilted-fabric-object-builder-api-v1"
+archivesBaseName = "quilted_fabric_object_builder_api_v1"
 version = getSubprojectVersion(project)
 upstream_version = getSubprojectUpstreamVersion(project)
 
@@ -14,5 +14,5 @@ moduleDependencies(project, [
 ])
 
 loom {
-	accessWidenerPath = file("src/main/resources/fabric-object-builder-api-v1.accesswidener")
+	accessWidenerPath = file("src/main/resources/quilted_fabric_object_builder_api_v1.accesswidener")
 }

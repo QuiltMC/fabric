@@ -1,4 +1,4 @@
-archivesBaseName = "fabric-networking-v0"
+archivesBaseName = "quilted_fabric_networking_v0"
 version = getSubprojectVersion(project)
 upstream_version = getSubprojectUpstreamVersion(project)
 

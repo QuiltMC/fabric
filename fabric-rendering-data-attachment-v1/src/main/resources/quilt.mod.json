@@ -1,0 +1,43 @@
+{
+	"schema_version": 1,
+	"quilt_loader": {
+		"group": "org.quiltmc.quilted-fabric-api",
+		"id": "quilted_fabric_rendering_data_attachment_v1",
+		"version": "${version}",
+		"metadata": {
+			"name": "Quilted Fabric Rendering Data Attachment (v1)",
+			"description": "Thread-safe hooks for block entity data use during terrain rendering.",
+			"contributors": {
+				"Owner": "QuiltMC: QSL Team",
+				"Original Owner": "FabricMC"
+			},
+			"contact": {
+				"homepage": "https://quiltmc.org",
+				"issues": "https://github.com/QuiltMC/quilted-fabric-api/issues",
+				"sources": "https://github.com/QuiltMC/quilted-fabric-api"
+			},
+			"license": "Apache-2.0",
+			"icon": "assets/quilted_fabric_rendering_data_attachment_v1/icon.png"
+		},
+		"intermediate_mappings": "net.fabricmc:intermediary",
+		"depends": [
+			"quilt_loader",
+			"fabric-api-base"
+		],
+		"provides": [
+			{
+				"id": "fabric-rendering-data-attachment-v1",
+				"version": "${upstream_version}"
+			}
+		]
+	},
+	"mixin": "quilted_fabric_rendering_data_attachment_v1.mixins.json",
+	"access_widener": "quilted_fabric_rendering_data_attachment_v1.accesswidener",
+	"fabric-api:module-lifecycle": "stable",
+	"modmenu": {
+		"badges": [
+			"library"
+		],
+		"parent": "quilted_fabric_api"
+	}
+}

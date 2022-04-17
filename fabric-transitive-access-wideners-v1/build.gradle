@@ -1,9 +1,9 @@
-archivesBaseName = "fabric-transitive-access-wideners-v1"
+archivesBaseName = "quilted_fabric_transitive_access_wideners_v1"
 version = getSubprojectVersion(project)
 upstream_version = getSubprojectUpstreamVersion(project)
 
 loom {
-	accessWidenerPath = file('src/main/resources/fabric-transitive-access-wideners-v1.accesswidener')
+	accessWidenerPath = file('src/main/resources/quilted_fabric_transitive_access_wideners_v1.accesswidener')
 }
 
 import org.objectweb.asm.ClassReader
@@ -26,7 +26,7 @@ task generateAccessWidener {
 			generateBlockConstructors(lines, fs)
 		}
 
-		file('src/main/resources/fabric-transitive-access-wideners-v1.accesswidener').text = String.join('\n', lines) + '\n'
+		file('src/main/resources/quilted_fabric_transitive_access_wideners_v1.accesswidener').text = String.join('\n', lines) + '\n'
 	}
 }
 

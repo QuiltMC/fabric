@@ -1,4 +1,4 @@
-archivesBaseName = "fabric-data-generation-api-v1"
+archivesBaseName = "quilted_fabric_data_generation_api_v1"
 version = getSubprojectVersion(project)
 upstream_version = getSubprojectUpstreamVersion(project)
 
@@ -23,7 +23,7 @@ sourceSets {
 }
 
 loom {
-	accessWidenerPath = file("src/main/resources/fabric-data-generation-api-v1.accesswidener")
+	accessWidenerPath = file("src/main/resources/quilted_fabric_data_generation_api_v1.accesswidener")
 
 	runs {
 		datagen {

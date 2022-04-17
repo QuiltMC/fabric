@@ -1,4 +1,4 @@
-archivesBaseName = "fabric-renderer-registries-v1"
+archivesBaseName = "quilted_fabric_renderer_registries_v1"
 version = getSubprojectVersion(project)
 upstream_version = getSubprojectUpstreamVersion(project)
 

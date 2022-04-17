@@ -31,9 +31,9 @@ def getQslModule(String library, String module, String version) {
 	return "org.quiltmc.qsl.${library}:${module}:${version}+${project.minecraft_version}-SNAPSHOT";
 }
 
-def getSubprojectVersion(project, boolean isQuilted) {
+def getSubprojectVersion(project) {
 	// Get the version from the gradle.properties file
-	def version = project.properties[isQuilted ? "quilted-${project.name}-version" : "${project.name}-version"]
+	def version = project.properties["quilted-${project.name}-version"]
 
 	if (!version) {
 		throw new NullPointerException("Could not find version for " + project.name)

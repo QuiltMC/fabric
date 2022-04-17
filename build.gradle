@@ -27,8 +27,8 @@ logger.lifecycle("Building Fabric: " + version)
 import org.apache.commons.codec.digest.DigestUtils
 import org.kohsuke.github.GHReleaseBuilder
 
-def getQslModule(String library, String module, String version) {
-	return "org.quiltmc.qsl.${library}:${module}:${version}+${project.minecraft_version}-SNAPSHOT";
+def getQslModule(String library, String module) {
+	return "org.quiltmc.qsl.${library}:${module}:${project.qsl2_version}+${project.minecraft_version}-SNAPSHOT";
 }
 
 def getSubprojectVersion(project) {
@@ -413,6 +413,10 @@ def devOnlyModules = [
 ]
 
 dependencies {
+	// Bundle all QSL modules
+	// TODO - This is not the final path!
+	include modImplementation("org.quiltmc.qsl:qsl:${project.qsl_version}")
+
 	afterEvaluate {
 		subprojects.each {
 			api project(path: ":${it.name}", configuration: "namedElements")

@@ -7,5 +7,5 @@ moduleDependencies(project, [
 ])
 
 dependencies {
-	include modApi(getQslModule("block", "block_extensions", "1.0.0"))
+	modApi(getQslModule("block", "block_extensions"))
 }

@@ -8,5 +8,5 @@ moduleDependencies(project, [
 ])
 
 dependencies {
-	include modApi(getQslModule("core", "lifecycle_events", "1.0.0"))
+	modApi(getQslModule("core", "lifecycle_events"))
 }

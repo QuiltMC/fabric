@@ -8,5 +8,5 @@ moduleDependencies(project, [
 ])
 
 dependencies {
-	include modApi(getQslModule("item", "item_group", "1.0.0"))
+	modApi(getQslModule("item", "item_group"))
 }

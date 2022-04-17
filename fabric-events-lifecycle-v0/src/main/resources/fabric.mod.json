@@ -36,7 +36,8 @@
       "badges": [
         "library",
         "deprecated"
-      ]
+      ],
+      "parent": "quilted_fabric_api"
     }
   }
 }

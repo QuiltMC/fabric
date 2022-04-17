@@ -3,5 +3,5 @@ version = getSubprojectVersion(project)
 upstream_version = getSubprojectUpstreamVersion(project)
 
 dependencies {
-	include modApi(getQslModule("core", "crash_info", "1.0.0"))
+	modApi(getQslModule("core", "crash_info"))
 }

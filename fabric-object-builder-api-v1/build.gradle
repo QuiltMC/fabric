@@ -3,7 +3,7 @@ version = getSubprojectVersion(project)
 upstream_version = getSubprojectUpstreamVersion(project)
 
 dependencies {
-	include modApi(getQslModule("block", "block_extensions", "1.0.0"))
+	modApi(getQslModule("block", "block_extensions"))
 
 	testmodImplementation project(path: ':fabric-command-api-v1', configuration: 'namedElements')
 }

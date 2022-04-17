@@ -3,8 +3,8 @@ version = getSubprojectVersion(project)
 upstream_version = getSubprojectUpstreamVersion(project)
 
 dependencies {
-	include modApi(getQslModule("gui", "tooltip", "1.0.0"))
-	include modApi(getQslModule("item", "item_setting", "1.0.0"))
+	modApi(getQslModule("gui", "tooltip"))
+	modApi(getQslModule("item", "item_setting"))
 }
 
 moduleDependencies(project, [

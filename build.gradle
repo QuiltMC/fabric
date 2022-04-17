@@ -172,7 +172,7 @@ allprojects {
 		inputs.property "upstream_version", project.upstream_version
 
 		filesMatching("fabric.mod.json") {
-			expand "version": project.version
+			expand "version": project.version, "upstream_version": project.upstream_version
 		}
 
 		filesMatching("quilt.mod.json") {

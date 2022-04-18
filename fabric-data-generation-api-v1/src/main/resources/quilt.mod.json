@@ -31,7 +31,7 @@
 		]
 	},
 	"mixin": "quilted_fabric_data_generation_api_v1.mixins.json",
-	"access_widener": "fabric-data-generation-api-v1.accesswidener",
+	"access_widener": "quilted_fabric_data_generation_api_v1.accesswidener",
 	"fabric-api:module-lifecycle": "stable",
 	"modmenu": {
 		"badges": [

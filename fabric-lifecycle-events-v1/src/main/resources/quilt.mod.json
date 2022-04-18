@@ -28,7 +28,7 @@
 			"quilt_loader",
 			"quilted_fabric_api_base",
 			{
-				"id": "quilted-fabric-resource-loader-v0",
+				"id": "quilted_fabric_resource_loader_v0",
 				"versions": ">=1.0.0"
 			},
 			{

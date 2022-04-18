@@ -66,11 +66,24 @@
 			"quilted_fabric_rendering_v1",
 			"quilted_fabric_resource_conditions_api_v1",
 			"quilted_fabric_resource_loader_v0",
-			"quilted_fabric_screen_api_v1",
+			"fabric-screen-api-v1",
 			"quilted_fabric_screen_handler_api_v1",
 			"quilted_fabric_textures_v0",
 			"quilted_fabric_transfer_api_v1",
-			"quilted_fabric_transitive_access_wideners_v1"
+			"quilted_fabric_transitive_access_wideners_v1",
+			"quilt_block_extensions",
+			"quilt_client_command",
+			"quilt_command",
+			"quilt_crash_info",
+			"quilt_dimension",
+			"quilt_item_group",
+			"quilt_item_setting",
+			"quilt_lifecycle_events",
+			"quilt_networking",
+			"quilt_base",
+			"quilt_resource_loader",
+			"quilt_tags",
+			"quilt_tooltip"
 		],
 		"provides": [
 			{

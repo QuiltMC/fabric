@@ -52,12 +52,10 @@ public class UpdatingItem extends Item {
 		}
 	}
 
-	@Override
 	public boolean allowNbtUpdateAnimation(PlayerEntity player, Hand hand, ItemStack originalStack, ItemStack updatedStack) {
 		return allowUpdateAnimation;
 	}
 
-	@Override
 	public boolean allowContinuingBlockBreaking(PlayerEntity player, ItemStack oldStack, ItemStack newStack) {
 		return true; // set to false and you won't be able to break a block in survival with this item
 	}
@@ -67,7 +65,6 @@ public class UpdatingItem extends Item {
 		return !stack.hasNbt() || stack.getNbt().getLong("ticks") % 600 < 300;
 	}
 
-	@Override
 	public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(ItemStack stack, EquipmentSlot slot) {
 		// Give + 5 attack damage for 15 seconds every 30 seconds.
 		if (slot == EquipmentSlot.MAINHAND && isEnabled(stack)) {
@@ -77,7 +74,6 @@ public class UpdatingItem extends Item {
 		}
 	}
 
-	@Override
 	public boolean isSuitableFor(ItemStack stack, BlockState state) {
 		// Suitable for everything for 15 seconds every 30 seconds.
 		return isEnabled(stack);

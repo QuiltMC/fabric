@@ -32,28 +32,7 @@ def getQslModule(String library, String module) {
 }
 
 def getSubprojectVersion(project) {
-	// Get the version from the gradle.properties file
-	def version = project.properties["quilted-${project.name}-version"]
-
-	if (!version) {
-		throw new NullPointerException("Could not find version for " + project.name)
-	}
-
-	if (grgit == null) {
-		return version + "+nogit"
-	}
-
-	def latestCommits = grgit.log(paths: [project.name], maxCommits: 1)
-
-	if (latestCommits.isEmpty()) {
-		return version + "+uncommited"
-	}
-
-	if (System.getenv().SNAPSHOTS_URL) {
-		return version + "+" + getBranch() + "-SNAPSHOT"
-	}
-
-	return version + "+" + latestCommits.get(0).id.substring(0, 8) + DigestUtils.sha256Hex(project.rootProject.minecraft_version).substring(0, 2)
+	return version
 }
 
 // Same as above, but for QMJ provides and unported modules
@@ -417,7 +396,7 @@ configurations {
 }
 dependencies {
 	// Bundle all QSL modules
-	qsl modImplementation("org.quiltmc:qsl:${project.qsl_version}")
+	qsl modApi("org.quiltmc:qsl:${project.qsl_version}")
 	configurations.getByName("qsl").resolvedConfiguration.getFirstLevelModuleDependencies().each {
 		// "it" is QSL
 		it.getChildren().each {

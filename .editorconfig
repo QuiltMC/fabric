@@ -17,6 +17,10 @@ ij_java_class_count_to_use_import_on_demand = 999
 
 [*.json]
 indent_style = space
+tab_width = 2
+
+[quilt.mod.json]
+indent_style = tab
 indent_size = 2
 
 [*.properties]

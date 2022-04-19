@@ -1,12 +1,13 @@
-archivesBaseName = "fabric-networking-api-v1"
+archivesBaseName = "quilted_fabric_networking_api_v1"
 version = getSubprojectVersion(project)
+upstream_version = getSubprojectUpstreamVersion(project)
 
 moduleDependencies(project, [
 		'fabric-api-base'
 ])
 
 dependencies {
-	include modApi(getQslModule("core", "networking", "1.0.0"))
+	modApi(getQslModule("core", "networking"))
 
 	testmodImplementation project(path: ':fabric-command-api-v1', configuration: 'namedElements')
 	testmodImplementation project(path: ':fabric-lifecycle-events-v1', configuration: 'namedElements')

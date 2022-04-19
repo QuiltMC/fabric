@@ -107,8 +107,8 @@ class BumpVersionTask extends DefaultTask {
 			println "${p.name}: $version -> $newVersion"
 
 			text = text.replace(
-				"${p.name}-version=$version",
-				"${p.name}-version=$newVersion"
+				"quilted-${p.name}-version=$version",
+				"quilted-${p.name}-version=$newVersion"
 			)
 		}
 

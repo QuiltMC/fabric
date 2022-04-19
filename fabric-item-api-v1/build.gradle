@@ -1,9 +1,10 @@
-archivesBaseName = "fabric-item-api-v1"
+archivesBaseName = "quilted_fabric_item_api_v1"
 version = getSubprojectVersion(project)
+upstream_version = getSubprojectUpstreamVersion(project)
 
 dependencies {
-	include modApi(getQslModule("gui", "tooltip", "1.0.0"))
-	include modApi(getQslModule("item", "item_setting", "1.0.0"))
+	modApi(getQslModule("gui", "tooltip"))
+	modApi(getQslModule("item", "item_setting"))
 }
 
 moduleDependencies(project, [

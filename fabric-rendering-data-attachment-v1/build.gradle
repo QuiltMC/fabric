@@ -1,10 +1,11 @@
-archivesBaseName = "fabric-rendering-data-attachment-v1"
+archivesBaseName = "quilted_fabric_rendering_data_attachment_v1"
 version = getSubprojectVersion(project)
+upstream_version = getSubprojectUpstreamVersion(project)
 
 moduleDependencies(project, [
 		'fabric-api-base'
 ])
 
 loom {
-	accessWidenerPath = file("src/main/resources/fabric-rendering-data-attachment-v1.accesswidener")
+	accessWidenerPath = file("src/main/resources/quilted_fabric_rendering_data_attachment_v1.accesswidener")
 }

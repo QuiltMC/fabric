@@ -1,10 +1,11 @@
-archivesBaseName = "fabric-blockrenderlayer-v1"
+archivesBaseName = "quilted_fabric_blockrenderlayer_v1"
 version = getSubprojectVersion(project)
+upstream_version = getSubprojectUpstreamVersion(project)
 
 moduleDependencies(project, [
         'fabric-api-base'
 ])
 
 dependencies {
-	include modApi(getQslModule("block", "block_extensions", "1.0.0"))
+	modApi(getQslModule("block", "block_extensions"))
 }

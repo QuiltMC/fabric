@@ -1,11 +1,12 @@
-archivesBaseName = "fabric-command-api-v1"
+archivesBaseName = "quilted_fabric_command_api_v1"
 version = getSubprojectVersion(project)
+upstream_version = getSubprojectUpstreamVersion(project)
 
 dependencies {
 	testmodImplementation project(path: ':fabric-lifecycle-events-v1', configuration: 'namedElements')
 
-	include modApi(getQslModule("command", "command", "1.0.0"))
-	include modApi(getQslModule("command", "client_command", "1.0.0"))
+	modApi(getQslModule("command", "command"))
+	modApi(getQslModule("command", "client_command"))
 }
 
 moduleDependencies(project, [

@@ -1,6 +1,7 @@
-archivesBaseName = "fabric-crash-report-info-v1"
+archivesBaseName = "quilted_fabric_crash_report_info_v1"
 version = getSubprojectVersion(project)
+upstream_version = getSubprojectUpstreamVersion(project)
 
 dependencies {
-	include modApi(getQslModule("core", "crash_info", "1.0.0"))
+	modApi(getQslModule("core", "crash_info"))
 }

@@ -1,8 +1,9 @@
-archivesBaseName = "fabric-game-rule-api-v1"
+archivesBaseName = "quilted_fabric_game_rule_api_v1"
 version = getSubprojectVersion(project)
+upstream_version = getSubprojectUpstreamVersion(project)
 
 loom {
-	accessWidenerPath = file("src/main/resources/fabric-game-rule-api-v1.accesswidener")
+	accessWidenerPath = file("src/main/resources/quilted_fabric_game_rule_api_v1.accesswidener")
 }
 
 dependencies {

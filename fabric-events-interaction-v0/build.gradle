@@ -1,5 +1,6 @@
-archivesBaseName = "fabric-events-interaction-v0"
+archivesBaseName = "quilted_fabric_events_interaction_v0"
 version = getSubprojectVersion(project)
+upstream_version = getSubprojectUpstreamVersion(project)
 
 moduleDependencies(project, [
 		'fabric-api-base'

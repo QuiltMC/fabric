@@ -1,5 +1,6 @@
-archivesBaseName = "fabric-lifecycle-events-v1"
+archivesBaseName = "quilted_fabric_lifecycle_events_v1"
 version = getSubprojectVersion(project)
+upstream_version = getSubprojectUpstreamVersion(project)
 
 moduleDependencies(project, [
 		'fabric-api-base',
@@ -7,5 +8,5 @@ moduleDependencies(project, [
 ])
 
 dependencies {
-	include modApi(getQslModule("core", "lifecycle_events", "1.0.0"))
+	modApi(getQslModule("core", "lifecycle_events"))
 }

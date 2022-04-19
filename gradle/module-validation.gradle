@@ -13,13 +13,11 @@ subprojects {
 }
 
 /**
- * Verifies that each module has the required custom values for module lifecycle in it's FMJ.
+ * Verifies that each module has the required custom values for module lifecycle in its QMJ or FMJ.
  *
  * <p>Example:
  * <pre>{@code
- * "custom": {
- *   "fabric-api:module-lifecycle": "stable"
- * }
+ * "fabric-api:module-lifecycle": "stable"
  * }</pre>
  */
 class ValidateModuleTask extends DefaultTask {
@@ -32,14 +30,26 @@ class ValidateModuleTask extends DefaultTask {
 
 	@TaskAction
 	void validate() {
-		def json = new JsonSlurper().parse(project.file("src/main/resources/fabric.mod.json") as File) as Map<String, Map<String, String>>;
+		def quiltModJsonFile = project.file("src/main/resources/quilt.mod.json") as File
+		if (quiltModJsonFile.size() > 0) {
+			def quiltModJson = new JsonSlurper().parse(quiltModJsonFile) as Map<String, String>;
 
-		if (json.custom == null) {
-			throw new GradleException("Module ${project} does not have a custom value containing module lifecycle!")
+			def moduleLifecycle = quiltModJson.get("fabric-api:module-lifecycle")
+			validateModuleLifecycle(moduleLifecycle)
+			// TODO - It would be nice if it also ensured that all modules had Mod Menu metadata
+		} else {
+			def fabricModJson = new JsonSlurper().parse(project.file("src/main/resources/fabric.mod.json") as File) as Map<String, Map<String, String>>;
+
+			if (fabricModJson.custom == null) {
+				throw new GradleException("Module ${project} does not have a custom value containing module lifecycle!")
+			}
+
+			def moduleLifecycle = fabricModJson.custom.get("fabric-api:module-lifecycle")
+			validateModuleLifecycle(moduleLifecycle)
 		}
+	}
 
-		def moduleLifecycle = json.custom.get("fabric-api:module-lifecycle")
-
+	def validateModuleLifecycle(moduleLifecycle) {
 		if (moduleLifecycle == null) {
 			throw new GradleException("Module ${project} does not have module lifecycle in custom values!")
 		}

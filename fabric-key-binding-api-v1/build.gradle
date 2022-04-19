@@ -1,5 +1,6 @@
-archivesBaseName = "fabric-key-binding-api-v1"
+archivesBaseName = "quilted_fabric_key_binding_api_v1"
 version = getSubprojectVersion(project)
+upstream_version = getSubprojectUpstreamVersion(project)
 
 dependencies {
 	testmodImplementation project(path: ':fabric-api-base', configuration: 'namedElements')

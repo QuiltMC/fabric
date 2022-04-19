@@ -1,8 +1,9 @@
-archivesBaseName = "fabric-content-registries-v0"
+archivesBaseName = "quilted_fabric_content_registries_v0"
 version = getSubprojectVersion(project)
+upstream_version = getSubprojectUpstreamVersion(project)
 
 loom {
-	accessWidenerPath = file("src/main/resources/fabric-content-registries-v0.accesswidener")
+	accessWidenerPath = file("src/main/resources/quilted_fabric_content_registries_v0.accesswidener")
 }
 
 moduleDependencies(project, [

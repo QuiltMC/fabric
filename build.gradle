@@ -9,8 +9,7 @@ plugins {
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
-	id "fabric-loom" version "0.11.32" apply false
-	id "io.github.juuxel.loom-quiltflower" version "1.6.+" apply false
+	id "org.quiltmc.loom" version "0.12-SNAPSHOT" apply false
 	id "org.cadixdev.licenser" version "0.6.1"
 	id "org.ajoberstar.grgit" version "3.1.0"
 	id "com.matthewprenger.cursegradle" version "1.4.0"
@@ -21,20 +20,20 @@ plugins {
 def ENV = System.getenv()
 def signingEnabled = ENV.SIGNING_SERVER
 
-version = project.version + "+" + (ENV.GITHUB_RUN_NUMBER ? "" : "local-") + getBranch() + (ENV.SNAPSHOTS_URL ? "-SNAPSHOT" : "")
-logger.lifecycle("Building Fabric: " + version)
+version = project.version + "+" + (ENV.GITHUB_RUN_NUMBER ? "" : "local-") + project.upstream_version + "-" + getBranch() + (ENV.SNAPSHOTS_URL ? "-SNAPSHOT" : "")
+logger.lifecycle("Building Quilted Fabric API: " + version)
 
 
 import org.apache.commons.codec.digest.DigestUtils
 import org.kohsuke.github.GHReleaseBuilder
 
-def getQslModule(String library, String module, String version) {
-	return "org.quiltmc.qsl.${library}:${module}:${version}+${project.minecraft_version}-SNAPSHOT";
+def getQslModule(String library, String module) {
+	return "org.quiltmc.qsl.${library}:${module}:${project.qsl_version}";
 }
 
 def getSubprojectVersion(project) {
 	// Get the version from the gradle.properties file
-	def version = project.properties["${project.name}-version"]
+	def version = project.properties["quilted-${project.name}-version"]
 
 	if (!version) {
 		throw new NullPointerException("Could not find version for " + project.name)
@@ -55,6 +54,17 @@ def getSubprojectVersion(project) {
 	}
 
 	return version + "+" + latestCommits.get(0).id.substring(0, 8) + DigestUtils.sha256Hex(project.rootProject.minecraft_version).substring(0, 2)
+}
+
+// Same as above, but for QMJ provides and unported modules
+def getSubprojectUpstreamVersion(project) {
+	def version = project.properties["${project.name}-version"]
+
+	if (!version) {
+		throw new NullPointerException("Could not find upstream version for " + project.name)
+	}
+
+	return version;
 }
 
 def getBranch() {
@@ -103,8 +113,7 @@ allprojects {
 	apply plugin: "java-library"
 	apply plugin: "checkstyle"
 	apply plugin: "maven-publish"
-	apply plugin: "fabric-loom"
-	apply plugin: "io.github.juuxel.loom-quiltflower"
+	apply plugin: "org.quiltmc.loom"
 	apply plugin: "org.cadixdev.licenser"
 	apply plugin: "me.modmuss50.remotesign"
 
@@ -112,7 +121,7 @@ allprojects {
 		it.options.release = 17
 	}
 
-	group = "org.quiltmc.fabric_api_qsl"
+	group = "org.quiltmc.quilted-fabric-api"
 
 	sourceSets {
 		testmod {
@@ -143,7 +152,7 @@ allprojects {
 	dependencies {
 		minecraft "com.mojang:minecraft:$rootProject.minecraft_version"
 		mappings "net.fabricmc:yarn:${rootProject.minecraft_version}${project.yarn_version}:v2"
-		modApi "net.fabricmc:fabric-loader:${project.loader_version}"
+		modApi "org.quiltmc:quilt-loader:${project.loader_version}"
 	}
 
 	loom {
@@ -160,9 +169,14 @@ allprojects {
 
 	processResources {
 		inputs.property "version", project.version
+		inputs.property "upstream_version", project.upstream_version
 
 		filesMatching("fabric.mod.json") {
-			expand "version": project.version
+			expand "version": project.version, "upstream_version": project.upstream_version
+		}
+
+		filesMatching("quilt.mod.json") {
+			expand "version": project.version, "upstream_version": project.upstream_version
 		}
 	}
 
@@ -398,7 +412,27 @@ def devOnlyModules = [
 		"fabric-data-generation-api-v1"
 ]
 
+configurations {
+	qsl
+}
 dependencies {
+	// Bundle all QSL modules
+	qsl modImplementation("org.quiltmc:qsl:${project.qsl_version}")
+	configurations.getByName("qsl").resolvedConfiguration.getFirstLevelModuleDependencies().each {
+		// "it" is QSL
+		it.getChildren().each {
+			// "it" is each QSL library
+			it.getChildren().each {
+				// "it" is each QSL module
+				// this should only be QSL modules, but it can't hurt to filter out
+				if (it.getModuleGroup().startsWith("org.quiltmc.qsl") && it.getModuleGroup().split("\\.").length == 4) {
+					include (it.getModuleGroup() + ":" + it.getModuleName() + ":" + it.getModuleVersion())
+				} else {
+					println("WARNING: Excluding non-QSL module: $it")
+				}
+			}
+		}
+	}
 	afterEvaluate {
 		subprojects.each {
 			api project(path: ":${it.name}", configuration: "namedElements")
@@ -453,7 +487,16 @@ if (signingEnabled) {
 import org.kohsuke.github.GHReleaseBuilder
 import org.kohsuke.github.GitHub
 
-task github(dependsOn: (signingEnabled ? signRemapJar : remapJar)) {
+task renameJar(type: Jar, dependsOn: (signingEnabled ? signRemapJar : remapJar)) {
+	with remapJar
+	def qsl_version_normalized = project.qsl_version.substring(0, project.qsl_version.indexOf('+'))
+	def qfapi_version_normalized = project.version.substring(0, project.version.indexOf('+'))
+	def upstream_fapi_version_normalized = project.upstream_version
+	archiveFileName.set("qsl-${qsl_version_normalized}_qfapi-${qfapi_version_normalized}_fapi-${upstream_fapi_version_normalized}_mc-${project.minecraft_version}.jar")
+}
+
+
+task github(dependsOn: renameJar) {
 	onlyIf {
 		ENV.GITHUB_TOKEN
 	}
@@ -463,47 +506,32 @@ task github(dependsOn: (signingEnabled ? signRemapJar : remapJar)) {
 		def repository = github.getRepository(ENV.GITHUB_REPOSITORY)
 
 		def releaseBuilder = new GHReleaseBuilder(repository, version as String)
-		releaseBuilder.name("[$project.minecraft_version] Fabric API $project.version")
-		releaseBuilder.body(ENV.CHANGELOG ?: "No changelog provided")
+		releaseBuilder.name("[$project.minecraft_version] QSL " + project.qsl_version.split("\\+")[0] + " and QFAPI " + project.version.split("\\+")[0])
+		releaseBuilder.body("Provides Fabric API ${project.upstream_version}\n" + ENV.CHANGELOG ?: "No changelog provided")
 		releaseBuilder.commitish(getBranch())
 		releaseBuilder.prerelease(project.prerelease == "true")
 
 		def ghRelease = releaseBuilder.create()
-		ghRelease.uploadAsset(signingEnabled ? signRemapJar.output.get().getAsFile() : remapJar.archiveFile.get().getAsFile(), "application/java-archive");
+		ghRelease.uploadAsset(renameJar.archiveFile.get().getAsFile(), "application/java-archive");
 	}
 }
 
-task modrinth(type: com.modrinth.minotaur.TaskModrinthUpload, dependsOn: (signingEnabled ? signRemapJar : remapJar)) {
+
+task modrinth(type: com.modrinth.minotaur.TaskModrinthUpload, dependsOn: renameJar) {
 	onlyIf {
 		ENV.MODRINTH_TOKEN
 	}
 
 	token = ENV.MODRINTH_TOKEN
-	projectId = "P7dR8mSH"
+	projectId = "qvIfYCYJ"
 	versionNumber = version
-	versionName = "[$project.minecraft_version] Fabric API $project.version"
+	versionName = "[$project.minecraft_version] QSL " + project.qsl_version.split("\\+")[0] + " and QFAPI " + project.version.split("\\+")[0]
 	releaseType = project.prerelease == "true" ? "beta" : "release"
-	changelog = ENV.CHANGELOG ?: "No changelog provided"
+	changelog = "Provides Fabric API ${project.upstream_version}\n"
+	changelog += ENV.CHANGELOG ?: "No changelog provided"
 
-	uploadFile = signingEnabled ? signRemapJar.output : remapJar
+	uploadFile = renameJar
 
 	addGameVersion(project.minecraft_version)
-	addLoader('fabric')
+	addLoader('quilt')
 }
-
-// A task to ensure that the version being released has not already been released.
-task checkVersion {
-	doFirst {
-		def xml = new URL("https://maven.quiltmc.org/repository/snapshot/net/fabricmc/fabric-api/fabric-api/maven-metadata.xml").text
-		def metadata = new XmlSlurper().parseText(xml)
-		def versions = metadata.versioning.versions.version*.text();
-		if (versions.contains(version)) {
-			throw new RuntimeException("${version} has already been released!")
-		}
-	}
-}
-
-github.mustRunAfter checkVersion
-modrinth.mustRunAfter checkVersion
-publish.mustRunAfter checkVersion
-project.tasks.curseforge.mustRunAfter checkVersion

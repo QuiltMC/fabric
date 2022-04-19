@@ -1,5 +1,6 @@
-archivesBaseName = "fabric-api-lookup-api-v1"
+archivesBaseName = "quilted_fabric_api_lookup_api_v1"
 version = getSubprojectVersion(project)
+upstream_version = getSubprojectUpstreamVersion(project)
 
 moduleDependencies(project, [
 	'fabric-api-base',

@@ -18,7 +18,6 @@ package net.fabricmc.fabric.mixin.client.keybinding;
 
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -39,7 +38,6 @@ public class MixinGameOptions {
 
 	@Inject(at = @At("HEAD"), method = "load()V")
 	public void loadHook(CallbackInfo info) {
-		MixinEnvironment.getCurrentEnvironment().audit();
 		allKeys = KeyBindingRegistryImpl.process(allKeys);
 	}
 }

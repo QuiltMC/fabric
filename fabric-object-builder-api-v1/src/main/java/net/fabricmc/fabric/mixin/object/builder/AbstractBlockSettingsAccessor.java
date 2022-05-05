@@ -27,12 +27,73 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.MapColor;
+import net.minecraft.block.Material;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 
 @Mixin(AbstractBlock.Settings.class)
 public interface AbstractBlockSettingsAccessor {
+	/* GETTERS */
+	@Deprecated
+	@Accessor
+	Material getMaterial();
+
+	@Deprecated
+	@Accessor
+	float getHardness();
+
+	@Deprecated
+	@Accessor
+	float getResistance();
+
+	@Deprecated
+	@Accessor
+	boolean getCollidable();
+
+	@Deprecated
+	@Accessor
+	boolean getRandomTicks();
+
+	@Deprecated
+	@Accessor("luminance")
+	ToIntFunction<BlockState> getLuminance();
+
+	@Deprecated
+	@Accessor
+	Function<BlockState, MapColor> getMapColorProvider();
+
+	@Deprecated
+	@Accessor
+	BlockSoundGroup getSoundGroup();
+
+	@Deprecated
+	@Accessor
+	float getSlipperiness();
+
+	@Deprecated
+	@Accessor
+	float getVelocityMultiplier();
+
+	@Deprecated
+	@Accessor
+	boolean getDynamicBounds();
+
+	@Deprecated
+	@Accessor
+	boolean getOpaque();
+
+	@Deprecated
+	@Accessor
+	boolean getIsAir();
+
+	@Deprecated
+	@Accessor
+	boolean isToolRequired();
 	/* SETTERS */
+	@Deprecated
+	@Accessor
+	void setMaterial(Material material);
+
 	@Accessor
 	void setHardness(float hardness);
 
@@ -42,14 +103,32 @@ public interface AbstractBlockSettingsAccessor {
 	@Accessor
 	void setCollidable(boolean collidable);
 
+	@Deprecated
+	@Accessor
+	void setRandomTicks(boolean ticksRandomly);
+
+	@Deprecated
 	@Accessor
 	void setMapColorProvider(Function<BlockState, MapColor> mapColorProvider);
 
 	@Accessor
 	void setDynamicBounds(boolean dynamicBounds);
 
+	@Deprecated
+	@Accessor
+	void setOpaque(boolean opaque);
+
+	@Deprecated
+	@Accessor
+	void setIsAir(boolean isAir);
+
+	@Deprecated
 	@Accessor
 	void setLootTableId(Identifier lootTableId);
+
+	@Deprecated
+	@Accessor
+	void setToolRequired(boolean toolRequired);
 
 	// Cannot be an invoker due to conflicts in mixin: method_9631(Ljava/util/function/ToIntFunction;)Lnet/minecraft/class_4970$class_2251; for target net.minecraft.block.AbstractBlock$Settings conflicts with existing mapping field_10663:Ljava/util/function/ToIntFunction;
 	@Accessor("luminance")

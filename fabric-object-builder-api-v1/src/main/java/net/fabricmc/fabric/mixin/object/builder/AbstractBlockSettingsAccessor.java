@@ -107,7 +107,6 @@ public interface AbstractBlockSettingsAccessor {
 	@Accessor
 	void setRandomTicks(boolean ticksRandomly);
 
-	@Deprecated
 	@Accessor
 	void setMapColorProvider(Function<BlockState, MapColor> mapColorProvider);
 
@@ -122,7 +121,6 @@ public interface AbstractBlockSettingsAccessor {
 	@Accessor
 	void setIsAir(boolean isAir);
 
-	@Deprecated
 	@Accessor
 	void setLootTableId(Identifier lootTableId);
 

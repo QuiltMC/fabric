@@ -89,6 +89,7 @@ public interface AbstractBlockSettingsAccessor {
 	@Deprecated
 	@Accessor
 	boolean isToolRequired();
+
 	/* SETTERS */
 	@Deprecated
 	@Accessor

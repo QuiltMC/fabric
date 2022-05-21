@@ -29,7 +29,10 @@
 				"id": "fabric-screen-api-v1",
 				"version": "${upstream_version}"
 			}
-		]
+		],
+		"entrypoints": {
+			"client_init": "net.fabricmc.fabric.impl.client.screen.CompatEventInitializer"
+		}
 	},
 	"minecraft": {
 		"environment": "client"

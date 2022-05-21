@@ -36,6 +36,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents;
 import net.fabricmc.fabric.api.client.screen.v1.Screens;
+import net.fabricmc.fabric.impl.client.screen.ScreenEventFactory;
 
 @Environment(EnvType.CLIENT)
 public final class ScreenTests implements ClientModInitializer {
@@ -53,6 +54,10 @@ public final class ScreenTests implements ClientModInitializer {
 
 	private void afterInitScreen(MinecraftClient client, Screen screen, int windowWidth, int windowHeight) {
 		LOGGER.info("Initializing {}", screen.getClass().getName());
+
+		for (Screen screen2 : ScreenEventFactory.ACTIVE_SCRRENS) {
+			LOGGER.info("Active: {}", screen2);
+		}
 
 		if (screen instanceof TitleScreen) {
 			final List<ClickableWidget> buttons = Screens.getButtons(screen);

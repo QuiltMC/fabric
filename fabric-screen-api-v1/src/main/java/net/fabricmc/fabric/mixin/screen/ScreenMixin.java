@@ -82,31 +82,33 @@ abstract class ScreenMixin implements ScreenExtensions {
 
 	@Inject(method = "init(Lnet/minecraft/client/MinecraftClient;II)V", at = @At("HEAD"))
 	private void beforeInitScreen(MinecraftClient client, int width, int height, CallbackInfo ci) {
-		var screenClass = ((Screen) (Object) this).getClass();
-		this.qfapi$removeEvent = ScreenEventFactory.createRemoveEvent(screenClass);
-		this.qfapi$beforeRenderEvent = ScreenEventFactory.createBeforeRenderEvent(screenClass);
-		this.qfapi$afterRenderEvent = ScreenEventFactory.createAfterRenderEvent(screenClass);
-		this.qfapi$beforeTickEvent = ScreenEventFactory.createBeforeTickEvent(screenClass);
-		this.qfapi$afterTickEvent = ScreenEventFactory.createAfterTickEvent(screenClass);
+		this.qfapi$removeEvent = ScreenEventFactory.createRemoveEvent();
+		this.qfapi$beforeRenderEvent = ScreenEventFactory.createBeforeRenderEvent();
+		this.qfapi$afterRenderEvent = ScreenEventFactory.createAfterRenderEvent();
+		this.qfapi$beforeTickEvent = ScreenEventFactory.createBeforeTickEvent();
+		this.qfapi$afterTickEvent = ScreenEventFactory.createAfterTickEvent();
 
 		// Keyboard
-		this.qfapi$allowKeyPressEvent = ScreenEventFactory.createAllowKeyPressEvent(screenClass);
-		this.qfapi$beforeKeyPressEvent = ScreenEventFactory.createBeforeKeyPressEvent(screenClass);
-		this.qfapi$afterKeyPressEvent = ScreenEventFactory.createAfterKeyPressEvent(screenClass);
-		this.qfapi$allowKeyReleaseEvent = ScreenEventFactory.createAllowKeyReleaseEvent(screenClass);
-		this.qfapi$beforeKeyReleaseEvent = ScreenEventFactory.createBeforeKeyReleaseEvent(screenClass);
-		this.qfapi$afterKeyReleaseEvent = ScreenEventFactory.createAfterKeyReleaseEvent(screenClass);
+		this.qfapi$allowKeyPressEvent = ScreenEventFactory.createAllowKeyPressEvent();
+		this.qfapi$beforeKeyPressEvent = ScreenEventFactory.createBeforeKeyPressEvent();
+		this.qfapi$afterKeyPressEvent = ScreenEventFactory.createAfterKeyPressEvent();
+		this.qfapi$allowKeyReleaseEvent = ScreenEventFactory.createAllowKeyReleaseEvent();
+		this.qfapi$beforeKeyReleaseEvent = ScreenEventFactory.createBeforeKeyReleaseEvent();
+		this.qfapi$afterKeyReleaseEvent = ScreenEventFactory.createAfterKeyReleaseEvent();
 
 		// Mouse
-		this.qfapi$allowMouseClickEvent = ScreenEventFactory.createAllowMouseClickEvent(screenClass);
-		this.qfapi$beforeMouseClickEvent = ScreenEventFactory.createBeforeMouseClickEvent(screenClass);
-		this.qfapi$afterMouseClickEvent = ScreenEventFactory.createAfterMouseClickEvent(screenClass);
-		this.qfapi$allowMouseReleaseEvent = ScreenEventFactory.createAllowMouseReleaseEvent(screenClass);
-		this.qfapi$beforeMouseReleaseEvent = ScreenEventFactory.createBeforeMouseReleaseEvent(screenClass);
-		this.qfapi$afterMouseReleaseEvent = ScreenEventFactory.createAfterMouseReleaseEvent(screenClass);
-		this.qfapi$allowMouseScrollEvent = ScreenEventFactory.createAllowMouseScrollEvent(screenClass);
-		this.qfapi$beforeMouseScrollEvent = ScreenEventFactory.createBeforeMouseScrollEvent(screenClass);
-		this.qfapi$afterMouseScrollEvent = ScreenEventFactory.createAfterMouseScrollEvent(screenClass);
+		this.qfapi$allowMouseClickEvent = ScreenEventFactory.createAllowMouseClickEvent();
+		this.qfapi$beforeMouseClickEvent = ScreenEventFactory.createBeforeMouseClickEvent();
+		this.qfapi$afterMouseClickEvent = ScreenEventFactory.createAfterMouseClickEvent();
+		this.qfapi$allowMouseReleaseEvent = ScreenEventFactory.createAllowMouseReleaseEvent();
+		this.qfapi$beforeMouseReleaseEvent = ScreenEventFactory.createBeforeMouseReleaseEvent();
+		this.qfapi$afterMouseReleaseEvent = ScreenEventFactory.createAfterMouseReleaseEvent();
+		this.qfapi$allowMouseScrollEvent = ScreenEventFactory.createAllowMouseScrollEvent();
+		this.qfapi$beforeMouseScrollEvent = ScreenEventFactory.createBeforeMouseScrollEvent();
+		this.qfapi$afterMouseScrollEvent = ScreenEventFactory.createAfterMouseScrollEvent();
+
+		// Activate our Fabric events
+		ScreenEventFactory.activateScreen((Screen) (Object) this);
 	}
 
 	@Unique

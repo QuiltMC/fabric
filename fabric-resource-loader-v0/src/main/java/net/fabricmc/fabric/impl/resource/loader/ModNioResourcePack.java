@@ -270,8 +270,8 @@ public class ModNioResourcePack extends AbstractFileResourcePack implements ModR
 		return modInfo;
 	}
 
-	public ResourcePackActivationType getActivationType() {
-		return this.activationType;
+	public org.quiltmc.qsl.resource.loader.api.ResourcePackActivationType getActivationType() {
+		return this.activationType.getQuiltEquivalent();
 	}
 
 	@Override

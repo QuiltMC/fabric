@@ -39,6 +39,7 @@ import net.fabricmc.fabric.impl.client.screen.ScreenExtensions;
  *
  * @see ScreenEvents
  */
+@Deprecated
 @Environment(EnvType.CLIENT)
 public final class ScreenKeyboardEvents {
 	/**

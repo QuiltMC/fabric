@@ -26,6 +26,10 @@
 			{
 				"id": "quilt_resource_loader",
 				"versions": ">=1.0.0"
+			},
+			{
+				"id": "quilt_screen",
+				"versions": ">=1.0.0"
 			}
 		],
 		"provides": [

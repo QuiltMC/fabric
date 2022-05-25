@@ -86,6 +86,7 @@
 			"quilt_registry",
 			"quilt_registry_entry_attachments",
 			"quilt_resource_loader",
+			"quilt_screen",
 			"quilt_tags",
 			"quilt_tooltip"
 		],

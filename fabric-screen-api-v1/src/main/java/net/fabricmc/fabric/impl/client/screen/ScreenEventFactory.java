@@ -39,9 +39,7 @@ import net.fabricmc.fabric.api.event.EventFactory;
 @ApiStatus.Internal
 @Environment(EnvType.CLIENT)
 public final class ScreenEventFactory {
-	// These lists will always have keep holding events, preventing them from being GC'd! This is bad!
-	// FIXME - Find a solution for this
-	public static final Set<Screen> ACTIVE_SCRRENS = new ReferenceArraySet<>(1);
+	private static final Set<Screen> ACTIVE_SCREENS = new ReferenceArraySet<>(2);
 
 	public static Event<ScreenEvents.Remove> createRemoveEvent() {
 		var event = EventFactory.createArrayBacked(ScreenEvents.Remove.class, callbacks -> screen -> {
@@ -248,192 +246,151 @@ public final class ScreenEventFactory {
 	}
 
 	public static void activateScreen(Screen screen) {
-		ACTIVE_SCRRENS.add(screen);
+		ACTIVE_SCREENS.add(screen);
 	}
 
 	protected static void initializeCompatEvents() {
 		org.quiltmc.qsl.screen.api.client.ScreenEvents.REMOVE.register(screen -> {
-			for (Screen activeScreen : ACTIVE_SCRRENS) {
-				if (activeScreen.equals(screen)) {
-					ScreenExtensions.getExtensions(screen).fabric_getRemoveEvent().invoker().onRemove(screen);
-					ACTIVE_SCRRENS.remove(activeScreen);
-				}
+			if (ACTIVE_SCREENS.remove(screen)) {
+				ScreenExtensions.getExtensions(screen).fabric_getRemoveEvent().invoker().onRemove(screen);
 			}
 		});
 
 		org.quiltmc.qsl.screen.api.client.ScreenEvents.BEFORE_RENDER.register((screen, matrices, mouseX, mouseY, tickDelta) -> {
-			for (Screen activeScreen : ACTIVE_SCRRENS) {
-				if (activeScreen.equals(screen)) {
-					ScreenExtensions.getExtensions(screen).fabric_getBeforeRenderEvent().invoker().beforeRender(screen, matrices, mouseX, mouseY, tickDelta);
-				}
+			if (ACTIVE_SCREENS.contains(screen)) {
+				ScreenExtensions.getExtensions(screen).fabric_getBeforeRenderEvent().invoker().beforeRender(screen, matrices, mouseX, mouseY, tickDelta);
 			}
 		});
 
 		org.quiltmc.qsl.screen.api.client.ScreenEvents.AFTER_RENDER.register((screen, matrices, mouseX, mouseY, tickDelta) -> {
-			for (Screen activeScreen : ACTIVE_SCRRENS) {
-				if (activeScreen.equals(screen)) {
-					ScreenExtensions.getExtensions(screen).fabric_getAfterRenderEvent().invoker().afterRender(screen, matrices, mouseX, mouseY, tickDelta);
-				}
+			if (ACTIVE_SCREENS.contains(screen)) {
+				ScreenExtensions.getExtensions(screen).fabric_getAfterRenderEvent().invoker().afterRender(screen, matrices, mouseX, mouseY, tickDelta);
 			}
 		});
 
 		org.quiltmc.qsl.screen.api.client.ScreenEvents.BEFORE_TICK.register(screen -> {
-			for (Screen activeScreen : ACTIVE_SCRRENS) {
-				if (activeScreen.equals(screen)) {
-					ScreenExtensions.getExtensions(screen).fabric_getBeforeTickEvent().invoker().beforeTick(screen);
-				}
+			if (ACTIVE_SCREENS.contains(screen)) {
+				ScreenExtensions.getExtensions(screen).fabric_getBeforeTickEvent().invoker().beforeTick(screen);
 			}
 		});
 
 		org.quiltmc.qsl.screen.api.client.ScreenEvents.AFTER_TICK.register(screen -> {
-			for (Screen activeScreen : ACTIVE_SCRRENS) {
-				if (activeScreen.equals(screen)) {
-					ScreenExtensions.getExtensions(screen).fabric_getAfterTickEvent().invoker().afterTick(screen);
-				}
+			if (ACTIVE_SCREENS.contains(screen)) {
+				ScreenExtensions.getExtensions(screen).fabric_getAfterTickEvent().invoker().afterTick(screen);
 			}
 		});
 
 		// Keyboard Events
 
 		org.quiltmc.qsl.screen.api.client.ScreenKeyboardEvents.ALLOW_KEY_PRESS.register((screen, key, scancode, modifiers) -> {
-			for (Screen activeScreen : ACTIVE_SCRRENS) {
-				if (activeScreen.equals(screen)) {
-					return TriState.fromBoolean(
-						ScreenExtensions.getExtensions(screen).fabric_getAllowKeyPressEvent().invoker().allowKeyPress(screen, key, scancode, modifiers)
-					);
-				}
+			if (ACTIVE_SCREENS.contains(screen)) {
+				return TriState.fromBoolean(
+					ScreenExtensions.getExtensions(screen).fabric_getAllowKeyPressEvent().invoker().allowKeyPress(screen, key, scancode, modifiers)
+				);
 			}
 
 			return TriState.DEFAULT;
 		});
 
 		org.quiltmc.qsl.screen.api.client.ScreenKeyboardEvents.BEFORE_KEY_PRESS.register((screen, key, scancode, modifiers) -> {
-			for (Screen activeScreen : ACTIVE_SCRRENS) {
-				if (activeScreen.equals(screen)) {
-					ScreenExtensions.getExtensions(screen).fabric_getBeforeKeyPressEvent().invoker().beforeKeyPress(screen, key, scancode, modifiers);
-				}
+			if (ACTIVE_SCREENS.contains(screen)) {
+				ScreenExtensions.getExtensions(screen).fabric_getBeforeKeyPressEvent().invoker().beforeKeyPress(screen, key, scancode, modifiers);
 			}
 		});
 
 		org.quiltmc.qsl.screen.api.client.ScreenKeyboardEvents.AFTER_KEY_PRESS.register((screen, key, scancode, modifiers) -> {
-			for (Screen activeScreen : ACTIVE_SCRRENS) {
-				if (activeScreen.equals(screen)) {
-					ScreenExtensions.getExtensions(screen).fabric_getAfterKeyPressEvent().invoker().afterKeyPress(screen, key, scancode, modifiers);
-				}
+			if (ACTIVE_SCREENS.contains(screen)) {
+				ScreenExtensions.getExtensions(screen).fabric_getAfterKeyPressEvent().invoker().afterKeyPress(screen, key, scancode, modifiers);
 			}
 		});
 
 		org.quiltmc.qsl.screen.api.client.ScreenKeyboardEvents.ALLOW_KEY_RELEASE.register((screen, key, scancode, modifiers) -> {
-			for (Screen activeScreen : ACTIVE_SCRRENS) {
-				if (activeScreen.equals(screen)) {
-					return TriState.fromBoolean(
-						ScreenExtensions.getExtensions(screen).fabric_getAllowKeyReleaseEvent().invoker().allowKeyRelease(screen, key, scancode, modifiers)
-					);
-				}
+			if (ACTIVE_SCREENS.contains(screen)) {
+				return TriState.fromBoolean(
+					ScreenExtensions.getExtensions(screen).fabric_getAllowKeyReleaseEvent().invoker().allowKeyRelease(screen, key, scancode, modifiers)
+				);
 			}
 
 			return TriState.DEFAULT;
 		});
 
 		org.quiltmc.qsl.screen.api.client.ScreenKeyboardEvents.BEFORE_KEY_RELEASE.register((screen, key, scancode, modifiers) -> {
-			for (Screen activeScreen : ACTIVE_SCRRENS) {
-				if (activeScreen.equals(screen)) {
-					ScreenExtensions.getExtensions(screen).fabric_getBeforeKeyReleaseEvent().invoker().beforeKeyRelease(screen, key, scancode, modifiers);
-				}
+			if (ACTIVE_SCREENS.contains(screen)) {
+				ScreenExtensions.getExtensions(screen).fabric_getBeforeKeyReleaseEvent().invoker().beforeKeyRelease(screen, key, scancode, modifiers);
 			}
 		});
 
 		org.quiltmc.qsl.screen.api.client.ScreenKeyboardEvents.AFTER_KEY_RELEASE.register((screen, key, scancode, modifiers) -> {
-			for (Screen activeScreen : ACTIVE_SCRRENS) {
-				if (activeScreen.equals(screen)) {
-					ScreenExtensions.getExtensions(screen).fabric_getAfterKeyReleaseEvent().invoker().afterKeyRelease(screen, key, scancode, modifiers);
-				}
+			if (ACTIVE_SCREENS.contains(screen)) {
+				ScreenExtensions.getExtensions(screen).fabric_getAfterKeyReleaseEvent().invoker().afterKeyRelease(screen, key, scancode, modifiers);
 			}
 		});
 
 		// Mouse Events
 
 		org.quiltmc.qsl.screen.api.client.ScreenMouseEvents.ALLOW_MOUSE_CLICK.register((screen, mouseX, mouseY, button) -> {
-			for (Screen activeScreen : ACTIVE_SCRRENS) {
-				if (activeScreen.equals(screen)) {
-					return TriState.fromBoolean(
-						ScreenExtensions.getExtensions(screen).fabric_getAllowMouseClickEvent().invoker().allowMouseClick(screen, mouseX, mouseY, button)
-					);
-				}
+			if (ACTIVE_SCREENS.contains(screen)) {
+				return TriState.fromBoolean(
+					ScreenExtensions.getExtensions(screen).fabric_getAllowMouseClickEvent().invoker().allowMouseClick(screen, mouseX, mouseY, button)
+				);
 			}
 
 			return TriState.DEFAULT;
 		});
 
 		org.quiltmc.qsl.screen.api.client.ScreenMouseEvents.BEFORE_MOUSE_CLICK.register((screen, mouseX, mouseY, button) -> {
-			for (Screen activeScreen : ACTIVE_SCRRENS) {
-				if (activeScreen.equals(screen)) {
-					ScreenExtensions.getExtensions(screen).fabric_getBeforeMouseClickEvent().invoker().beforeMouseClick(screen, mouseX, mouseY, button);
-				}
+			if (ACTIVE_SCREENS.contains(screen)) {
+				ScreenExtensions.getExtensions(screen).fabric_getBeforeMouseClickEvent().invoker().beforeMouseClick(screen, mouseX, mouseY, button);
 			}
 		});
 
 		org.quiltmc.qsl.screen.api.client.ScreenMouseEvents.AFTER_MOUSE_CLICK.register((screen, mouseX, mouseY, button) -> {
-			for (Screen activeScreen : ACTIVE_SCRRENS) {
-				if (activeScreen.equals(screen)) {
-					ScreenExtensions.getExtensions(screen).fabric_getAfterMouseClickEvent().invoker().afterMouseClick(screen, mouseX, mouseY, button);
-				}
+			if (ACTIVE_SCREENS.contains(screen)) {
+				ScreenExtensions.getExtensions(screen).fabric_getAfterMouseClickEvent().invoker().afterMouseClick(screen, mouseX, mouseY, button);
 			}
 		});
 
 		org.quiltmc.qsl.screen.api.client.ScreenMouseEvents.ALLOW_MOUSE_RELEASE.register((screen, mouseX, mouseY, button) -> {
-			for (Screen activeScreen : ACTIVE_SCRRENS) {
-				if (activeScreen.equals(screen)) {
-					return TriState.fromBoolean(
-						ScreenExtensions.getExtensions(screen).fabric_getAllowMouseReleaseEvent().invoker().allowMouseRelease(screen, mouseX, mouseY, button)
-					);
-				}
+			if (ACTIVE_SCREENS.contains(screen)) {
+				return TriState.fromBoolean(
+					ScreenExtensions.getExtensions(screen).fabric_getAllowMouseReleaseEvent().invoker().allowMouseRelease(screen, mouseX, mouseY, button)
+				);
 			}
 
 			return TriState.DEFAULT;
 		});
 
 		org.quiltmc.qsl.screen.api.client.ScreenMouseEvents.BEFORE_MOUSE_RELEASE.register((screen, mouseX, mouseY, button) -> {
-			for (Screen activeScreen : ACTIVE_SCRRENS) {
-				if (activeScreen.equals(screen)) {
-					ScreenExtensions.getExtensions(screen).fabric_getBeforeMouseReleaseEvent().invoker().beforeMouseRelease(screen, mouseX, mouseY, button);
-				}
+			if (ACTIVE_SCREENS.contains(screen)) {
+				ScreenExtensions.getExtensions(screen).fabric_getBeforeMouseReleaseEvent().invoker().beforeMouseRelease(screen, mouseX, mouseY, button);
 			}
 		});
 
 		org.quiltmc.qsl.screen.api.client.ScreenMouseEvents.AFTER_MOUSE_RELEASE.register((screen, mouseX, mouseY, button) -> {
-			for (Screen activeScreen : ACTIVE_SCRRENS) {
-				if (activeScreen.equals(screen)) {
-					ScreenExtensions.getExtensions(screen).fabric_getAfterMouseReleaseEvent().invoker().afterMouseRelease(screen, mouseX, mouseY, button);
-				}
+			if (ACTIVE_SCREENS.contains(screen)) {
+				ScreenExtensions.getExtensions(screen).fabric_getAfterMouseReleaseEvent().invoker().afterMouseRelease(screen, mouseX, mouseY, button);
 			}
 		});
 
 		org.quiltmc.qsl.screen.api.client.ScreenMouseEvents.ALLOW_MOUSE_SCROLL.register((screen, mouseX, mouseY, horizontalAmount, verticalAmount) -> {
-			for (Screen activeScreen : ACTIVE_SCRRENS) {
-				if (activeScreen.equals(screen)) {
-					return TriState.fromBoolean(
-						ScreenExtensions.getExtensions(screen).fabric_getAllowMouseScrollEvent().invoker().allowMouseScroll(screen, mouseX, mouseY, horizontalAmount, verticalAmount)
-					);
-				}
+			if (ACTIVE_SCREENS.contains(screen)) {
+				return TriState.fromBoolean(
+					ScreenExtensions.getExtensions(screen).fabric_getAllowMouseScrollEvent().invoker().allowMouseScroll(screen, mouseX, mouseY, horizontalAmount, verticalAmount)
+				);
 			}
 
 			return TriState.DEFAULT;
 		});
 
 		org.quiltmc.qsl.screen.api.client.ScreenMouseEvents.BEFORE_MOUSE_SCROLL.register((screen, mouseX, mouseY, horizontalAmount, verticalAmount) -> {
-			for (Screen activeScreen : ACTIVE_SCRRENS) {
-				if (activeScreen.equals(screen)) {
-					ScreenExtensions.getExtensions(screen).fabric_getBeforeMouseScrollEvent().invoker().beforeMouseScroll(screen, mouseX, mouseY, horizontalAmount, verticalAmount);
-				}
+			if (ACTIVE_SCREENS.contains(screen)) {
+				ScreenExtensions.getExtensions(screen).fabric_getBeforeMouseScrollEvent().invoker().beforeMouseScroll(screen, mouseX, mouseY, horizontalAmount, verticalAmount);
 			}
 		});
 
 		org.quiltmc.qsl.screen.api.client.ScreenMouseEvents.AFTER_MOUSE_SCROLL.register((screen, mouseX, mouseY, horizontalAmount, verticalAmount) -> {
-			for (Screen activeScreen : ACTIVE_SCRRENS) {
-				if (activeScreen.equals(screen)) {
-					ScreenExtensions.getExtensions(screen).fabric_getAfterMouseScrollEvent().invoker().afterMouseScroll(screen, mouseX, mouseY, horizontalAmount, verticalAmount);
-				}
+			if (ACTIVE_SCREENS.contains(screen)) {
+				ScreenExtensions.getExtensions(screen).fabric_getAfterMouseScrollEvent().invoker().afterMouseScroll(screen, mouseX, mouseY, horizontalAmount, verticalAmount);
 			}
 		});
 	}

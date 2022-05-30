@@ -20,6 +20,8 @@ package net.fabricmc.fabric.api.client.screen.v1;
 import java.util.List;
 import java.util.Objects;
 
+import org.quiltmc.qsl.screen.api.client.QuiltScreen;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;
@@ -47,7 +49,7 @@ public final class Screens {
 	public static List<ClickableWidget> getButtons(Screen screen) {
 		Objects.requireNonNull(screen, "Screen cannot be null");
 
-		return screen.getButtons();
+		return ((QuiltScreen) screen).getButtons();
 	}
 
 	/**
@@ -58,7 +60,7 @@ public final class Screens {
 	public static ItemRenderer getItemRenderer(Screen screen) {
 		Objects.requireNonNull(screen, "Screen cannot be null");
 
-		return screen.getItemRenderer();
+		return ((QuiltScreen) screen).getItemRenderer();
 	}
 
 	/**
@@ -69,13 +71,13 @@ public final class Screens {
 	public static TextRenderer getTextRenderer(Screen screen) {
 		Objects.requireNonNull(screen, "Screen cannot be null");
 
-		return screen.getTextRenderer();
+		return ((QuiltScreen) screen).getTextRenderer();
 	}
 
 	public static MinecraftClient getClient(Screen screen) {
 		Objects.requireNonNull(screen, "Screen cannot be null");
 
-		return screen.getClient();
+		return ((QuiltScreen) screen).getClient();
 	}
 
 	private Screens() {

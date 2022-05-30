@@ -22,7 +22,11 @@
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"depends": [
 			"quilt_loader",
-			"fabric-api-base"
+			"fabric-api-base",
+			{
+				"id": "quilt_screen",
+				"versions": ">=1.0.0"
+			}
 		],
 		"provides": [
 			{
@@ -38,7 +42,7 @@
 		"environment": "client"
 	},
 	"mixin": "quilted_fabric_screen_api_v1.mixins.json",
-	"fabric-api:module-lifecycle": "stable",
+	"fabric-api:module-lifecycle": "deprecated",
 	"modmenu": {
 		"badges": [
 			"library"

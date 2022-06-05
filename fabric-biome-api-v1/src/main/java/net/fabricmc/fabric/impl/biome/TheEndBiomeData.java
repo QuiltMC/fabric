@@ -38,114 +38,32 @@ import net.minecraft.world.gen.random.ChunkRandom;
  */
 @ApiStatus.Internal
 public final class TheEndBiomeData {
-	private static final Map<RegistryKey<Biome>, WeightedPicker<RegistryKey<Biome>>> END_BIOMES_MAP = new IdentityHashMap<>();
-	private static final Map<RegistryKey<Biome>, WeightedPicker<RegistryKey<Biome>>> END_MIDLANDS_MAP = new IdentityHashMap<>();
-	private static final Map<RegistryKey<Biome>, WeightedPicker<RegistryKey<Biome>>> END_BARRENS_MAP = new IdentityHashMap<>();
-
-	static {
-		END_BIOMES_MAP.computeIfAbsent(BiomeKeys.THE_END, key -> new WeightedPicker<>())
-				.add(BiomeKeys.THE_END, 1.0);
-		END_BIOMES_MAP.computeIfAbsent(BiomeKeys.END_HIGHLANDS, key -> new WeightedPicker<>())
-				.add(BiomeKeys.END_HIGHLANDS, 1.0);
-		END_BIOMES_MAP.computeIfAbsent(BiomeKeys.SMALL_END_ISLANDS, key -> new WeightedPicker<>())
-				.add(BiomeKeys.SMALL_END_ISLANDS, 1.0);
-
-		END_MIDLANDS_MAP.computeIfAbsent(BiomeKeys.END_HIGHLANDS, key -> new WeightedPicker<>())
-				.add(BiomeKeys.END_MIDLANDS, 1.0);
-		END_BARRENS_MAP.computeIfAbsent(BiomeKeys.END_HIGHLANDS, key -> new WeightedPicker<>())
-				.add(BiomeKeys.END_BARRENS, 1.0);
-	}
-
 	private TheEndBiomeData() {
 	}
 
 	public static void addEndBiomeReplacement(RegistryKey<Biome> replaced, RegistryKey<Biome> variant, double weight) {
-		Preconditions.checkNotNull(replaced, "replaced entry is null");
-		Preconditions.checkNotNull(variant, "variant entry is null");
-		Preconditions.checkArgument(weight > 0.0, "Weight is less than or equal to 0.0 (got %s)", weight);
-		END_BIOMES_MAP.computeIfAbsent(replaced, key -> new WeightedPicker<>()).add(variant, weight);
+		org.quiltmc.qsl.worldgen.biome.impl.TheEndBiomeData.addEndBiomeReplacement(replaced, variant, weight);
 	}
 
 	public static void addEndMidlandsReplacement(RegistryKey<Biome> highlands, RegistryKey<Biome> midlands, double weight) {
-		Preconditions.checkNotNull(highlands, "highlands entry is null");
-		Preconditions.checkNotNull(midlands, "midlands entry is null");
-		Preconditions.checkArgument(weight > 0.0, "Weight is less than or equal to 0.0 (got %s)", weight);
-		END_MIDLANDS_MAP.computeIfAbsent(highlands, key -> new WeightedPicker<>()).add(midlands, weight);
+		org.quiltmc.qsl.worldgen.biome.impl.TheEndBiomeData.addEndBiomeReplacement(highlands, midlands, weight);
 	}
 
 	public static void addEndBarrensReplacement(RegistryKey<Biome> highlands, RegistryKey<Biome> barrens, double weight) {
-		Preconditions.checkNotNull(highlands, "highlands entry is null");
-		Preconditions.checkNotNull(barrens, "midlands entry is null");
-		Preconditions.checkArgument(weight > 0.0, "Weight is less than or equal to 0.0 (got %s)", weight);
-		END_BARRENS_MAP.computeIfAbsent(highlands, key -> new WeightedPicker<>()).add(barrens, weight);
+		org.quiltmc.qsl.worldgen.biome.impl.TheEndBiomeData.addEndBiomeReplacement(highlands, barrens, weight);
 	}
 
-	public static Overrides createOverrides(Registry<Biome> biomeRegistry, long seed) {
-		return new Overrides(biomeRegistry, seed);
+	public static org.quiltmc.qsl.worldgen.biome.impl.TheEndBiomeData.Overrides createOverrides(Registry<Biome> biomeRegistry, long seed) {
+		return org.quiltmc.qsl.worldgen.biome.impl.TheEndBiomeData.createOverrides(biomeRegistry, seed);
 	}
 
 	/**
 	 * An instance of this class is attached to each {@link TheEndBiomeSource}.
 	 */
-	public static class Overrides {
-		private final PerlinNoiseSampler sampler;
-
-		// Vanilla entries to compare against
-		private final RegistryEntry<Biome> endMidlands;
-		private final RegistryEntry<Biome> endBarrens;
-		private final RegistryEntry<Biome> endHighlands;
-
-		// Maps where the keys have been resolved to actual entries
-		private final Map<RegistryEntry<Biome>, WeightedPicker<RegistryEntry<Biome>>> endBiomesMap;
-		private final Map<RegistryEntry<Biome>, WeightedPicker<RegistryEntry<Biome>>> endMidlandsMap;
-		private final Map<RegistryEntry<Biome>, WeightedPicker<RegistryEntry<Biome>>> endBarrensMap;
+	public static class Overrides extends org.quiltmc.qsl.worldgen.biome.impl.TheEndBiomeData.Overrides {
 
 		public Overrides(Registry<Biome> biomeRegistry, long seed) {
-			this.sampler = new PerlinNoiseSampler(new ChunkRandom(new AtomicSimpleRandom(seed)));
-			this.endMidlands = biomeRegistry.entryOf(BiomeKeys.END_MIDLANDS);
-			this.endBarrens = biomeRegistry.entryOf(BiomeKeys.END_BARRENS);
-			this.endHighlands = biomeRegistry.entryOf(BiomeKeys.END_HIGHLANDS);
-
-			this.endBiomesMap = resolveOverrides(biomeRegistry, END_BIOMES_MAP);
-			this.endMidlandsMap = resolveOverrides(biomeRegistry, END_MIDLANDS_MAP);
-			this.endBarrensMap = resolveOverrides(biomeRegistry, END_BARRENS_MAP);
-		}
-
-		// Resolves all RegistryKey instances to RegistryEntries
-		private Map<RegistryEntry<Biome>, WeightedPicker<RegistryEntry<Biome>>> resolveOverrides(Registry<Biome> biomeRegistry, Map<RegistryKey<Biome>, WeightedPicker<RegistryKey<Biome>>> overrides) {
-			var result = new IdentityHashMap<RegistryEntry<Biome>, WeightedPicker<RegistryEntry<Biome>>>(overrides.size());
-
-			for (Map.Entry<RegistryKey<Biome>, WeightedPicker<RegistryKey<Biome>>> entry : overrides.entrySet()) {
-				result.put(biomeRegistry.entryOf(entry.getKey()), entry.getValue().map(biomeRegistry::entryOf));
-			}
-
-			return result;
-		}
-
-		public RegistryEntry<Biome> pick(int x, int y, int z, RegistryEntry<Biome> vanillaBiome) {
-			RegistryEntry<Biome> replacementKey;
-
-			// The x and z of the entry are divided by 64 to ensure custom biomes are large enough; going larger than this]
-			// seems to make custom biomes too hard to find.
-			if (vanillaBiome == endMidlands || vanillaBiome == endBarrens) {
-				// Since the highlands picker is statically populated by InternalBiomeData, picker will never be null.
-				WeightedPicker<RegistryEntry<Biome>> highlandsPicker = endBiomesMap.get(endHighlands);
-				RegistryEntry<Biome> highlandsKey = highlandsPicker.pickFromNoise(sampler, x / 64.0, 0, z / 64.0);
-
-				if (vanillaBiome == endMidlands) {
-					WeightedPicker<RegistryEntry<Biome>> midlandsPicker = endMidlandsMap.get(highlandsKey);
-					replacementKey = (midlandsPicker == null) ? vanillaBiome : midlandsPicker.pickFromNoise(sampler, x / 64.0, 0, z / 64.0);
-				} else {
-					WeightedPicker<RegistryEntry<Biome>> barrensPicker = endBarrensMap.get(highlandsKey);
-					replacementKey = (barrensPicker == null) ? vanillaBiome : barrensPicker.pickFromNoise(sampler, x / 64.0, 0, z / 64.0);
-				}
-			} else {
-				// Since the main island and small islands pickers are statically populated by InternalBiomeData, picker will never be null.
-				WeightedPicker<RegistryEntry<Biome>> picker = endBiomesMap.get(vanillaBiome);
-				replacementKey = picker.pickFromNoise(sampler, x / 64.0, 0, z / 64.0);
-			}
-
-			return replacementKey;
+			super(biomeRegistry, seed);
 		}
 	}
 }

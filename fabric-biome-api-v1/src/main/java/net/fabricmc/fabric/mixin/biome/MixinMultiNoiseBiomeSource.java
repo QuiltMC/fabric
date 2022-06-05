@@ -21,18 +21,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mojang.datafixers.util.Pair;
+
+import net.minecraft.util.registry.RegistryEntry;
+
+import org.quiltmc.qsl.worldgen.biome.impl.NetherBiomeData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.MultiNoiseBiomeSource;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil;
-
-import net.fabricmc.fabric.impl.biome.NetherBiomeData;
 
 /**
  * This Mixin is responsible for adding mod-biomes to the NETHER preset in the MultiNoiseBiomeSource.
@@ -53,3 +54,4 @@ public class MixinMultiNoiseBiomeSource {
 		cri.setReturnValue(new MultiNoiseUtil.Entries<>(entries));
 	}
 }
+

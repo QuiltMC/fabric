@@ -17,18 +17,16 @@
 
 package net.fabricmc.fabric.api.dimension.v1;
 
-import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.TeleportTarget;
 
-import net.fabricmc.fabric.impl.dimension.FabricDimensionInternals;
-
 /**
  * This class consists exclusively of static methods that operate on world dimensions.
  */
+@Deprecated
 public final class FabricDimensions {
 	private FabricDimensions() {
 		throw new AssertionError();
@@ -55,9 +53,6 @@ public final class FabricDimensions {
 	 */
 	@Nullable
 	public static <E extends Entity> E teleport(E teleported, ServerWorld destination, TeleportTarget target) {
-		Preconditions.checkNotNull(target, "A target must be provided");
-		Preconditions.checkState(!teleported.world.isClient, "Entities can only be teleported on the server side");
-
-		return FabricDimensionInternals.changeDimension(teleported, destination, target);
+		return org.quiltmc.qsl.worldgen.dimension.impl.QuiltDimensionsImpl.teleport(teleported, destination, target);
 	}
 }

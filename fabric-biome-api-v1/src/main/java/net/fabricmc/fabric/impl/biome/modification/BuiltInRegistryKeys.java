@@ -36,22 +36,18 @@ public final class BuiltInRegistryKeys {
 	}
 
 	public static RegistryKey<ConfiguredStructureFeature<?, ?>> get(ConfiguredStructureFeature<?, ?> configuredStructure) {
-		return BuiltinRegistries.CONFIGURED_STRUCTURE_FEATURE.getKey(configuredStructure)
-				.orElseThrow(() -> new IllegalArgumentException("Given configured structure is not built-in: " + configuredStructure));
+		return org.quiltmc.qsl.worldgen.biome.impl.modification.BuiltInRegistryKeys.get(configuredStructure);
 	}
 
 	public static RegistryKey<ConfiguredFeature<?, ?>> get(ConfiguredFeature<?, ?> configuredFeature) {
-		return BuiltinRegistries.CONFIGURED_FEATURE.getKey(configuredFeature)
-				.orElseThrow(() -> new IllegalArgumentException("Given configured feature is not built-in: " + configuredFeature));
+		return org.quiltmc.qsl.worldgen.biome.impl.modification.BuiltInRegistryKeys.get(configuredFeature);
 	}
 
 	public static RegistryKey<PlacedFeature> get(PlacedFeature placedFeature) {
-		return BuiltinRegistries.PLACED_FEATURE.getKey(placedFeature)
-				.orElseThrow(() -> new IllegalArgumentException("Given placed feature is not built-in: " + placedFeature));
+		return org.quiltmc.qsl.worldgen.biome.impl.modification.BuiltInRegistryKeys.get(placedFeature);
 	}
 
 	public static RegistryKey<ConfiguredCarver<?>> get(ConfiguredCarver<?> configuredCarver) {
-		return BuiltinRegistries.CONFIGURED_CARVER.getKey(configuredCarver)
-				.orElseThrow(() -> new IllegalArgumentException("Given configured carver is not built-in: " + configuredCarver));
+		return org.quiltmc.qsl.worldgen.biome.impl.modification.BuiltInRegistryKeys.get(configuredCarver);
 	}
 }

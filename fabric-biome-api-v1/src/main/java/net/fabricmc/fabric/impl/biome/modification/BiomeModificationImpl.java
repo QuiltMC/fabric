@@ -28,6 +28,7 @@ import java.util.function.Predicate;
 
 import com.google.common.base.Stopwatch;
 import com.google.common.base.Suppliers;
+
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.TestOnly;
 import org.slf4j.Logger;
@@ -62,11 +63,7 @@ public class BiomeModificationImpl {
 	}
 
 	public void addModifier(Identifier id, ModificationPhase phase, Predicate<BiomeSelectionContext> selector, BiConsumer<BiomeSelectionContext, BiomeModificationContext> modifier) {
-		Objects.requireNonNull(selector);
-		Objects.requireNonNull(modifier);
-
-		modifiers.add(new ModifierRecord(phase, id, selector, modifier));
-		modifiersUnsorted = true;
+		INSTANCE.addModifier(id, phase, selector, modifier);
 	}
 
 	public void addModifier(Identifier id, ModificationPhase phase, Predicate<BiomeSelectionContext> selector, Consumer<BiomeModificationContext> modifier) {
@@ -114,7 +111,7 @@ public class BiomeModificationImpl {
 		// this once for a dynamic registry manager. Marking the dynamic registry manager as modified ensures a crash
 		// if the precondition is violated.
 		BiomeModificationMarker modificationTracker = (BiomeModificationMarker) impl;
-		modificationTracker.fabric_markModified();
+		modificationTracker.quilt$markModified();
 
 		Registry<Biome> biomes = impl.get(Registry.BIOME_KEY);
 

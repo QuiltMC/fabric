@@ -35,6 +35,7 @@ import net.fabricmc.fabric.impl.biome.modification.BuiltInRegistryKeys;
 /**
  * Context given to a biome selector for deciding whether it applies to a biome or not.
  */
+@Deprecated
 public interface BiomeSelectionContext {
 	RegistryKey<Biome> getBiomeKey();
 
@@ -151,5 +152,5 @@ public interface BiomeSelectionContext {
 	/**
 	 * {@return true if this biome is in the given {@link TagKey}}.
 	 */
-	boolean hasTag(TagKey<Biome> tag);
+	boolean isIn(TagKey<Biome> tag);
 }

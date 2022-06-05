@@ -30,6 +30,7 @@ import net.fabricmc.fabric.impl.biome.TheEndBiomeData;
  * Because of the volatility of world generation in Minecraft 1.16, this API is marked experimental
  * since it is likely to change in future Minecraft versions.
  */
+@Deprecated
 public final class TheEndBiomes {
 	private TheEndBiomes() {
 	}

@@ -28,6 +28,7 @@ import net.fabricmc.fabric.impl.biome.NetherBiomeData;
  *
  * <p><b>Experimental feature</b>, may be removed or changed without further notice.
  */
+@Deprecated
 public final class NetherBiomes {
 	private NetherBiomes() {
 	}

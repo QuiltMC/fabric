@@ -39,6 +39,7 @@ import net.minecraft.world.dimension.DimensionOptions;
  *
  * <p><b>Experimental feature</b>, may be removed or changed without further notice.
  */
+@Deprecated
 public final class BiomeSelectors {
 	private BiomeSelectors() {
 	}
@@ -97,10 +98,11 @@ public final class BiomeSelectors {
 	/**
 	 * Returns a biome selector that will match all biomes in the given tag.
 	 *
-	 * @see net.fabricmc.fabric.api.tag.TagFactory#BIOME
+	 * @see net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags
+	 * @see net.fabricmc.fabric.impl.tag.convention.TagRegistration
 	 */
 	public static Predicate<BiomeSelectionContext> tag(TagKey<Biome> tag) {
-		return context -> context.hasTag(tag);
+		return context -> context.isIn(tag);
 	}
 
 	/**
@@ -112,7 +114,7 @@ public final class BiomeSelectors {
 	}
 
 	/**
-	 * Returns a selector that will reject any biome whos keys is in the given collection of keys.
+	 * Returns a selector that will reject any biome whose keys are in the given collection of keys.
 	 *
 	 * <p>This is useful for allowing a list of biomes to be defined in the config file, where
 	 * a certain feature should not spawn.

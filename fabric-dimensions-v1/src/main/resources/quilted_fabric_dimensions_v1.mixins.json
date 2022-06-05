@@ -3,10 +3,6 @@
   "package": "net.fabricmc.fabric.mixin.dimension",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "EntityMixin",
-    "LevelStorageBugfixMixin",
-    "ServerBugfixMixin",
-    "ServerPlayerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

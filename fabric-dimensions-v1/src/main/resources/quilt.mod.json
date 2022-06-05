@@ -22,11 +22,11 @@
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"depends": [
 			"quilt_loader",
+			"quilted_fabric_api_base",
 			{
 				"id": "minecraft",
 				"versions": ">=1.16-rc.3"
-			},
-			"fabric-api-base"
+			}
 		],
 		"provides": [
 			{
@@ -36,7 +36,7 @@
 		]
 	},
 	"mixin": "quilted_fabric_dimensions_v1.mixins.json",
-	"fabric-api:module-lifecycle": "stable",
+	"fabric-api:module-lifecycle": "deprecated",
 	"modmenu": {
 		"badges": [
 			"library"

@@ -48,9 +48,9 @@ import net.minecraft.world.gen.chunk.VerticalBlockSample;
 public class VoidChunkGenerator extends ChunkGenerator {
 	public static final Codec<VoidChunkGenerator> CODEC = RecordCodecBuilder.create((instance) ->
 			method_41042(instance).and(
-				RegistryOps.createRegistryCodec(Registry.BIOME_KEY).forGetter((generator) -> generator.biomeRegistry)
-			)
-			.apply(instance, instance.stable(VoidChunkGenerator::new))
+							RegistryOps.createRegistryCodec(Registry.BIOME_KEY).forGetter((generator) -> generator.biomeRegistry)
+					)
+					.apply(instance, instance.stable(VoidChunkGenerator::new))
 	);
 
 	private final Registry<Biome> biomeRegistry;

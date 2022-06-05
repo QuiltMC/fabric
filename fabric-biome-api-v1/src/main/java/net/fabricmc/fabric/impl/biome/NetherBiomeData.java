@@ -37,39 +37,19 @@ import net.minecraft.world.biome.source.util.MultiNoiseUtil;
  */
 @ApiStatus.Internal
 public final class NetherBiomeData {
-	// Cached sets of the biomes that would generate from Vanilla's default biome source without consideration
-	// for data packs (as those would be distinct biome sources).
-	private static final Set<RegistryKey<Biome>> NETHER_BIOMES = new HashSet<>();
-
-	private static final Map<RegistryKey<Biome>, MultiNoiseUtil.NoiseHypercube> NETHER_BIOME_NOISE_POINTS = new HashMap<>();
 
 	private NetherBiomeData() {
 	}
 
 	public static void addNetherBiome(RegistryKey<Biome> biome, MultiNoiseUtil.NoiseHypercube spawnNoisePoint) {
-		Preconditions.checkArgument(biome != null, "Biome is null");
-		Preconditions.checkArgument(spawnNoisePoint != null, "MultiNoiseUtil.NoiseValuePoint is null");
-		NETHER_BIOME_NOISE_POINTS.put(biome, spawnNoisePoint);
-		clearBiomeSourceCache();
+		org.quiltmc.qsl.worldgen.biome.impl.NetherBiomeData.addNetherBiome(biome, spawnNoisePoint);
 	}
 
 	public static Map<RegistryKey<Biome>, MultiNoiseUtil.NoiseHypercube> getNetherBiomeNoisePoints() {
-		return NETHER_BIOME_NOISE_POINTS;
+		return org.quiltmc.qsl.worldgen.biome.impl.NetherBiomeData.getNetherBiomeNoisePoints();
 	}
 
 	public static boolean canGenerateInNether(RegistryKey<Biome> biome) {
-		if (NETHER_BIOMES.isEmpty()) {
-			MultiNoiseBiomeSource source = MultiNoiseBiomeSource.Preset.NETHER.getBiomeSource(BuiltinRegistries.BIOME);
-
-			for (RegistryEntry<Biome> entry : source.getBiomes()) {
-				BuiltinRegistries.BIOME.getKey(entry.value()).ifPresent(NETHER_BIOMES::add);
-			}
-		}
-
-		return NETHER_BIOMES.contains(biome);
-	}
-
-	private static void clearBiomeSourceCache() {
-		NETHER_BIOMES.clear(); // Clear cached biome source data
+		return org.quiltmc.qsl.worldgen.biome.impl.NetherBiomeData.canGenerateInNether(biome);
 	}
 }

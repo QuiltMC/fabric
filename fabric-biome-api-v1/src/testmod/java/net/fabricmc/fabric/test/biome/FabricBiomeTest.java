@@ -20,7 +20,6 @@ package net.fabricmc.fabric.test.biome;
 import java.util.List;
 
 import net.minecraft.tag.BiomeTags;
-import net.minecraft.tag.TagKey;
 import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.sound.BiomeMoodSound;
 import net.minecraft.util.Identifier;
@@ -46,14 +45,12 @@ import net.minecraft.world.gen.feature.PlacedFeatures;
 import net.minecraft.world.gen.placementmodifier.BiomePlacementModifier;
 import net.minecraft.world.gen.placementmodifier.SquarePlacementModifier;
 
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
+import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
+import net.fabricmc.fabric.api.biome.v1.NetherBiomes;
+import net.fabricmc.fabric.api.biome.v1.TheEndBiomes;
 import net.fabricmc.api.ModInitializer;
-
-import org.quiltmc.loader.api.ModContainer;
-import org.quiltmc.qsl.worldgen.biome.api.BiomeModifications;
-import org.quiltmc.qsl.worldgen.biome.api.BiomeSelectors;
-import org.quiltmc.qsl.worldgen.biome.api.ModificationPhase;
-import org.quiltmc.qsl.worldgen.biome.api.NetherBiomes;
-import org.quiltmc.qsl.worldgen.biome.api.TheEndBiomes;
 
 /**
  * <b>NOTES FOR TESTING:</b>
@@ -73,7 +70,6 @@ public class FabricBiomeTest implements ModInitializer {
 	private static final RegistryKey<Biome> TEST_END_HIGHLANDS = RegistryKey.of(Registry.BIOME_KEY, new Identifier(MOD_ID, "test_end_highlands"));
 	private static final RegistryKey<Biome> TEST_END_MIDLANDS = RegistryKey.of(Registry.BIOME_KEY, new Identifier(MOD_ID, "test_end_midlands"));
 	private static final RegistryKey<Biome> TEST_END_BARRRENS = RegistryKey.of(Registry.BIOME_KEY, new Identifier(MOD_ID, "test_end_barrens"));
-
 
 	@Override
 	public void onInitialize() {
@@ -103,24 +99,24 @@ public class FabricBiomeTest implements ModInitializer {
 		Registry.register(BuiltinRegistries.PLACED_FEATURE, new Identifier(MOD_ID, "fab_desert_well"), PLACED_COMMON_DESERT_WELL);
 
 		BiomeModifications.create(new Identifier("fabric:testmod"))
-				.add(org.quiltmc.qsl.worldgen.biome.api.ModificationPhase.ADDITIONS,
-						org.quiltmc.qsl.worldgen.biome.api.BiomeSelectors.foundInOverworld(),
+				.add(ModificationPhase.ADDITIONS,
+						BiomeSelectors.foundInOverworld(),
 						modification -> modification.getWeather().setDownfall(100))
 				//check for an excess of desert wells
-				.add(org.quiltmc.qsl.worldgen.biome.api.ModificationPhase.ADDITIONS,
-						org.quiltmc.qsl.worldgen.biome.api.BiomeSelectors.categories(Biome.Category.DESERT),
+				.add(ModificationPhase.ADDITIONS,
+						BiomeSelectors.categories(Biome.Category.DESERT),
 						context -> context.getGenerationSettings().addFeature(GenerationStep.Feature.TOP_LAYER_MODIFICATION,
 								BuiltinRegistries.PLACED_FEATURE.getKey(PLACED_COMMON_DESERT_WELL).orElseThrow()
 						))
 				//these three test should be glaringly obvious if they work or not, be sure to check forests as well
-				.add(org.quiltmc.qsl.worldgen.biome.api.ModificationPhase.ADDITIONS,
-						org.quiltmc.qsl.worldgen.biome.api.BiomeSelectors.foundInOverworld(),
+				.add(ModificationPhase.ADDITIONS,
+						BiomeSelectors.foundInOverworld(),
 						context -> context.getEffects().setSkyColor(0x111111))
-				.add(org.quiltmc.qsl.worldgen.biome.api.ModificationPhase.ADDITIONS,
-						org.quiltmc.qsl.worldgen.biome.api.BiomeSelectors.foundInOverworld(),
+				.add(ModificationPhase.ADDITIONS,
+					BiomeSelectors.foundInOverworld(),
 						context -> context.getEffects().setFogColor(0x000099))
 				.add(ModificationPhase.ADDITIONS,
-						BiomeSelectors.isIn(BiomeTags.IS_FOREST),
+						BiomeSelectors.tag(BiomeTags.IS_FOREST),
 						context -> context.getEffects().setFogColor(0x990000));
 	}
 

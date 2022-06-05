@@ -23,7 +23,6 @@ import org.jetbrains.annotations.ApiStatus;
 
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.registry.DynamicRegistryManager;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;

@@ -17,21 +17,12 @@
 
 package net.fabricmc.fabric.impl.biome;
 
-import java.util.IdentityHashMap;
-import java.util.Map;
-
-import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.ApiStatus;
 
-import net.minecraft.util.math.noise.PerlinNoiseSampler;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeKeys;
 import net.minecraft.world.biome.source.TheEndBiomeSource;
-import net.minecraft.world.gen.random.AtomicSimpleRandom;
-import net.minecraft.world.gen.random.ChunkRandom;
 
 /**
  * Internal data for modding Vanilla's {@link TheEndBiomeSource}.
@@ -61,7 +52,6 @@ public final class TheEndBiomeData {
 	 * An instance of this class is attached to each {@link TheEndBiomeSource}.
 	 */
 	public static class Overrides extends org.quiltmc.qsl.worldgen.biome.impl.TheEndBiomeData.Overrides {
-
 		public Overrides(Registry<Biome> biomeRegistry, long seed) {
 			super(biomeRegistry, seed);
 		}

@@ -28,7 +28,6 @@ import java.util.function.Predicate;
 
 import com.google.common.base.Stopwatch;
 import com.google.common.base.Suppliers;
-
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.TestOnly;
 import org.slf4j.Logger;

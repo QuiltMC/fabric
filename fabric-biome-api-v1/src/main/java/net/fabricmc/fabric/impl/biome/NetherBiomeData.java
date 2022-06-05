@@ -17,16 +17,10 @@
 
 package net.fabricmc.fabric.impl.biome;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
-import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.ApiStatus;
 
-import net.minecraft.util.registry.RegistryEntry;
-import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.MultiNoiseBiomeSource;
@@ -37,7 +31,6 @@ import net.minecraft.world.biome.source.util.MultiNoiseUtil;
  */
 @ApiStatus.Internal
 public final class NetherBiomeData {
-
 	private NetherBiomeData() {
 	}
 

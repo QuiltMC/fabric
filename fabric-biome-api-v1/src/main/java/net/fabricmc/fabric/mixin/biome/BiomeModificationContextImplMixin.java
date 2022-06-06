@@ -1,5 +1,4 @@
 /*
- * Copyright 2016, 2017, 2018, 2019 FabricMC
  * Copyright 2022 QuiltMC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,14 +14,12 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.api.biome.v1;
+package net.fabricmc.fabric.mixin.biome;
 
-import net.minecraft.world.biome.Biome;
+import org.quiltmc.qsl.worldgen.biome.impl.modification.BiomeModificationContextImpl;
+import org.spongepowered.asm.mixin.Mixin;
 
-/**
- * Allows {@link Biome} properties to be modified.
- *
- * <p><b>Experimental feature</b>, may be removed or changed without further notice.
- */
-@Deprecated
-public interface BiomeModificationContext extends org.quiltmc.qsl.worldgen.biome.api.BiomeModificationContext { }
+import net.fabricmc.fabric.api.biome.v1.BiomeModificationContext;
+
+@Mixin(BiomeModificationContextImpl.class)
+public abstract class BiomeModificationContextImplMixin implements BiomeModificationContext { }

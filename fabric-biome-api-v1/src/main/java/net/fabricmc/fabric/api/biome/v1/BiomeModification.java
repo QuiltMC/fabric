@@ -47,7 +47,7 @@ public class BiomeModification {
 	 */
 	@SuppressWarnings("unchecked")
 	public BiomeModification add(ModificationPhase phase, Predicate<BiomeSelectionContext> selector, Consumer<BiomeModificationContext> modifier) {
-		BiomeModificationImpl.INSTANCE.addModifier(id, phase.asQuiltPhase(), (Predicate<org.quiltmc.qsl.worldgen.biome.api.BiomeSelectionContext>) (Object) selector, (Consumer<org.quiltmc.qsl.worldgen.biome.api.BiomeModificationContext>) (Object) modifier);
+		BiomeModificationImpl.INSTANCE.addModifier(id, phase.getQuiltEquivalent(), (Predicate<org.quiltmc.qsl.worldgen.biome.api.BiomeSelectionContext>) (Object) selector, (Consumer<org.quiltmc.qsl.worldgen.biome.api.BiomeModificationContext>) (Object) modifier);
 		return this;
 	}
 
@@ -61,7 +61,7 @@ public class BiomeModification {
 	 */
 	@SuppressWarnings("unchecked")
 	public BiomeModification add(ModificationPhase phase, Predicate<BiomeSelectionContext> selector, BiConsumer<BiomeSelectionContext, BiomeModificationContext> modifier) {
-		BiomeModificationImpl.INSTANCE.addModifier(id, phase.asQuiltPhase(), (Predicate<org.quiltmc.qsl.worldgen.biome.api.BiomeSelectionContext>) (Object) selector, (Consumer<org.quiltmc.qsl.worldgen.biome.api.BiomeModificationContext>) (Object) modifier);
+		BiomeModificationImpl.INSTANCE.addModifier(id, phase.getQuiltEquivalent(), (Predicate<org.quiltmc.qsl.worldgen.biome.api.BiomeSelectionContext>) (Object) selector, (Consumer<org.quiltmc.qsl.worldgen.biome.api.BiomeModificationContext>) (Object) modifier);
 		return this;
 	}
 }

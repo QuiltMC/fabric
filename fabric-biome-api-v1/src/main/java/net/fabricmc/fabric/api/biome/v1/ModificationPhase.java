@@ -73,7 +73,7 @@ public enum ModificationPhase {
 	}
 
 	@ApiStatus.Internal
-	protected org.quiltmc.qsl.worldgen.biome.api.ModificationPhase asQuiltPhase() {
+	protected org.quiltmc.qsl.worldgen.biome.api.ModificationPhase getQuiltEquivalent() {
 		return this.quiltEquivalent;
 	}
 }

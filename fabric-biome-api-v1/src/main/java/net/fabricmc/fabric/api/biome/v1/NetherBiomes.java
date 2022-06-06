@@ -28,8 +28,7 @@ import net.minecraft.world.biome.source.util.MultiNoiseUtil;
  */
 @Deprecated
 public final class NetherBiomes {
-	private NetherBiomes() {
-	}
+	private NetherBiomes() { }
 
 	/**
 	 * Adds a biome to the Nether generator.

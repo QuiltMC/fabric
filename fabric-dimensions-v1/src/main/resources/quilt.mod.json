@@ -27,8 +27,7 @@
 			{
 				"id": "minecraft",
 				"versions": ">=1.16-rc.3"
-			},
-			"fabric-api-base"
+			}
 		],
 		"provides": [
 			{

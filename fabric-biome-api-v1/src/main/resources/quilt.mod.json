@@ -26,8 +26,7 @@
 			{
 				"id": "minecraft",
 				"versions": ">=1.16.2"
-			},
-			"fabric-api-base"
+			}
 		],
 		"provides": [
 			{

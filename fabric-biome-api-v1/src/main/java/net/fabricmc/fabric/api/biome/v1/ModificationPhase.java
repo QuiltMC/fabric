@@ -62,5 +62,14 @@ public enum ModificationPhase {
 	 * <p><b>Examples:</b> Mods that allow modpack authors to customize world generation, changing biome
 	 * properties (i.e. category) that other mods rely on.
 	 */
-	POST_PROCESSING
+	POST_PROCESSING;
+
+	public org.quiltmc.qsl.worldgen.biome.api.ModificationPhase asQuiltPhase() {
+		return switch (this) {
+		case ADDITIONS -> org.quiltmc.qsl.worldgen.biome.api.ModificationPhase.ADDITIONS;
+		case REMOVALS -> org.quiltmc.qsl.worldgen.biome.api.ModificationPhase.REMOVALS;
+		case REPLACEMENTS -> org.quiltmc.qsl.worldgen.biome.api.ModificationPhase.REPLACEMENTS;
+		case POST_PROCESSING -> org.quiltmc.qsl.worldgen.biome.api.ModificationPhase.POST_PROCESSING;
+		};
+	}
 }

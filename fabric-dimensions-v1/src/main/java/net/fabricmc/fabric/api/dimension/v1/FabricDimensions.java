@@ -53,6 +53,6 @@ public final class FabricDimensions {
 	 */
 	@Nullable
 	public static <E extends Entity> E teleport(E teleported, ServerWorld destination, TeleportTarget target) {
-		return org.quiltmc.qsl.worldgen.dimension.impl.QuiltDimensionsImpl.teleport(teleported, destination, target);
+		return org.quiltmc.qsl.worldgen.dimension.api.QuiltDimensions.teleport(teleported, destination, target);
 	}
 }

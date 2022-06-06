@@ -46,7 +46,7 @@ import net.fabricmc.fabric.impl.biome.modification.BuiltInRegistryKeys;
  * <p><b>Experimental feature</b>, may be removed or changed without further notice.
  */
 @Deprecated
-public interface BiomeModificationContext {
+public interface BiomeModificationContext extends org.quiltmc.qsl.worldgen.biome.api.BiomeModificationContext {
 	/**
 	 * @see Biome#getCategory()
 	 * @see Biome.Builder#category(Biome.Category)
@@ -73,7 +73,7 @@ public interface BiomeModificationContext {
 	 */
 	SpawnSettingsContext getSpawnSettings();
 
-	interface WeatherContext {
+	interface WeatherContext extends org.quiltmc.qsl.worldgen.biome.api.BiomeModificationContext.WeatherContext {
 		/**
 		 * @see Biome#getPrecipitation()
 		 * @see Biome.Builder#precipitation(Biome.Precipitation)
@@ -98,7 +98,7 @@ public interface BiomeModificationContext {
 		void setDownfall(float downfall);
 	}
 
-	interface EffectsContext {
+	interface EffectsContext extends org.quiltmc.qsl.worldgen.biome.api.BiomeModificationContext.EffectsContext {
 		/**
 		 * @see BiomeEffects#getFogColor()
 		 * @see BiomeEffects.Builder#fogColor(int)
@@ -284,7 +284,7 @@ public interface BiomeModificationContext {
 		}
 	}
 
-	interface GenerationSettingsContext {
+	interface GenerationSettingsContext extends org.quiltmc.qsl.worldgen.biome.api.BiomeModificationContext.GenerationSettingsContext {
 		/**
 		 * Removes a feature from one of this biomes generation steps, and returns if any features were removed.
 		 */
@@ -395,7 +395,7 @@ public interface BiomeModificationContext {
 		}
 	}
 
-	interface SpawnSettingsContext {
+	interface SpawnSettingsContext extends org.quiltmc.qsl.worldgen.biome.api.BiomeModificationContext.SpawnSettingsContext {
 		/**
 		 * Associated JSON property: <code>creature_spawn_probability</code>.
 		 *

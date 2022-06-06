@@ -35,55 +35,74 @@ import net.minecraft.world.level.LevelProperties;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 
 @ApiStatus.Internal
-public class BiomeSelectionContextImpl implements BiomeSelectionContext {
-	private final org.quiltmc.qsl.worldgen.biome.impl.modification.BiomeSelectionContextImpl quiltBiomeSelectionContextImpl;
+public class BiomeSelectionContextImpl extends org.quiltmc.qsl.worldgen.biome.impl.modification.BiomeSelectionContextImpl implements BiomeSelectionContext {
+	private final DynamicRegistryManager dynamicRegistryManager;
+	private final LevelProperties levelProperties;
+	private final org.quiltmc.qsl.worldgen.biome.impl.modification.BiomeSelectionContextImpl QUILT_IMPL;
 
 	public BiomeSelectionContextImpl(DynamicRegistryManager dynamicRegistries, LevelProperties levelProperties, RegistryKey<Biome> key, Biome biome) {
-		quiltBiomeSelectionContextImpl = new org.quiltmc.qsl.worldgen.biome.impl.modification.BiomeSelectionContextImpl(dynamicRegistries, levelProperties, key, biome);
+		super(dynamicRegistries, levelProperties, key, biome);
+		//both of these are soley for create a QSL-QFAPI bridge.
+		this.dynamicRegistryManager = dynamicRegistries;
+		this.levelProperties = levelProperties;
+		this.QUILT_IMPL = new org.quiltmc.qsl.worldgen.biome.impl.modification.BiomeSelectionContextImpl(dynamicRegistries, levelProperties, key, biome);
+	}
+
+	public DynamicRegistryManager getDynamicRegistryManager() {
+		return this.dynamicRegistryManager;
+	}
+
+	public LevelProperties getLevelProperties() {
+		return this.levelProperties;
 	}
 
 	@Override
 	public RegistryKey<Biome> getBiomeKey() {
-		return quiltBiomeSelectionContextImpl.getBiomeKey();
+		return QUILT_IMPL.getBiomeKey();
 	}
 
 	@Override
 	public Biome getBiome() {
-		return quiltBiomeSelectionContextImpl.getBiome();
+		return QUILT_IMPL.getBiome();
 	}
 
 	@Override
 	public RegistryEntry<Biome> getBiomeRegistryEntry() {
-		return quiltBiomeSelectionContextImpl.getBiomeRegistryEntry();
+		return QUILT_IMPL.getBiomeRegistryEntry();
 	}
 
 	@Override
 	public Optional<RegistryKey<ConfiguredFeature<?, ?>>> getFeatureKey(ConfiguredFeature<?, ?> configuredFeature) {
-		return quiltBiomeSelectionContextImpl.getFeatureKey(configuredFeature);
+		return QUILT_IMPL.getFeatureKey(configuredFeature);
 	}
 
 	@Override
 	public Optional<RegistryKey<PlacedFeature>> getPlacedFeatureKey(PlacedFeature placedFeature) {
-		return quiltBiomeSelectionContextImpl.getPlacedFeatureKey(placedFeature);
+		return QUILT_IMPL.getPlacedFeatureKey(placedFeature);
 	}
 
 	@Override
 	public boolean validForStructure(RegistryKey<ConfiguredStructureFeature<?, ?>> key) {
-		return quiltBiomeSelectionContextImpl.validForStructure(key);
+		return QUILT_IMPL.validForStructure(key);
 	}
 
 	@Override
 	public Optional<RegistryKey<ConfiguredStructureFeature<?, ?>>> getStructureKey(ConfiguredStructureFeature<?, ?> configuredStructure) {
-		return quiltBiomeSelectionContextImpl.getStructureKey(configuredStructure);
+		return QUILT_IMPL.getStructureKey(configuredStructure);
 	}
 
 	@Override
 	public boolean canGenerateIn(RegistryKey<DimensionOptions> dimensionKey) {
-		return quiltBiomeSelectionContextImpl.canGenerateIn(dimensionKey);
+		return QUILT_IMPL.canGenerateIn(dimensionKey);
+	}
+
+	@Override
+	public boolean hasTag(TagKey<Biome> tag) {
+		return isIn(tag);
 	}
 
 	@Override
 	public boolean isIn(TagKey<Biome> tag) {
-		return quiltBiomeSelectionContextImpl.isIn(tag);
+		return QUILT_IMPL.isIn(tag);
 	}
 }

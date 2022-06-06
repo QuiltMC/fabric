@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 import net.minecraft.tag.TagKey;
+import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.util.registry.RegistryEntryList;
 import net.minecraft.util.registry.RegistryKey;
@@ -29,6 +30,7 @@ import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.gen.feature.PlacedFeature;
+import net.minecraft.world.level.LevelProperties;
 
 import net.fabricmc.fabric.impl.biome.modification.BuiltInRegistryKeys;
 
@@ -36,7 +38,7 @@ import net.fabricmc.fabric.impl.biome.modification.BuiltInRegistryKeys;
  * Context given to a biome selector for deciding whether it applies to a biome or not.
  */
 @Deprecated
-public interface BiomeSelectionContext {
+public interface BiomeSelectionContext extends org.quiltmc.qsl.worldgen.biome.api.BiomeSelectionContext {
 	RegistryKey<Biome> getBiomeKey();
 
 	/**
@@ -153,4 +155,16 @@ public interface BiomeSelectionContext {
 	 * {@return true if this biome is in the given {@link TagKey}}.
 	 */
 	boolean isIn(TagKey<Biome> tag);
+
+	boolean hasTag(TagKey<Biome> tag);
+
+	default org.quiltmc.qsl.worldgen.biome.api.BiomeSelectionContext asQuiltContext() {
+		return new org.quiltmc.qsl.worldgen.biome.impl.modification.BiomeSelectionContextImpl(this.getDynamicRegistryManager(), this.getLevelProperties(), this.getBiomeKey(), this.getBiome());
+	}
+
+	//used for quilt conversion
+	DynamicRegistryManager getDynamicRegistryManager();
+
+	//used for quilt conversion
+	LevelProperties getLevelProperties();
 }

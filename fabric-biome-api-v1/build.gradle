@@ -2,11 +2,10 @@ archivesBaseName = "quilted_fabric_biome_api_v1"
 version = getSubprojectVersion(project)
 upstream_version = getSubprojectUpstreamVersion(project)
 
-loom {
-    accessWidenerPath = file("src/main/resources/quilted_fabric_biome_api_v1.accesswidener")
-}
-
 dependencies {
 	modApi(getQslModule("core", "qsl_base"))
 	modApi(getQslModule("worldgen", "biome"))
+
+	testmodImplementation project(path: ':fabric-api-base', configuration: 'namedElements')
+	testmodImplementation project(path: ':fabric-resource-loader-v0', configuration: 'namedElements')
 }

@@ -22,10 +22,12 @@
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"depends": [
 			"quilt_loader",
+			"quilt_biome",
 			{
 				"id": "minecraft",
 				"versions": ">=1.16.2"
-			}
+			},
+			"fabric-api-base"
 		],
 		"provides": [
 			{
@@ -34,8 +36,6 @@
 			}
 		]
 	},
-	"mixin": "quilted_fabric_biome_api_v1.mixins.json",
-	"access_widener": "quilted_fabric_biome_api_v1.accesswidener",
 	"fabric-api:module-lifecycle": "experimental",
 	"modmenu": {
 		"badges": [

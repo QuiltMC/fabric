@@ -17,15 +17,12 @@
 
 package net.fabricmc.fabric.api.biome.v1;
 
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import org.jetbrains.annotations.ApiStatus;
 
 import net.minecraft.util.Identifier;
-
-import net.fabricmc.fabric.impl.biome.modification.BiomeModificationImpl;
 
 /**
  * <b>Experimental feature</b>, may be removed or changed without further notice.
@@ -35,6 +32,7 @@ import net.fabricmc.fabric.impl.biome.modification.BiomeModificationImpl;
 @Deprecated
 public class BiomeModification {
 	private final Identifier id;
+	public static final org.quiltmc.qsl.worldgen.biome.impl.modification.BiomeModificationImpl QUILT_INSTANCE = org.quiltmc.qsl.worldgen.biome.impl.modification.BiomeModificationImpl.INSTANCE;
 
 	@ApiStatus.Internal
 	BiomeModification(Identifier id) {
@@ -46,8 +44,8 @@ public class BiomeModification {
 	 * for this are modifiers that simply add or remove features unconditionally, or change other values
 	 * to constants.
 	 */
-	public BiomeModification add(ModificationPhase phase, Predicate<BiomeSelectionContext> selector, Consumer<BiomeModificationContext> modifier) {
-		BiomeModificationImpl.INSTANCE.addModifier(id, phase, selector, modifier);
+	public <T extends org.quiltmc.qsl.worldgen.biome.api.BiomeSelectionContext, V extends org.quiltmc.qsl.worldgen.biome.api.BiomeModificationContext> BiomeModification add(ModificationPhase phase, Predicate<T> selector, Consumer<V> modifier) {
+		QUILT_INSTANCE.addModifier(id, phase.asQuiltPhase(), (Predicate<org.quiltmc.qsl.worldgen.biome.api.BiomeSelectionContext>) selector, (Consumer<org.quiltmc.qsl.worldgen.biome.api.BiomeModificationContext>) modifier);
 		return this;
 	}
 
@@ -59,8 +57,8 @@ public class BiomeModification {
 	 * conditions to the selector, and use a context-free modifier instead, as this will greatly help
 	 * with debugging world generation issues.
 	 */
-	public BiomeModification add(ModificationPhase phase, Predicate<BiomeSelectionContext> selector, BiConsumer<BiomeSelectionContext, BiomeModificationContext> modifier) {
-		BiomeModificationImpl.INSTANCE.addModifier(id, phase, selector, modifier);
+	public <T extends org.quiltmc.qsl.worldgen.biome.api.BiomeSelectionContext, V extends org.quiltmc.qsl.worldgen.biome.api.BiomeModificationContext> BiomeModification add(Identifier id, ModificationPhase phase, Predicate<T> selector, Consumer<V> modifier) {
+		QUILT_INSTANCE.addModifier(id, phase.asQuiltPhase(), (Predicate<org.quiltmc.qsl.worldgen.biome.api.BiomeSelectionContext>) selector, (Consumer<org.quiltmc.qsl.worldgen.biome.api.BiomeModificationContext>) modifier);
 		return this;
 	}
 }

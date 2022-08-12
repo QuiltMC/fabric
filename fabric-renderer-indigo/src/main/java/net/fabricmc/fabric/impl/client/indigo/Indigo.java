@@ -24,8 +24,8 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.Properties;
 
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
@@ -90,7 +90,7 @@ public class Indigo implements ClientModInitializer {
 	}
 
 	static {
-		File configDir = new File(FabricLoader.getInstance().getConfigDirectory(), "fabric");
+		File configDir = FabricLoader.getInstance().getConfigDir().resolve("fabric").toFile();
 
 		if (!configDir.exists()) {
 			if (!configDir.mkdir()) {

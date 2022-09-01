@@ -24,8 +24,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 
 import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
+import net.fabricmc.fabric.impl.content.registry.util.QuiltDeferringQueues;
+import net.fabricmc.fabric.impl.content.registry.util.QuiltDeferringQueues.DeferringQueue;
 
 public class CompostingChanceRegistryImpl implements CompostingChanceRegistry {
+	private static final DeferringQueue<Item, Float> QUEUE = QuiltDeferringQueues.ITEM_DEFERRING_QUEUES.registerQueue(ItemContentRegistries.COMPOST_CHANCE);
+
 	@Override
 	public Float get(ItemConvertible item) {
 		return ItemContentRegistries.COMPOST_CHANCE.get(item.asItem()).orElse(0.0F);
@@ -33,7 +37,7 @@ public class CompostingChanceRegistryImpl implements CompostingChanceRegistry {
 
 	@Override
 	public void add(ItemConvertible item, Float value) {
-		ItemContentRegistries.COMPOST_CHANCE.put(item.asItem(), value);
+		QuiltDeferringQueues.ITEM_DEFERRING_QUEUES.addEntry(QUEUE, item.asItem(), value);
 	}
 
 	/**

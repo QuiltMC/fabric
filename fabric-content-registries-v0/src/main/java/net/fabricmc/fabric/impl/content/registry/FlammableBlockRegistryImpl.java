@@ -17,9 +17,6 @@
 
 package net.fabricmc.fabric.impl.content.registry;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.quiltmc.qsl.block.content.registry.api.BlockContentRegistries;
 import org.quiltmc.qsl.block.content.registry.api.FlammableBlockEntry;
 
@@ -27,10 +24,11 @@ import net.minecraft.block.Block;
 import net.minecraft.tag.TagKey;
 
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
+import net.fabricmc.fabric.impl.content.registry.util.QuiltDeferringQueues;
+import net.fabricmc.fabric.impl.content.registry.util.QuiltDeferringQueues.DeferringQueue;
 
 public class FlammableBlockRegistryImpl implements FlammableBlockRegistry {
-	private static final FlammableBlockEntry REMOVED = new FlammableBlockEntry(0, 0);
-	private static final Map<Block, FlammableBlockRegistryImpl> REGISTRIES = new HashMap<>();
+	private static final DeferringQueue<Block, FlammableBlockEntry> QUEUE = QuiltDeferringQueues.BLOCK.register(BlockContentRegistries.FLAMMABLE_BLOCK);
 
 	private FlammableBlockRegistryImpl(Block key) { }
 
@@ -50,7 +48,7 @@ public class FlammableBlockRegistryImpl implements FlammableBlockRegistry {
 
 	@Override
 	public void add(Block block, Entry value) {
-		BlockContentRegistries.FLAMMABLE_BLOCK.put(block, value.toQuilt());
+		QuiltDeferringQueues.BLOCK.addEntry(QUEUE, block, value.toQuilt());
 	}
 
 	@Override

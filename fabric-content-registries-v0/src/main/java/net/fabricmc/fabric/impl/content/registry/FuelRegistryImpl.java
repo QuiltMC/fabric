@@ -21,18 +21,20 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 
 import org.quiltmc.qsl.item.content.registry.api.ItemContentRegistries;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.minecraft.tag.TagKey;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 
 import net.fabricmc.fabric.api.registry.FuelRegistry;
+import net.fabricmc.fabric.impl.content.registry.util.QuiltDeferringQueues;
+import net.fabricmc.fabric.impl.content.registry.util.QuiltDeferringQueues.DeferringQueue;
 
-// TODO: Clamp values to 32767 (+ add hook for mods which extend the limit to disable the check?)
+// Fabric To-Do: Clamp values to 32767 (+ add hook for mods which extend the limit to disable the check?)
+// About that, Quilt's equivalent API supports integer values properly, no need for that
 public final class FuelRegistryImpl implements FuelRegistry {
-	private static final Logger LOGGER = LoggerFactory.getLogger(FuelRegistryImpl.class);
+	private static final DeferringQueue<Item, Integer> QUEUE = QuiltDeferringQueues.ITEM.register(ItemContentRegistries.FUEL_TIME);
+	//private static final Logger LOGGER = LoggerFactory.getLogger(FuelRegistryImpl.class);
 
 	public FuelRegistryImpl() { }
 
@@ -51,19 +53,11 @@ public final class FuelRegistryImpl implements FuelRegistry {
 
 	@Override
 	public void add(ItemConvertible item, Integer cookTime) {
-		if (cookTime > 32767) {
-			LOGGER.warn("Tried to register an overly high cookTime: " + cookTime + " > 32767! (" + item + ")");
-		}
-
-		ItemContentRegistries.FUEL_TIME.put(item.asItem(), cookTime.intValue());
+		QuiltDeferringQueues.ITEM.addEntry(QUEUE, item.asItem(), cookTime.intValue());
 	}
 
 	@Override
 	public void add(TagKey<Item> tag, Integer cookTime) {
-		if (cookTime > 32767) {
-			LOGGER.warn("Tried to register an overly high cookTime: " + cookTime + " > 32767! (" + getTagName(tag) + ")");
-		}
-
 		ItemContentRegistries.FUEL_TIME.put(tag, cookTime.intValue());
 	}
 
@@ -88,10 +82,6 @@ public final class FuelRegistryImpl implements FuelRegistry {
 	}
 
 	public void apply(Map<Item, Integer> map) { }
-
-	private static String getTagName(TagKey<?> tag) {
-		return tag.id().toString();
-	}
 
 	public void resetCache() { }
 }

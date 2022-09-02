@@ -24,10 +24,14 @@ import org.slf4j.LoggerFactory;
 import net.minecraft.tag.GameEventTags;
 import net.minecraft.world.event.GameEvent;
 
+import net.fabricmc.fabric.impl.content.registry.util.QuiltDeferringQueues;
+import net.fabricmc.fabric.impl.content.registry.util.QuiltDeferringQueues.DeferringQueue;
+
 /**
  * Provides a method for registering sculk sensor frequencies.
  */
 public final class SculkSensorFrequencyRegistry {
+	private static final DeferringQueue<GameEvent, Integer> QUEUE = QuiltDeferringQueues.GAME_EVENT.register(BlockContentRegistries.SCULK_FREQUENCY);
 	private static final Logger LOGGER = LoggerFactory.getLogger(SculkSensorFrequencyRegistry.class);
 
 	private SculkSensorFrequencyRegistry() {
@@ -55,6 +59,6 @@ public final class SculkSensorFrequencyRegistry {
 			LOGGER.debug("Replaced old frequency mapping for {} - was {}, now {}", event.getId(), replaced, frequency);
 		});
 
-		BlockContentRegistries.SCULK_FREQUENCY.put(event, frequency);
+		QuiltDeferringQueues.GAME_EVENT.addEntry(QUEUE, event, frequency);
 	}
 }

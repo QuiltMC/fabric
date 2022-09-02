@@ -26,10 +26,14 @@ import org.slf4j.Logger;
 import net.minecraft.block.Block;
 import net.minecraft.state.property.Properties;
 
+import net.fabricmc.fabric.impl.content.registry.util.QuiltDeferringQueues;
+import net.fabricmc.fabric.impl.content.registry.util.QuiltDeferringQueues.DeferringQueue;
+
 /**
  * A registry for axe stripping interactions. A vanilla example is turning logs to stripped logs.
  */
 public final class StrippableBlockRegistry {
+	private static final DeferringQueue<Block, Block> QUEUE = QuiltDeferringQueues.BLOCK.register(BlockContentRegistries.STRIPPABLE_BLOCK);
 	private static final Logger LOGGER = LoggerFactory.getLogger(StrippableBlockRegistry.class);
 
 	private StrippableBlockRegistry() {
@@ -52,7 +56,7 @@ public final class StrippableBlockRegistry {
 			LOGGER.debug("Replaced old stripping mapping from {} to {} with {}", input, old, stripped);
 		});
 
-		BlockContentRegistries.STRIPPABLE_BLOCK.put(input, stripped);
+		QuiltDeferringQueues.BLOCK.addEntry(QUEUE, input, stripped);
 	}
 
 	private static void requireNonNullAndAxisProperty(Block block, String name) {

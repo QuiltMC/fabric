@@ -28,7 +28,7 @@ import net.fabricmc.fabric.impl.content.registry.util.QuiltDeferringQueues;
 import net.fabricmc.fabric.impl.content.registry.util.QuiltDeferringQueues.DeferringQueue;
 
 public class CompostingChanceRegistryImpl implements CompostingChanceRegistry {
-	private static final DeferringQueue<Item, Float> QUEUE = QuiltDeferringQueues.ITEM_DEFERRING_QUEUES.registerQueue(ItemContentRegistries.COMPOST_CHANCE);
+	private static final DeferringQueue<Item, Float> QUEUE = QuiltDeferringQueues.ITEM.register(ItemContentRegistries.COMPOST_CHANCE);
 
 	@Override
 	public Float get(ItemConvertible item) {
@@ -37,7 +37,7 @@ public class CompostingChanceRegistryImpl implements CompostingChanceRegistry {
 
 	@Override
 	public void add(ItemConvertible item, Float value) {
-		QuiltDeferringQueues.ITEM_DEFERRING_QUEUES.addEntry(QUEUE, item.asItem(), value);
+		QuiltDeferringQueues.ITEM.addEntry(QUEUE, item.asItem(), value);
 	}
 
 	/**

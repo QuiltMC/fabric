@@ -63,33 +63,31 @@ public class QuiltDeferringQueues<T> {
 
 	public static <V> boolean deferEntry(V value) {
 		if (value instanceof Block block) {
-			QuiltDeferringQueues.BLOCK.deferEntry(block);
+			return QuiltDeferringQueues.BLOCK.deferEntry(block);
 		} else if (value instanceof BlockState state) {
-			QuiltDeferringQueues.BLOCK.deferEntry(state.getBlock());
+			return QuiltDeferringQueues.BLOCK.deferEntry(state.getBlock());
 		} else if (value instanceof ReversibleBlockEntry entry) {
 			return QuiltDeferringQueues.BLOCK.deferEntry(entry.block());
 		} else if (value instanceof Item item) {
-			QuiltDeferringQueues.ITEM.deferEntry(item);
+			return QuiltDeferringQueues.ITEM.deferEntry(item);
 		} else if (value instanceof GameEvent event) {
-			QuiltDeferringQueues.GAME_EVENT.deferEntry(event);
-		} else {
-			return false;
+			return QuiltDeferringQueues.GAME_EVENT.deferEntry(event);
 		}
 
-		return true;
+		return false;
 	}
 
 	public static <V> boolean isEntryDeferred(V value) {
 		if (value instanceof Block block) {
-			return QuiltDeferringQueues.BLOCK.deferredEntries.contains(block);
+			return QuiltDeferringQueues.BLOCK.isDeferred(block);
 		} else if (value instanceof BlockState state) {
-			return QuiltDeferringQueues.BLOCK.deferredEntries.contains(state.getBlock());
+			return QuiltDeferringQueues.BLOCK.isDeferred(state.getBlock());
 		} else if (value instanceof ReversibleBlockEntry entry) {
-			return QuiltDeferringQueues.BLOCK.deferredEntries.contains(entry.block());
+			return QuiltDeferringQueues.BLOCK.isDeferred(entry.block());
 		} else if (value instanceof Item item) {
-			return QuiltDeferringQueues.ITEM.deferredEntries.contains(item);
+			return QuiltDeferringQueues.ITEM.isDeferred(item);
 		} else if (value instanceof GameEvent event) {
-			return QuiltDeferringQueues.GAME_EVENT.deferredEntries.contains(event);
+			return QuiltDeferringQueues.GAME_EVENT.isDeferred(event);
 		}
 
 		return false;
@@ -116,7 +114,7 @@ public class QuiltDeferringQueues<T> {
 	}
 
 	public static class DeferringQueue<K> {
-		public List<K> deferredEntries;
+		private List<K> deferredEntries;
 		private boolean active;
 		private final Registry<K> registry;
 
@@ -141,14 +139,18 @@ public class QuiltDeferringQueues<T> {
 			if (!this.active) {
 				if (CRASH_ON_DEFERRING_ENTRY.toBooleanOrElse(QuiltLoader.isDevelopmentEnvironment())) {
 					if (CRASH_ON_DEFERRING_ENTRY == TriState.DEFAULT) {
-						LOGGER.error("An unregistered entry on the " + this.registry + " registry was attempted to be registered in a content registry through the Quilted Fabric API bridge! Due to this happening on a dev environment, the game will proceed to crash now. This crash may be disabled by disabling the \"quilted_fabric_api.quilted_fabric_content_registries_v0.crash_on_deferring_entry\" property.");
+						LOGGER.error("An unregistered entry on the " + this.registry + " registry was attempted to be registered in a content registry through the Quilted Fabric API bridge! "
+								+ "Due to this happening on a dev environment, the game will proceed to crash now. "
+								+ "This crash may be disabled by setting the \"quilted_fabric_api.quilted_fabric_content_registries_v0.crash_on_deferring_entry\" property. to false!");
 					} else {
-						LOGGER.error("An unregistered entry on the " + this.registry + " registry was attempted to be registered in a content registry through the Quilted Fabric API bridge! Due to a debug option being enabled, the game will proceed to crash now.");
+						LOGGER.error("An unregistered entry on the " + this.registry + " registry was attempted to be registered in a content registry through the Quilted Fabric API bridge! "
+								+ "Due to a debug option being enabled, the game will proceed to crash now.");
 					}
 
-					throw new UnsupportedOperationException();
+					throw new DisabledDeferringQueueException();
 				} else {
-					LOGGER.warn("An unregistered entry on the " + this.registry + " registry was attempted to be registered in a content registry through the Quilted Fabric API bridge! Its instability will be circumvented through the activation of the registry's deferring queue, which may affect performance!");
+					LOGGER.warn("An unregistered entry on the " + this.registry + " registry was attempted to be registered in a content registry through the Quilted Fabric API bridge! "
+							+ "Its instability will be circumvented through the activation of the registry's deferring queue, which may affect performance!");
 				}
 
 				this.active = true;
@@ -174,8 +176,14 @@ public class QuiltDeferringQueues<T> {
 			});
 		}
 
-		public boolean isActive() {
-			return active;
+		public boolean isDeferred(K entry) {
+			return this.deferredEntries.contains(entry);
+		}
+	}
+
+	public static class DisabledDeferringQueueException extends RuntimeException {
+		public DisabledDeferringQueueException() {
+			super();
 		}
 	}
 }

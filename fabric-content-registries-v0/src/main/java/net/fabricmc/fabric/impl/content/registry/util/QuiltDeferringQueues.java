@@ -1,10 +1,25 @@
+/*
+ * Copyright 2022 QuiltMC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package net.fabricmc.fabric.impl.content.registry.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.quiltmc.qsl.base.api.util.TriState;
 import org.quiltmc.qsl.block.content.registry.api.ReversibleBlockEntry;
@@ -83,17 +98,21 @@ public class QuiltDeferringQueues<T> {
 
 	public static void updateOmniqueue() {
 		var entriesToRemove = new ArrayList<>();
+
 		for (var entry : OMNIQUEUE.entrySet()) {
 			var entriesToRemove2 = new ArrayList<>();
+
 			for (var listEntry : entry.getValue()) {
 				if (!isEntryDeferred(listEntry.entry()) && !isEntryDeferred(listEntry.value())) {
 					entry.getKey().put(listEntry.entry(), listEntry.value());
 					entriesToRemove2.add(listEntry.entry());
 				}
 			}
+
 			entry.getValue().removeAll(entriesToRemove2);
 			if (entry.getValue().size() == 0) entriesToRemove.add(entry.getKey());
 		}
+
 		entriesToRemove.forEach(entry -> OMNIQUEUE.remove(entry));
 	}
 
@@ -130,13 +149,16 @@ public class QuiltDeferringQueues<T> {
 			LOGGER.info("Event created for " + registry.toString());
 			RegistryMonitor.create(this.registry).forUpcoming(entryAdded -> {
 				var entriesToRemove = new ArrayList<>();
+
 				for (K entry : this.deferredEntries) {
 					LOGGER.warn("a: " + entryAdded.id());
 					LOGGER.warn("b: " + this.registry.getId(entry));
+
 					if (entryAdded.id().equals(this.registry.getId(entry))) {
 						entriesToRemove.add(entry);
 					}
 				}
+
 				this.deferredEntries.removeAll(entriesToRemove);
 				// TODO - Check if the deferred entries list has changed; Yes, it's very easy to do that, but I actually need to debug stuff before doing that
 				updateOmniqueue();

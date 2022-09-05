@@ -181,9 +181,5 @@ public class QuiltDeferringQueues<T> {
 		}
 	}
 
-	public static class DisabledDeferringQueueException extends RuntimeException {
-		public DisabledDeferringQueueException() {
-			super();
-		}
-	}
+	public static class DisabledDeferringQueueException extends RuntimeException { }
 }

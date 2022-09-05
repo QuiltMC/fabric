@@ -27,14 +27,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 
 import net.fabricmc.fabric.impl.content.registry.util.QuiltDeferringQueues;
-import net.fabricmc.fabric.impl.content.registry.util.QuiltDeferringQueues.DeferringQueue;
 
 /**
  * A registry for shovel flattening interactions. A vanilla example is turning dirt to dirt paths.
  */
 @Deprecated
 public final class FlattenableBlockRegistry {
-	private static final DeferringQueue<Block, BlockState> QUEUE = QuiltDeferringQueues.BLOCK.register(BlockContentRegistries.FLATTENABLE_BLOCK);
 	private static final Logger LOGGER = LoggerFactory.getLogger(FlattenableBlockRegistry.class);
 
 	private FlattenableBlockRegistry() {
@@ -54,6 +52,6 @@ public final class FlattenableBlockRegistry {
 			LOGGER.debug("Replaced old flattening mapping from {} to {} with {}", input, old, flattened);
 		});
 
-		QuiltDeferringQueues.BLOCK.addEntry(QUEUE, input, flattened);
+		QuiltDeferringQueues.addEntry(BlockContentRegistries.FLATTENABLE_BLOCK, input, flattened);
 	}
 }

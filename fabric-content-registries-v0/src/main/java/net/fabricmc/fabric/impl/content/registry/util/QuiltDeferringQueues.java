@@ -1,19 +1,3 @@
-/*
- * Copyright 2022 QuiltMC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package net.fabricmc.fabric.impl.content.registry.util;
 
 import java.util.ArrayList;
@@ -22,14 +6,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.quiltmc.loader.api.QuiltLoader;
 import org.quiltmc.qsl.base.api.util.TriState;
+import org.quiltmc.qsl.block.content.registry.api.ReversibleBlockEntry;
 import org.quiltmc.qsl.registry.api.event.RegistryMonitor;
 import org.quiltmc.qsl.registry.attachment.api.RegistryEntryAttachment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.item.Item;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.event.GameEvent;
@@ -38,89 +23,128 @@ public class QuiltDeferringQueues<T> {
 	private static final TriState CRASH_ON_DEFERRING_ENTRY = TriState.fromProperty("quilted_fabric_api.quilted_fabric_content_registries_v0.crash_on_deferring_entry");
 	private static final Logger LOGGER = LoggerFactory.getLogger("Quilted Fabric Content Registries");
 
-	private final List<DeferringQueue<T, ?>> queues = new ArrayList<>();
-	private boolean hasEvent = false;
+	public static final DeferringQueue<Block> BLOCK = new DeferringQueue<>(Registry.BLOCK);
+	public static final DeferringQueue<Item> ITEM = new DeferringQueue<>(Registry.ITEM);
+	public static final DeferringQueue<GameEvent> GAME_EVENT = new DeferringQueue<>(Registry.GAME_EVENT);
 
-	public static final QuiltDeferringQueues<Block> BLOCK = new QuiltDeferringQueues<>();
-	public static final QuiltDeferringQueues<Item> ITEM = new QuiltDeferringQueues<>();
-	public static final QuiltDeferringQueues<GameEvent> GAME_EVENT = new QuiltDeferringQueues<>();
+	public static final Map<RegistryEntryAttachment<Object, Object>, List<RegistryEntryAttachment.Entry<Object, Object>>> OMNIQUEUE = new HashMap<>();
 
-	public QuiltDeferringQueues() {
-		this.hasEvent = false;
-	}
+	@SuppressWarnings("unchecked")
+	public static <K, V> void addEntry(RegistryEntryAttachment<K, V> queue, K entry, V value) {
+		boolean hasDeferredKey = deferEntry(entry);
+		boolean hasDeferredValue = deferEntry(value);
 
-	public <V> DeferringQueue<T, V> register(RegistryEntryAttachment<T, V> registryAttachment) {
-		var queue = new DeferringQueue<>(registryAttachment, new HashMap<>());
-
-		queues.add(queue);
-
-		return queue;
-	}
-
-	public <V> void addEntry(DeferringQueue<T, V> queue, T entry, V value) {
-		if (queue.registryAttachment().registry().getKey(entry).isEmpty()) {
-			LOGGER.warn("There was an attempt to add an unregistered item to a content registry! The registration will be deferred to a later point.");
-			queue.deferredEntries().put(entry, value);
-
-			if (!hasEvent) {
-				if (CRASH_ON_DEFERRING_ENTRY.toBooleanOrElse(QuiltLoader.isDevelopmentEnvironment())) {
-					if (CRASH_ON_DEFERRING_ENTRY == TriState.DEFAULT) {
-						LOGGER.warn("A mod has attempted to put an unregistered entry to a Fabric API content registry (bridged to the "
-								+ queue.registryAttachment().id() + " registry attachment by QFAPI)! The game will proceed to crash."
-								+ "This debugging behavior may be disabled with the \"quilted_fabric_api.quilted_fabric_content_registries_v0.crash_on_deferring_entry\" property "
-								+ "set to false.");
-					} else {
-						LOGGER.warn("A mod has attempted to put an unregistered entry to a Fabric API content registry (bridged to the "
-								+ queue.registryAttachment().id() + " registry attachment by QFAPI)! The game will proceed to crash "
-								+ "due to a debug property being enabled.");
-					}
-
-					throw new UnsupportedOperationException();
-				} else {
-					LOGGER.warn("A mod has attempted to put an unregistered entry to a Fabric API content registry (bridged to the "
-							+ queue.registryAttachment().id() + " registry attachment by QFAPI)! The " + queue.registryAttachment().registry().toString()
-							+ " registry's deferring queue has been activated in order to re-route its addition to post-registration.");
-					this.createEvent(queue.registryAttachment().registry());
-					this.hasEvent = true;
-				}
+		if (hasDeferredKey || hasDeferredValue) {
+			// a
+			if (OMNIQUEUE.containsKey(queue)) {
+				OMNIQUEUE.get(queue).add(new RegistryEntryAttachment.Entry<>(entry, value));
+			} else {
+				OMNIQUEUE.put((RegistryEntryAttachment<Object, Object>) queue, new ArrayList<>());
+				OMNIQUEUE.get(queue).add(new RegistryEntryAttachment.Entry<>(entry, value));
 			}
 		} else {
-			queue.registryAttachment().put(entry, value);
+			queue.put(entry, value);
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public <V> void createEvent(Registry<T> registry) {
-		RegistryMonitor.create(registry).forUpcoming(entryAdded -> {
-			var queuesToRemove = new ArrayList<DeferringQueue<?, ?>>();
+	public static <V> boolean deferEntry(V value) {
+		if (value instanceof Block block) {
+			QuiltDeferringQueues.BLOCK.deferEntry(block);
+		} else if (value instanceof BlockState state) {
+			QuiltDeferringQueues.BLOCK.deferEntry(state.getBlock());
+		} else if (value instanceof ReversibleBlockEntry entry) {
+			return QuiltDeferringQueues.BLOCK.deferEntry(entry.block());
+		} else if (value instanceof Item item) {
+			QuiltDeferringQueues.ITEM.deferEntry(item);
+		} else if (value instanceof GameEvent event) {
+			QuiltDeferringQueues.GAME_EVENT.deferEntry(event);
+		} else {
+			return false;
+		}
 
-			for (DeferringQueue<?, ?> queue : queues) {
-				var entriesToRemove = new ArrayList<>();
-
-				for (Entry<?, ?> entry: queue.deferredEntries().entrySet()) {
-					var castEntry = (Entry<T, V>) entry;
-
-					if (registry.getId((castEntry.getKey())).equals(entryAdded.id())) {
-						((RegistryEntryAttachment<T, V>) queue.registryAttachment()).put(castEntry.getKey(), castEntry.getValue());
-						entriesToRemove.add(entry.getKey());
-						LOGGER.warn("Registered the deferred entry " + entryAdded.id() + " to the Fabric API content registry bridged to QSL's "
-								+ queue.registryAttachment().id() + " registry attachment.");
-					}
-				}
-
-				entriesToRemove.forEach(entry -> queue.deferredEntries().remove(entry));
-
-				if (queue.deferredEntries().size() == 0) {
-					queuesToRemove.add(queue);
-				}
-			}
-
-			queuesToRemove.forEach(entry -> queues.remove(entry));
-		});
+		return true;
 	}
 
-	public record DeferringQueue<T, V>(
-			RegistryEntryAttachment<T, V> registryAttachment,
-			Map<T, V> deferredEntries
-	) { }
+	public static <V> boolean isEntryDeferred(V value) {
+		if (value instanceof Block block) {
+			return QuiltDeferringQueues.BLOCK.deferredEntries.contains(block);
+		} else if (value instanceof BlockState state) {
+			return QuiltDeferringQueues.BLOCK.deferredEntries.contains(state.getBlock());
+		} else if (value instanceof ReversibleBlockEntry entry) {
+			return QuiltDeferringQueues.BLOCK.deferredEntries.contains(entry.block());
+		} else if (value instanceof Item item) {
+			return QuiltDeferringQueues.ITEM.deferredEntries.contains(item);
+		} else if (value instanceof GameEvent event) {
+			return QuiltDeferringQueues.GAME_EVENT.deferredEntries.contains(event);
+		}
+
+		return false;
+	}
+
+	public static void updateOmniqueue() {
+		var entriesToRemove = new ArrayList<>();
+		for (var entry : OMNIQUEUE.entrySet()) {
+			var entriesToRemove2 = new ArrayList<>();
+			for (var listEntry : entry.getValue()) {
+				if (!isEntryDeferred(listEntry.entry()) && !isEntryDeferred(listEntry.value())) {
+					entry.getKey().put(listEntry.entry(), listEntry.value());
+					entriesToRemove2.add(listEntry.entry());
+				}
+			}
+			entry.getValue().removeAll(entriesToRemove2);
+			if (entry.getValue().size() == 0) entriesToRemove.add(entry.getKey());
+		}
+		entriesToRemove.forEach(entry -> OMNIQUEUE.remove(entry));
+	}
+
+	public static class DeferringQueue<K> {
+		public List<K> deferredEntries;
+		private boolean active;
+		private final Registry<K> registry;
+
+		public DeferringQueue(Registry<K> registry) {
+			this.deferredEntries = new ArrayList<>();
+			this.active = false;
+			this.registry = registry;
+		}
+
+		public boolean deferEntry(K entry) {
+			if (registry.getKey(entry).isEmpty()) {
+				this.deferredEntries.add(entry);
+				this.activate();
+
+				return true;
+			}
+
+			return false;
+		}
+
+		public void activate() {
+			if (!this.active) {
+				this.active = true;
+				this.createEvent();
+			}
+		}
+
+		private void createEvent() {
+			LOGGER.info("Event created for " + registry.toString());
+			RegistryMonitor.create(this.registry).forUpcoming(entryAdded -> {
+				var entriesToRemove = new ArrayList<>();
+				for (K entry : this.deferredEntries) {
+					LOGGER.warn("a: " + entryAdded.id());
+					LOGGER.warn("b: " + this.registry.getId(entry));
+					if (entryAdded.id().equals(this.registry.getId(entry))) {
+						entriesToRemove.add(entry);
+					}
+				}
+				this.deferredEntries.removeAll(entriesToRemove);
+				// TODO - Check if the deferred entries list has changed; Yes, it's very easy to do that, but I actually need to debug stuff before doing that
+				updateOmniqueue();
+			});
+		}
+
+		public boolean isActive() {
+			return active;
+		}
+	}
 }

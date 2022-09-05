@@ -28,12 +28,10 @@ import net.minecraft.item.ItemConvertible;
 
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.fabricmc.fabric.impl.content.registry.util.QuiltDeferringQueues;
-import net.fabricmc.fabric.impl.content.registry.util.QuiltDeferringQueues.DeferringQueue;
 
 // Fabric To-Do: Clamp values to 32767 (+ add hook for mods which extend the limit to disable the check?)
 // About that, Quilt's equivalent API supports integer values properly, no need for that
 public final class FuelRegistryImpl implements FuelRegistry {
-	private static final DeferringQueue<Item, Integer> QUEUE = QuiltDeferringQueues.ITEM.register(ItemContentRegistries.FUEL_TIME);
 	//private static final Logger LOGGER = LoggerFactory.getLogger(FuelRegistryImpl.class);
 
 	public FuelRegistryImpl() { }
@@ -53,7 +51,7 @@ public final class FuelRegistryImpl implements FuelRegistry {
 
 	@Override
 	public void add(ItemConvertible item, Integer cookTime) {
-		QuiltDeferringQueues.ITEM.addEntry(QUEUE, item.asItem(), cookTime.intValue());
+		QuiltDeferringQueues.addEntry(ItemContentRegistries.FUEL_TIME, item.asItem(), cookTime.intValue());
 	}
 
 	@Override

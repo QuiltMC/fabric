@@ -25,11 +25,8 @@ import net.minecraft.tag.TagKey;
 
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.fabricmc.fabric.impl.content.registry.util.QuiltDeferringQueues;
-import net.fabricmc.fabric.impl.content.registry.util.QuiltDeferringQueues.DeferringQueue;
 
 public class FlammableBlockRegistryImpl implements FlammableBlockRegistry {
-	private static final DeferringQueue<Block, FlammableBlockEntry> QUEUE = QuiltDeferringQueues.BLOCK.register(BlockContentRegistries.FLAMMABLE_BLOCK);
-
 	private FlammableBlockRegistryImpl(Block key) { }
 
 	// User-facing fire registry interface - queries vanilla fire block
@@ -48,7 +45,7 @@ public class FlammableBlockRegistryImpl implements FlammableBlockRegistry {
 
 	@Override
 	public void add(Block block, Entry value) {
-		QuiltDeferringQueues.BLOCK.addEntry(QUEUE, block, value.toQuilt());
+		QuiltDeferringQueues.addEntry(BlockContentRegistries.FLAMMABLE_BLOCK, block, value.toQuilt());
 	}
 
 	@Override

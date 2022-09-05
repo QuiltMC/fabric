@@ -21,12 +21,11 @@ import java.util.Objects;
 
 import org.slf4j.LoggerFactory;
 import org.quiltmc.qsl.block.content.registry.api.BlockContentRegistries;
+import org.quiltmc.quilted_fabric_api.impl.content.registry.util.QuiltDeferringQueues;
 import org.slf4j.Logger;
 
 import net.minecraft.block.Block;
 import net.minecraft.state.property.Properties;
-
-import net.fabricmc.fabric.impl.content.registry.util.QuiltDeferringQueues;
 
 /**
  * A registry for axe stripping interactions. A vanilla example is turning logs to stripped logs.

@@ -21,10 +21,9 @@ import java.util.Objects;
 
 import org.quiltmc.qsl.block.content.registry.api.BlockContentRegistries;
 import org.quiltmc.qsl.block.content.registry.api.ReversibleBlockEntry;
+import org.quiltmc.quilted_fabric_api.impl.content.registry.util.QuiltDeferringQueues;
 
 import net.minecraft.block.Block;
-
-import net.fabricmc.fabric.impl.content.registry.util.QuiltDeferringQueues;
 
 /**
  * Provides methods for registering oxidizable and waxable blocks.

@@ -19,12 +19,12 @@ package net.fabricmc.fabric.impl.content.registry;
 
 import org.quiltmc.qsl.block.content.registry.api.BlockContentRegistries;
 import org.quiltmc.qsl.block.content.registry.api.FlammableBlockEntry;
+import org.quiltmc.quilted_fabric_api.impl.content.registry.util.QuiltDeferringQueues;
 
 import net.minecraft.block.Block;
 import net.minecraft.tag.TagKey;
 
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
-import net.fabricmc.fabric.impl.content.registry.util.QuiltDeferringQueues;
 
 public class FlammableBlockRegistryImpl implements FlammableBlockRegistry {
 	private FlammableBlockRegistryImpl(Block key) { }

@@ -18,13 +18,13 @@
 package net.fabricmc.fabric.impl.content.registry;
 
 import org.quiltmc.qsl.item.content.registry.api.ItemContentRegistries;
+import org.quiltmc.quilted_fabric_api.impl.content.registry.util.QuiltDeferringQueues;
 
 import net.minecraft.tag.TagKey;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 
 import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
-import net.fabricmc.fabric.impl.content.registry.util.QuiltDeferringQueues;
 
 public class CompostingChanceRegistryImpl implements CompostingChanceRegistry {
 	@Override

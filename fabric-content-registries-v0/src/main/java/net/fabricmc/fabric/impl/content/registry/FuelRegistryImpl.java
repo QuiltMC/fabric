@@ -21,13 +21,13 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 
 import org.quiltmc.qsl.item.content.registry.api.ItemContentRegistries;
+import org.quiltmc.quilted_fabric_api.impl.content.registry.util.QuiltDeferringQueues;
 
 import net.minecraft.tag.TagKey;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 
 import net.fabricmc.fabric.api.registry.FuelRegistry;
-import net.fabricmc.fabric.impl.content.registry.util.QuiltDeferringQueues;
 
 // Fabric To-Do: Clamp values to 32767 (+ add hook for mods which extend the limit to disable the check?)
 // About that, Quilt's equivalent API supports integer values properly, no need for that

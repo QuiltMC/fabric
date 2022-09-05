@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.quiltmc.loader.api.QuiltLoader;
 import org.quiltmc.qsl.base.api.util.TriState;
 import org.quiltmc.qsl.block.content.registry.api.ReversibleBlockEntry;
 import org.quiltmc.qsl.registry.api.event.RegistryMonitor;
@@ -50,13 +51,11 @@ public class QuiltDeferringQueues<T> {
 		boolean hasDeferredValue = deferEntry(value);
 
 		if (hasDeferredKey || hasDeferredValue) {
-			// a
-			if (OMNIQUEUE.containsKey(queue)) {
-				OMNIQUEUE.get(queue).add(new RegistryEntryAttachment.Entry<>(entry, value));
-			} else {
+			if (!OMNIQUEUE.containsKey(queue)) {
 				OMNIQUEUE.put((RegistryEntryAttachment<Object, Object>) queue, new ArrayList<>());
-				OMNIQUEUE.get(queue).add(new RegistryEntryAttachment.Entry<>(entry, value));
 			}
+
+			OMNIQUEUE.get(queue).add(new RegistryEntryAttachment.Entry<>(entry, value));
 		} else {
 			queue.put(entry, value);
 		}
@@ -140,28 +139,38 @@ public class QuiltDeferringQueues<T> {
 
 		public void activate() {
 			if (!this.active) {
+				if (CRASH_ON_DEFERRING_ENTRY.toBooleanOrElse(QuiltLoader.isDevelopmentEnvironment())) {
+					if (CRASH_ON_DEFERRING_ENTRY == TriState.DEFAULT) {
+						LOGGER.error("An unregistered entry on the " + this.registry + " registry was attempted to be registered in a content registry through the Quilted Fabric API bridge! Due to this happening on a dev environment, the game will proceed to crash now. This crash may be disabled by disabling the \"quilted_fabric_api.quilted_fabric_content_registries_v0.crash_on_deferring_entry\" property.");
+					} else {
+						LOGGER.error("An unregistered entry on the " + this.registry + " registry was attempted to be registered in a content registry through the Quilted Fabric API bridge! Due to a debug option being enabled, the game will proceed to crash now.");
+					}
+
+					throw new UnsupportedOperationException();
+				} else {
+					LOGGER.warn("An unregistered entry on the " + this.registry + " registry was attempted to be registered in a content registry through the Quilted Fabric API bridge! Its instability will be circumvented through the activation of the registry's deferring queue, which may affect performance!");
+				}
+
 				this.active = true;
 				this.createEvent();
 			}
 		}
 
 		private void createEvent() {
-			LOGGER.info("Event created for " + registry.toString());
 			RegistryMonitor.create(this.registry).forUpcoming(entryAdded -> {
 				var entriesToRemove = new ArrayList<>();
 
 				for (K entry : this.deferredEntries) {
-					LOGGER.warn("a: " + entryAdded.id());
-					LOGGER.warn("b: " + this.registry.getId(entry));
-
 					if (entryAdded.id().equals(this.registry.getId(entry))) {
 						entriesToRemove.add(entry);
 					}
 				}
 
 				this.deferredEntries.removeAll(entriesToRemove);
-				// TODO - Check if the deferred entries list has changed; Yes, it's very easy to do that, but I actually need to debug stuff before doing that
-				updateOmniqueue();
+
+				if (entriesToRemove.size() != 0) {
+					updateOmniqueue();
+				}
 			});
 		}
 

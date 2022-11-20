@@ -15,21 +15,17 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.impl.networking;
+package net.fabricmc.fabric.impl.client.networking.v0;
 
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.network.C2SPacketTypeCallback;
-import net.fabricmc.fabric.api.networking.v1.S2CPlayChannelEvents;
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.event.network.S2CPacketTypeCallback;
+import net.fabricmc.fabric.api.client.networking.v1.C2SPlayChannelEvents;
 
-public final class OldNetworkingHooks implements ModInitializer {
+public final class OldClientNetworkingHooks implements ClientModInitializer {
 	@Override
-	public void onInitialize() {
+	public void onInitializeClient() {
 		// Must be lambdas below
-		S2CPlayChannelEvents.REGISTER.register((handler, server, sender, channels) -> {
-			C2SPacketTypeCallback.REGISTERED.invoker().accept(handler.player, channels);
-		});
-		S2CPlayChannelEvents.UNREGISTER.register((handler, server, sender, channels) -> {
-			C2SPacketTypeCallback.UNREGISTERED.invoker().accept(handler.player, channels);
-		});
+		C2SPlayChannelEvents.REGISTER.register((handler, client, sender, channels) -> S2CPacketTypeCallback.REGISTERED.invoker().accept(channels));
+		C2SPlayChannelEvents.UNREGISTER.register((handler, client, sender, channels) -> S2CPacketTypeCallback.UNREGISTERED.invoker().accept(channels));
 	}
 }

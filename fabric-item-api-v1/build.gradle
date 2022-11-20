@@ -11,3 +11,7 @@ dependencies {
 moduleDependencies(project, [
 		'fabric-api-base'
 ])
+
+testDependencies(project, [
+		':fabric-content-registries-v0',
+])

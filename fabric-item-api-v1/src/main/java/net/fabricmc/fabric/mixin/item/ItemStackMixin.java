@@ -38,7 +38,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemStack;
-import net.fabricmc.fabric.api.item.v1.CustomDamageHandler;
 import net.fabricmc.fabric.api.item.v1.ModifyItemAttributeModifiersCallback;
 
 @Mixin(ItemStack.class)

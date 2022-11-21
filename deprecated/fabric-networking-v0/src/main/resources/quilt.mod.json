@@ -32,8 +32,8 @@
 			}
 		],
 		"entrypoints": {
-			"main": "net.fabricmc.fabric.impl.networking.OldNetworkingHooks",
-			"client": "net.fabricmc.fabric.impl.networking.OldClientNetworkingHooks"
+			"main": "net.fabricmc.fabric.impl.networking.v0.OldNetworkingHooks",
+			"client": "net.fabricmc.fabric.impl.client.networking.v0.OldClientNetworkingHooks"
 		}
 	},
 	"fabric-api:module-lifecycle": "deprecated",

@@ -22,7 +22,7 @@
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
 			"main": "net.fabricmc.fabric.impl.event.lifecycle.LifecycleEventsImpl",
-			"client": "net.fabricmc.fabric.impl.event.lifecycle.ClientLifecycleEventsImpl"
+			"client": "net.fabricmc.fabric.impl.client.event.lifecycle.ClientLifecycleEventsImpl"
 		},
 		"depends": [
 			"quilt_loader",

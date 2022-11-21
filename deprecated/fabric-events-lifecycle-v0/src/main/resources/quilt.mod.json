@@ -33,8 +33,8 @@
 			}
 		],
 		"entrypoints": {
-			"main": "net.fabricmc.fabric.impl.event.lifecycle.LegacyEventInvokers",
-			"client": "net.fabricmc.fabric.impl.event.lifecycle.client.LegacyClientEventInvokers"
+			"main": "net.fabricmc.fabric.impl.event.lifecycle.v0.LegacyEventInvokers",
+			"client": "net.fabricmc.fabric.impl.event.lifecycle.v0.client.LegacyClientEventInvokers"
 		}
 	},
 	"fabric-api:module-lifecycle": "deprecated",

@@ -17,6 +17,8 @@
 
 package net.fabricmc.fabric.api.item.v1;
 
+import org.quiltmc.qsl.item.setting.api.RecipeRemainderLogicHandler;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -35,6 +37,6 @@ public interface FabricItemStack {
 	 * @return the leftover item
 	 */
 	default ItemStack getRecipeRemainder() {
-		return ((ItemStack) this).getItem().getRecipeRemainder((ItemStack) this);
+		return RecipeRemainderLogicHandler.getRemainder((ItemStack) (Object) this, null);
 	}
 }

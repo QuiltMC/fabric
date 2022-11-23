@@ -1,5 +1,4 @@
 /*
- * Copyright 2016, 2017, 2018, 2019 FabricMC
  * Copyright 2022 QuiltMC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,19 +14,17 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.test.item.mixin;
+package net.fabricmc.fabric.mixin.item;
+
+import java.util.function.Supplier;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Invoker;
+import org.spongepowered.asm.mixin.Mutable;
+import org.spongepowered.asm.mixin.gen.Accessor;
 
-import net.minecraft.item.Item;
-import net.minecraft.potion.Potion;
-import net.minecraft.recipe.BrewingRecipeRegistry;
-
-@Mixin(BrewingRecipeRegistry.class)
-public interface BrewingRecipeRegistryAccessor {
-	@Invoker
-	static void callRegisterPotionRecipe(Potion input, Item item, Potion output) {
-		throw new UnsupportedOperationException();
-	}
+@Mixin(org.quiltmc.qsl.item.setting.impl.CustomItemSettingImpl.class)
+public interface CustomItemSettingImplAccessor<T> {
+	@Mutable
+	@Accessor
+	void setDefaultValue(Supplier<T> defaultValue);
 }

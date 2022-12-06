@@ -59,7 +59,7 @@ public final class ServerLivingEntityEvents {
 	 */
 	public static final Event<AllowDeath> ALLOW_DEATH = QuiltCompatEvent.fromQuilt(
 			org.quiltmc.qsl.entity_events.api.EntityReviveEvents.BEFORE_TOTEM,
-			beforeTotemCallback -> (entity, damageSource) -> beforeTotemCallback.allowDeath(entity, damageSource, ((LivingEntityAccessor) entity).getLastDamageTaken()),
+			beforeTotemCallback -> (entity, damageSource) -> !beforeTotemCallback.allowDeath(entity, damageSource, ((LivingEntityAccessor) entity).getLastDamageTaken()),
 			invokerGetter -> (entity, damageSource, damageAmount) -> invokerGetter.get().tryReviveBeforeTotem(entity, damageSource)
 	);
 

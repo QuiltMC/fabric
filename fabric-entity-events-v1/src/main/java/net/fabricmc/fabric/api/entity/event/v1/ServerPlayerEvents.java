@@ -63,7 +63,7 @@ public final class ServerPlayerEvents {
 			org.quiltmc.qsl.entity_events.api.EntityReviveEvents.BEFORE_TOTEM,
 			beforeTotemCallback -> (entity, damageSource) -> {
 				if (entity instanceof ServerPlayerEntity player) {
-					return beforeTotemCallback.allowDeath(player, damageSource, ((LivingEntityAccessor) entity).getLastDamageTaken());
+					return !beforeTotemCallback.allowDeath(player, damageSource, ((LivingEntityAccessor) entity).getLastDamageTaken());
 				}
 
 				return false;

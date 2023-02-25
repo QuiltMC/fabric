@@ -23,14 +23,14 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import net.minecraft.block.SculkSensorBlock;
 import net.minecraft.world.event.listener.VibrationListener;
 
 @Mixin(VibrationListener.class)
 public class VibrationListenerMixin {
 	/**
-	 * Redirects the call to {@linkplain Object2IntMaps#unmodifiable(Object2IntMap)} in initialization of {@linkplain SculkSensorBlock#FREQUENCIES}.
+	 * Redirects the call to {@linkplain Object2IntMaps#unmodifiable(Object2IntMap)} in initialization of {@linkplain VibrationListener#FREQUENCIES}.
 	 */
+	@SuppressWarnings("unchecked")
 	@Redirect(method = "<clinit>", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/objects/Object2IntMaps;unmodifiable(Lit/unimi/dsi/fastutil/objects/Object2IntMap;)Lit/unimi/dsi/fastutil/objects/Object2IntMap;"))
 	private static <K> Object2IntMap<K> makeFrequenciesMapModifiable(Object2IntMap<? extends K> m) {
 		return (Object2IntMap<K>) m;

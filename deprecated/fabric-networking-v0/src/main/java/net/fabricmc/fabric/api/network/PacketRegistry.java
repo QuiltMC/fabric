@@ -29,7 +29,6 @@ public interface PacketRegistry {
 	 *
 	 * @param id  The identifier.
 	 * @param buf The byte buffer.
-	 * @return
 	 */
 	Packet<?> toPacket(Identifier id, PacketByteBuf buf);
 

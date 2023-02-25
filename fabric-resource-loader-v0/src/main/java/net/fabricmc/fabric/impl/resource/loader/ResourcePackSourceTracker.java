@@ -26,9 +26,9 @@ import net.minecraft.resource.ResourcePackSource;
  * Tracks the sources of resource packs in a global weak hash map.
  * {@link ResourcePack} doesn't hold a reference to its {@link ResourcePackSource}
  * so we store the source in the map when the resource packs are created.
- * See {@link net.fabricmc.fabric.mixin.resource.loader.ResourcePackProfileMixin ResourcePackProfileMixin}.
+ * See {@link org.quiltmc.qsl.resource.loader.mixin.ResourcePackProfileMixin ResourcePackProfileMixin}.
  *
- * <p>The sources are later read for use in {@link FabricResource} and {@link FabricResourceImpl}.
+ * <p>The sources are later read for use in {@link FabricResource}.
  * See {@link net.fabricmc.fabric.mixin.resource.loader.NamespaceResourceManagerMixin NamespaceResourceManagerMixin}.
  */
 public final class ResourcePackSourceTracker {

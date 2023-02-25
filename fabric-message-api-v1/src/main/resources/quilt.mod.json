@@ -31,7 +31,10 @@
 			}
 		]
 	},
-	"mixin": "quilted_fabric_message_api_v1.mixins.json",
+	"mixin": [
+		"quilted_fabric_message_api_v1.mixins.json",
+		"quilted_fabric_message_api_v1.client.mixins.json"
+	],
 	"fabric-api:module-lifecycle": "experimental",
 	"modmenu": {
 		"badges": [

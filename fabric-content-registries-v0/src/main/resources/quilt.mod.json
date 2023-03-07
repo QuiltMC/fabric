@@ -33,7 +33,10 @@
 			}
 		]
 	},
-	"mixin": "quilted_fabric_content_registries_v0.mixins.json",
+	"mixin": [
+		"quilted_fabric_content_registries_v0.mixins.json",
+		"quilted_fabric_content_registries_v0_qsl.mixins.json"
+	],
 	"access_widener": "quilted_fabric_content_registries_v0.accesswidener",
 	"fabric-api:module-lifecycle": "stable",
 	"modmenu": {

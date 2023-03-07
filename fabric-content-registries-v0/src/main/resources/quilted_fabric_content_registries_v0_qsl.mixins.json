@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "org.quiltmc.quilted_fabric_api.impl.content.registry.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "BlockContentRegistriesInitializerMixin",
+    "ItemContentRegistriesInitializerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

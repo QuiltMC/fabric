@@ -19,10 +19,12 @@ package net.fabricmc.fabric.impl.resource.loader;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import org.quiltmc.qsl.resource.loader.api.ResourceLoader;
 
 import net.minecraft.resource.ResourceType;
+import net.minecraft.util.Identifier;
 
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -31,6 +33,7 @@ public class ResourceManagerHelperImpl implements ResourceManagerHelper {
 	private static final Map<ResourceType, ResourceManagerHelperImpl> registryMap = new HashMap<>();
 
 	private final ResourceType type;
+	private Identifier lastResourceReloaderIdentifier = null;
 
 	private ResourceManagerHelperImpl(ResourceType type) {
 		this.type = type;
@@ -42,6 +45,16 @@ public class ResourceManagerHelperImpl implements ResourceManagerHelper {
 
 	@Override
 	public void registerReloadListener(IdentifiableResourceReloadListener listener) {
-		ResourceLoader.get(this.type).registerReloader(listener);
+		ResourceLoader resourceLoader = ResourceLoader.get(this.type);
+		resourceLoader.registerReloader(listener);
+
+		if (
+				lastResourceReloaderIdentifier != null
+						&& Objects.equals(lastResourceReloaderIdentifier.getNamespace(), listener.getQuiltId().getNamespace())
+		) {
+			resourceLoader.addReloaderOrdering(lastResourceReloaderIdentifier, listener.getQuiltId());
+		}
+
+		lastResourceReloaderIdentifier = listener.getQuiltId();
 	}
 }

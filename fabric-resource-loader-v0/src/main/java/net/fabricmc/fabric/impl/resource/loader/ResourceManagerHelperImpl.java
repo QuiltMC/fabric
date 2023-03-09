@@ -49,6 +49,10 @@ public class ResourceManagerHelperImpl implements ResourceManagerHelper {
 		ResourceLoader resourceLoader = ResourceLoader.get(this.type);
 		resourceLoader.registerReloader(listener);
 
+		// Inject a synthetic ordering between listeners registered on the same namespace that are registered after each other
+		// This matches the existing behavior of fabric-api where listeners are called in registration order, fixing some compatibility issues.
+		// We split on namespaces to prevent grouping all fabric based listeners into one long chain and causing potential issues in actual ordering.
+		// see i.e https://gitlab.com/cable-mc/cobblemon/-/issues/148 or https://github.com/apace100/calio/issues/3
 		if (
 				lastResourceReloaderIdentifier != null
 						&& Objects.equals(lastResourceReloaderIdentifier.getNamespace(), listener.getQuiltId().getNamespace())

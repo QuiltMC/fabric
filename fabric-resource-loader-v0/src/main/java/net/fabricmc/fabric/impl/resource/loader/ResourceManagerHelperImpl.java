@@ -33,6 +33,7 @@ public class ResourceManagerHelperImpl implements ResourceManagerHelper {
 	private static final Map<ResourceType, ResourceManagerHelperImpl> registryMap = new HashMap<>();
 
 	private final ResourceType type;
+
 	private Identifier lastResourceReloaderIdentifier = null;
 
 	private ResourceManagerHelperImpl(ResourceType type) {

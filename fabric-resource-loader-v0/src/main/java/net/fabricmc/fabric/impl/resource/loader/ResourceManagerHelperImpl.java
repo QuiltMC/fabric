@@ -19,11 +19,13 @@ package net.fabricmc.fabric.impl.resource.loader;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.quiltmc.qsl.resource.loader.api.ResourceLoader;
 
 import net.minecraft.resource.ResourceType;
+import net.minecraft.util.Identifier;
 
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -33,6 +35,8 @@ public class ResourceManagerHelperImpl implements ResourceManagerHelper {
 	private static final Map<ResourceType, ResourceManagerHelperImpl> registryMap = new HashMap<>();
 
 	private final ResourceType type;
+
+	private Identifier lastResourceReloaderIdentifier = null;
 
 	private ResourceManagerHelperImpl(ResourceType type) {
 		this.type = type;
@@ -44,6 +48,20 @@ public class ResourceManagerHelperImpl implements ResourceManagerHelper {
 
 	@Override
 	public void registerReloadListener(IdentifiableResourceReloadListener listener) {
-		ResourceLoader.get(this.type).registerReloader(listener);
+		ResourceLoader resourceLoader = ResourceLoader.get(this.type);
+		resourceLoader.registerReloader(listener);
+
+		// Inject a synthetic ordering between listeners registered on the same namespace that are registered after each other
+		// This matches the existing behavior of fabric-api where listeners are called in registration order, fixing some compatibility issues.
+		// We split on namespaces to prevent grouping all fabric based listeners into one long chain and causing potential issues in actual ordering.
+		// see i.e https://gitlab.com/cable-mc/cobblemon/-/issues/148 or https://github.com/apace100/calio/issues/3
+		if (
+				lastResourceReloaderIdentifier != null
+						&& Objects.equals(lastResourceReloaderIdentifier.getNamespace(), listener.getQuiltId().getNamespace())
+		) {
+			resourceLoader.addReloaderOrdering(lastResourceReloaderIdentifier, listener.getQuiltId());
+		}
+
+		lastResourceReloaderIdentifier = listener.getQuiltId();
 	}
 }

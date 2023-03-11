@@ -20,7 +20,7 @@ public class QuiltedFabricContentRegistriesMixinPlugin implements IMixinConfigPl
 
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-		return !QuiltLoader.isDevelopmentEnvironment() && !Boolean.getBoolean("quilted_fabric_api.disable_rea_fix");
+		return !QuiltLoader.isDevelopmentEnvironment() || Boolean.getBoolean("quilted_fabric_api.enable_rea_fix");
 	}
 
 	@Override

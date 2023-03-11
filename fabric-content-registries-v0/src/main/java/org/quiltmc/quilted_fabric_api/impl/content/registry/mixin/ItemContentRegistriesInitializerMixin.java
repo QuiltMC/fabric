@@ -34,7 +34,7 @@ public class ItemContentRegistriesInitializerMixin {
 	@Redirect(method = "onInitialize", at = @At(value = "INVOKE", target = "Ljava/util/Map;forEach(Ljava/util/function/BiConsumer;)V", ordinal = 0), remap = false)
 	private void redirectInitialFuelTimesPut(Map<Item, Integer> instance, BiConsumer<?, ?> v) {
 		instance.forEach((item, integer) -> {
-			QuiltDeferringQueues.addEntry(ItemContentRegistries.FUEL_TIMES, item, integer);
+			QuiltDeferringQueues.addEntry(ItemContentRegistries.FUEL_TIME, item, integer);
 		});
 	}
 

@@ -6,6 +6,7 @@
     "BlockContentRegistriesInitializerMixin",
     "ItemContentRegistriesInitializerMixin"
   ],
+  "plugin": "org.quiltmc.quilted_fabric_api.impl.content.registry.plugin.QuiltedFabricContentRegistriesMixinPlugin",
   "injectors": {
     "defaultRequire": 1
   }

@@ -36,7 +36,7 @@ public class ResourceManagerHelperImpl implements ResourceManagerHelper {
 
 	private final ResourceType type;
 
-	private Identifier lastResourceReloaderIdentifier = null;
+	private Identifier lastResourceReloaderId = null;
 
 	private ResourceManagerHelperImpl(ResourceType type) {
 		this.type = type;
@@ -48,7 +48,7 @@ public class ResourceManagerHelperImpl implements ResourceManagerHelper {
 
 	@Override
 	public void registerReloadListener(IdentifiableResourceReloadListener listener) {
-		ResourceLoader resourceLoader = ResourceLoader.get(this.type);
+		var resourceLoader = ResourceLoader.get(this.type);
 		resourceLoader.registerReloader(listener);
 
 		// Inject a synthetic ordering between listeners registered on the same namespace that are registered after each other
@@ -56,12 +56,12 @@ public class ResourceManagerHelperImpl implements ResourceManagerHelper {
 		// We split on namespaces to prevent grouping all fabric based listeners into one long chain and causing potential issues in actual ordering.
 		// see i.e https://gitlab.com/cable-mc/cobblemon/-/issues/148 or https://github.com/apace100/calio/issues/3
 		if (
-				lastResourceReloaderIdentifier != null
-						&& Objects.equals(lastResourceReloaderIdentifier.getNamespace(), listener.getQuiltId().getNamespace())
+				this.lastResourceReloaderId != null
+						&& Objects.equals(this.lastResourceReloaderId.getNamespace(), listener.getQuiltId().getNamespace())
 		) {
-			resourceLoader.addReloaderOrdering(lastResourceReloaderIdentifier, listener.getQuiltId());
+			resourceLoader.addReloaderOrdering(this.lastResourceReloaderId, listener.getQuiltId());
 		}
 
-		lastResourceReloaderIdentifier = listener.getQuiltId();
+		this.lastResourceReloaderId = listener.getQuiltId();
 	}
 }

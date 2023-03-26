@@ -47,6 +47,7 @@ public final class ConventionalBiomeTags {
 	public static final TagKey<Biome> IN_NETHER = register("in_nether");
 	public static final TagKey<Biome> TAIGA = register("taiga");
 	public static final TagKey<Biome> EXTREME_HILLS = register("extreme_hills");
+	public static final TagKey<Biome> WINDSWEPT = register("windswept");
 	public static final TagKey<Biome> JUNGLE = register("jungle");
 	public static final TagKey<Biome> MESA = register("mesa");
 	/**
@@ -73,6 +74,7 @@ public final class ConventionalBiomeTags {
 	 * Biomes densely populated with deciduous trees.
 	 */
 	public static final TagKey<Biome> FOREST = register("forest");
+	public static final TagKey<Biome> BIRCH_FOREST = register("birch_forest");
 	public static final TagKey<Biome> OCEAN = register("ocean");
 	public static final TagKey<Biome> DESERT = register("desert");
 	public static final TagKey<Biome> RIVER = register("river");

@@ -15,7 +15,7 @@ plugins {
 	id "com.matthewprenger.cursegradle" version "1.4.0"
 	id "com.modrinth.minotaur" version "2.5.0"
 	id "me.modmuss50.remotesign" version "0.4.0" apply false
-	//id "io.github.p03w.machete" version "1.2.0"
+	id "io.github.p03w.machete" version "2.0.1"
 }
 
 def ENV = System.getenv()
@@ -632,14 +632,14 @@ remapJar {
 	}
 }
 
-/*
+
 machete {
 	// JSON minification isn't effective on this scale and sacrifices readability
 	json.enabled = false
+	ignoredTasks.add("jar")
+	additionalTasks.add("remapJar")
 }
-// This prevents issues with execution optimizations and therefore, Gradle deprecation warnings
-tasks.prepareRemapJar.dependsOn('optimizeOutputsOfJar')
-*/
+tasks.remapJar.finalizedBy('optimizeOutputsOfRemapJar')
 
 tasks.register('renameJar', Jar) {
 	dependsOn signingEnabled ? signRemapJar : remapJar
@@ -651,7 +651,6 @@ tasks.register('renameJar', Jar) {
 	def upstream_fapi_version_normalized = project.upstream_version
 	archiveFileName.set("qfapi-${qfapi_version_normalized}_qsl-${qsl_version_normalized}_fapi-${upstream_fapi_version_normalized}_mc-${project.minecraft_version}.jar")
 }
-//tasks.renameJar.dependsOn('optimizeOutputsOfJar')
 
 curseforge {
 	if (ENV.CURSEFORGE_TOKEN) {

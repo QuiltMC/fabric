@@ -500,11 +500,28 @@ subprojects {
 	javadoc.enabled = false
 }
 
+machete {
+	// JSON minification isn't effective on this scale and sacrifices readability
+	json.enabled = false
+	finalizeAfter = ""
+	ignoredTasks.add("jar")
+	additionalTasks.add("remapJar")
+}
+if (signingEnabled) {
+	tasks.signRemapJar.finalizedBy('optimizeOutputsOfRemapJar')
+} else {
+	tasks.remapJar.finalizedBy('optimizeOutputsOfRemapJar')
+}
+
+tasks.register('optimizedJar') {
+	dependsOn 'optimizeOutputsOfRemapJar'
+}
+
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
 			artifact(signingEnabled ? signRemapJar.output : remapJar) {
-				builtBy(signingEnabled ? signRemapJar : remapJar)
+				builtBy(tasks.named('optimizedJar'))
 			}
 
 			artifact(sourcesJar) {
@@ -619,8 +636,8 @@ java.util.stream.Stream<ResolvedDependency> getAllQslModules() {
 			throw RuntimeException("Unexpected dependency: $it")
 		}
 	}
-
 }
+
 remapJar {
 	afterEvaluate {
 		subprojects.each {
@@ -632,17 +649,8 @@ remapJar {
 	}
 }
 
-
-machete {
-	// JSON minification isn't effective on this scale and sacrifices readability
-	json.enabled = false
-	ignoredTasks.add("jar")
-	additionalTasks.add("remapJar")
-}
-tasks.remapJar.finalizedBy('optimizeOutputsOfRemapJar')
-
 tasks.register('renameJar', Jar) {
-	dependsOn signingEnabled ? signRemapJar : remapJar
+	dependsOn 'optimizedJar'
 
 	with remapJar
 	from zipTree(remapJar.archiveFile)
@@ -678,12 +686,7 @@ curseforge {
 	}
 }
 tasks.curseforge.dependsOn renameJar
-
-if (signingEnabled) {
-	project.tasks.curseforge.dependsOn signRemapJar
-	project.tasks.modrinth.dependsOn signRemapJar
-	build.dependsOn signRemapJar
-}
+tasks.build.dependsOn optimizeJar
 
 import org.kohsuke.github.GHReleaseBuilder
 import org.kohsuke.github.GitHub

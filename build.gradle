@@ -686,7 +686,7 @@ curseforge {
 	}
 }
 tasks.curseforge.dependsOn renameJar
-tasks.build.dependsOn optimizeJar
+tasks.build.dependsOn optimizedJar
 
 import org.kohsuke.github.GHReleaseBuilder
 import org.kohsuke.github.GitHub

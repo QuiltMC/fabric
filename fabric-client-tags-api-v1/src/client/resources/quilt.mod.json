@@ -8,8 +8,8 @@
 			"name": "Quilted Fabric Client Tags",
 			"description": "Adds the ability to load tags from the local mods.",
 			"contributors": {
-				"QuiltMC: QSL Team": "Owner",
-				"FabricMC": "Original Owner"
+				"The Quilt Project": "Owner",
+				"FabricMC": "Upstream Owner"
 			},
 			"contact": {
 				"homepage": "https://quiltmc.org",

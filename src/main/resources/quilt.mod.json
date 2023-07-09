@@ -8,8 +8,8 @@
 			"name": "Quilted Fabric API",
 			"description": "A reimplementation of Fabric API on top of Quilt Standard Libraries.",
 			"contributors": {
-				"QuiltMC: QSL Team": "Owner",
-				"FabricMC": "Original Owner"
+				"The Quilt Project": "Owner",
+				"FabricMC": "Upstream Owner"
 			},
 			"contact": {
 				"homepage": "https://quiltmc.org",

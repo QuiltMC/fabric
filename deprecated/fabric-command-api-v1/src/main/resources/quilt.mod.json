@@ -8,8 +8,8 @@
 			"name": "Quilted Fabric Command API (v1)",
 			"description": "Deprecated. Please migrate to v2",
 			"contributors": {
-				"QuiltMC: QSL Team": "Owner",
-				"FabricMC": "Original Owner"
+				"The Quilt Project": "Owner",
+				"FabricMC": "Upstream Owner"
 			},
 			"contact": {
 				"homepage": "https://quiltmc.org",

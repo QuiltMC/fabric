@@ -8,8 +8,8 @@
 			"name": "Quilted Fabric Item API (v1)",
 			"description": "Hooks for items",
 			"contributors": {
-				"QuiltMC: QSL Team": "Owner",
-				"FabricMC": "Original Owner"
+				"The Quilt Project": "Owner",
+				"FabricMC": "Upstream Owner"
 			},
 			"contact": {
 				"homepage": "https://quiltmc.org",

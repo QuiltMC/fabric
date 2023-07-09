@@ -8,8 +8,8 @@
 			"name": "Quilted Fabric Networking API (v1)",
 			"description": "Low-level, vanilla protocol oriented networking hooks.",
 			"contributors": {
-				"QuiltMC: QSL Team": "Owner",
-				"FabricMC": "Original Owner"
+				"The Quilt Project": "Owner",
+				"FabricMC": "Upstream Owner"
 			},
 			"contact": {
 				"homepage": "https://quiltmc.org",

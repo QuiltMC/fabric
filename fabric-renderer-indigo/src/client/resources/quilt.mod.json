@@ -8,8 +8,8 @@
 			"name": "Quilted Fabric Renderer - Indigo",
 			"description": "Default implementation of the Fabric Renderer API.",
 			"contributors": {
-				"QuiltMC: QSL Team": "Owner",
-				"FabricMC": "Original Owner"
+				"The Quilt Project": "Owner",
+				"FabricMC": "Upstream Owner"
 			},
 			"contact": {
 				"homepage": "https://quiltmc.org",

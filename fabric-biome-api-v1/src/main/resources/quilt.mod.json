@@ -8,8 +8,8 @@
 			"name": "Quilted Fabric Biome API (v1)",
 			"description": "Hooks for adding biomes to the default world generator.",
 			"contributors": {
-				"QuiltMC: QSL Team": "Owner",
-				"FabricMC": "Original Owner"
+				"The Quilt Project": "Owner",
+				"FabricMC": "Upstream Owner"
 			},
 			"contact": {
 				"homepage": "https://quiltmc.org",

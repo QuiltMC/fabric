@@ -8,8 +8,8 @@
 			"name": "Quilted Fabric Events Interaction (v0)",
 			"description": "Events for player interaction with blocks and entities.",
 			"contributors": {
-				"QuiltMC: QSL Team": "Owner",
-				"FabricMC": "Original Owner"
+				"The Quilt Project": "Owner",
+				"FabricMC": "Upstream Owner"
 			},
 			"contact": {
 				"homepage": "https://quiltmc.org",

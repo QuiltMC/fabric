@@ -8,8 +8,8 @@
 			"name": "Quilted Fabric API Lookup API (v1)",
 			"description": "A universal way to expose and query APIs",
 			"contributors": {
-				"QuiltMC: QSL Team": "Owner",
-				"FabricMC": "Original Owner"
+				"The Quilt Project": "Owner",
+				"FabricMC": "Upstream Owner"
 			},
 			"contact": {
 				"homepage": "https://quiltmc.org",

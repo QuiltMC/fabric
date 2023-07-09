@@ -8,8 +8,8 @@
 			"name": "Quilted Fabric Rendering Data Attachment (v1)",
 			"description": "Thread-safe hooks for block entity data use during terrain rendering.",
 			"contributors": {
-				"QuiltMC: QSL Team": "Owner",
-				"FabricMC": "Original Owner"
+				"The Quilt Project": "Owner",
+				"FabricMC": "Upstream Owner"
 			},
 			"contact": {
 				"homepage": "https://quiltmc.org",

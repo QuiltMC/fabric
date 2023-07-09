@@ -8,8 +8,8 @@
 			"name": "Quilted Fabric Models (v0)",
 			"description": "Hooks for models and model loading.",
 			"contributors": {
-				"QuiltMC: QSL Team": "Owner",
-				"FabricMC": "Original Owner"
+				"The Quilt Project": "Owner",
+				"FabricMC": "Upstream Owner"
 			},
 			"contact": {
 				"homepage": "https://quiltmc.org",

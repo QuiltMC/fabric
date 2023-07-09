@@ -8,8 +8,8 @@
 			"name": "Quilted Fabric Loot Tables (v1)",
 			"description": "Hooks for manipulating loot tables.",
 			"contributors": {
-				"QuiltMC: QSL Team": "Owner",
-				"FabricMC": "Original Owner"
+				"The Quilt Project": "Owner",
+				"FabricMC": "Upstream Owner"
 			},
 			"contact": {
 				"homepage": "https://quiltmc.org",

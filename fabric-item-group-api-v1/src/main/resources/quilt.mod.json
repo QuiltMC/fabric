@@ -8,8 +8,8 @@
 			"name": "Quilted Fabric Item Group API (v1)",
 			"description": "An API for adding custom item groups.",
 			"contributors": {
-				"QuiltMC: QSL Team": "Owner",
-				"FabricMC": "Original Owner"
+				"The Quilt Project": "Owner",
+				"FabricMC": "Upstream Owner"
 			},
 			"contact": {
 				"homepage": "https://quiltmc.org",

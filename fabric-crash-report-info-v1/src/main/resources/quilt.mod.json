@@ -8,8 +8,8 @@
 			"name": "Quilted Fabric Crash Report Info (v1)",
 			"description": "Adds Fabric-related debug info to crash reports.",
 			"contributors": {
-				"QuiltMC: QSL Team": "Owner",
-				"FabricMC": "Original Owner"
+				"The Quilt Project": "Owner",
+				"FabricMC": "Upstream Owner"
 			},
 			"contact": {
 				"homepage": "https://quiltmc.org",

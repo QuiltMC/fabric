@@ -8,8 +8,8 @@
 			"name": "Quilted Fabric Key Bindings (v0)",
 			"description": "Keybinding registry API.",
 			"contributors": {
-				"QuiltMC: QSL Team": "Owner",
-				"FabricMC": "Original Owner"
+				"The Quilt Project": "Owner",
+				"FabricMC": "Upstream Owner"
 			},
 			"contact": {
 				"homepage": "https://quiltmc.org",

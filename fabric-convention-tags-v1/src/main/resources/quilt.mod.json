@@ -8,8 +8,8 @@
 			"name": "Quilted Fabric Convention Tags API (v1)",
 			"description": "Contains common tags used by mods for vanilla things.",
 			"contributors": {
-				"QuiltMC: QSL Team": "Owner",
-				"FabricMC": "Original Owner"
+				"The Quilt Project": "Owner",
+				"FabricMC": "Upstream Owner"
 			},
 			"contact": {
 				"homepage": "https://quiltmc.org",

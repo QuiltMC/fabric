@@ -8,8 +8,8 @@
 			"name": "Quilted Fabric Events Lifecycle (v0)",
 			"description": "Legacy events for the game's lifecycle, superseded by fabric-lifecycle-events-v1 and fabric-item-api-v1.",
 			"contributors": {
-				"QuiltMC: QSL Team": "Owner",
-				"FabricMC": "Original Owner"
+				"The Quilt Project": "Owner",
+				"FabricMC": "Upstream Owner"
 			},
 			"contact": {
 				"homepage": "https://quiltmc.org",

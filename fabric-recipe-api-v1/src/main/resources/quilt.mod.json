@@ -8,8 +8,8 @@
 			"name": "Quilted Fabric Recipe API (v1)",
 			"description": "Recipe extensions such as creation of new types of recipe ingredients.",
 			"contributors": {
-				"QuiltMC: QSL Team": "Owner",
-				"FabricMC": "Original Owner"
+				"The Quilt Project": "Owner",
+				"FabricMC": "Upstream Owner"
 			},
 			"contact": {
 				"homepage": "https://quiltmc.org",

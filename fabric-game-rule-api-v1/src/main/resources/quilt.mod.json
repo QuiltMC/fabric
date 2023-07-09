@@ -8,8 +8,8 @@
 			"name": "Quilted Fabric Game Rule API (v1)",
 			"description": "Allows registration of custom game rules.",
 			"contributors": {
-				"QuiltMC: QSL Team": "Owner",
-				"FabricMC": "Original Owner"
+				"The Quilt Project": "Owner",
+				"FabricMC": "Upstream Owner"
 			},
 			"contact": {
 				"homepage": "https://quiltmc.org",

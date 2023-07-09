@@ -8,8 +8,8 @@
 			"name": "Quilted Fabric Message API (v1)",
 			"description": "Adds message-related hooks.",
 			"contributors": {
-				"QuiltMC: QSL Team": "Owner",
-				"FabricMC": "Original Owner"
+				"The Quilt Project": "Owner",
+				"FabricMC": "Upstream Owner"
 			},
 			"contact": {
 				"homepage": "https://quiltmc.org",

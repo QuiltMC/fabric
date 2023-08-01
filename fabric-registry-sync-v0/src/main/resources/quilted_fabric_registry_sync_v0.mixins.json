@@ -11,10 +11,8 @@
     "RegistriesAccessor",
     "RegistriesMixin",
     "SaveLoadingMixin",
-    "SerializableRegistriesMixin",
     "SimpleRegistryMixin",
     "StructuresToConfiguredStructuresFixMixin",
-    "TagManagerLoaderMixin",
     "quilt.DynamicRegistryManagerSetupContextImplMixin",
     "quilt.workaround.DynamicRegistryManagerSetupContextImplMixin"
   ],

@@ -29,10 +29,7 @@ import net.minecraft.registry.RegistryLoader;
 import net.fabricmc.fabric.impl.registry.sync.DynamicRegistriesImpl;
 
 /**
- *
- * @deprecated Use Quilt Registry API's {@link org.quiltmc.qsl.registry.api.dynamic.DynamicMetaRegistry} instead.
- *
- * <p>Contains methods for registering and accessing dynamic {@linkplain Registry registries}.
+ * Contains methods for registering and accessing dynamic {@linkplain Registry registries}.
  *
  * <h2>Basic usage</h2>
  * Custom dynamic registries can be registered with {@link #register(RegistryKey, Codec)}. These registries will not be
@@ -73,8 +70,10 @@ import net.fabricmc.fabric.impl.registry.sync.DynamicRegistriesImpl;
  * // @link substring=registerSynced target="#registerSynced(RegistryKey, Codec, Codec, SyncOption...)":
  * DynamicRegistries.registerSynced(MY_DATA_KEY, MyData.CODEC, MyData.NETWORK_CODEC);
  * }
+ *
+ * @deprecated Use Quilt Registry API's {@link org.quiltmc.qsl.registry.api.dynamic.DynamicMetaRegistry} instead.
  */
-@Deprecated()
+@Deprecated
 public final class DynamicRegistries {
 	private DynamicRegistries() {
 	}

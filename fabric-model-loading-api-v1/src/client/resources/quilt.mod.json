@@ -24,6 +24,12 @@
 			"quilt_loader",
 			"quilted_fabric_api_base"
 		],
+		"breaks": [
+			{
+				"id": "fabric-models-v0",
+				"versions": "<0.4.0"
+			}
+		],
 		"provides": [
 			{
 				"id": "fabric-model-loading-api-v1",

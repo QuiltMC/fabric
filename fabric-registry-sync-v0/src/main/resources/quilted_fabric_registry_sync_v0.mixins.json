@@ -10,7 +10,6 @@
     "LevelStorageSessionMixin",
     "RegistriesAccessor",
     "RegistriesMixin",
-    "SaveLoadingMixin",
     "SimpleRegistryMixin",
     "StructuresToConfiguredStructuresFixMixin",
     "quilt.DynamicRegistryManagerSetupContextImplMixin",

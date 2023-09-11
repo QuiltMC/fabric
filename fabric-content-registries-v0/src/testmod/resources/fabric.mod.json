@@ -12,7 +12,7 @@
     "main": [
       "net.fabricmc.fabric.test.content.registry.ContentRegistryTest"
     ],
-    "quilt:game_test": [
+    "fabric-gametest": [
       "net.fabricmc.fabric.test.content.registry.FlammableTest"
     ]
   },

@@ -19,9 +19,6 @@ package net.fabricmc.fabric.test.item.gametest;
 
 import java.util.Objects;
 
-import org.quiltmc.qsl.testing.api.game.QuiltGameTest;
-import org.quiltmc.qsl.testing.api.game.QuiltTestContext;
-
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BrewingStandBlockEntity;
 import net.minecraft.item.ItemStack;
@@ -29,16 +26,18 @@ import net.minecraft.item.Items;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.potion.Potions;
 import net.minecraft.test.GameTest;
+import net.minecraft.test.TestContext;
 import net.minecraft.util.math.BlockPos;
 
+import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.fabricmc.fabric.test.item.CustomDamageTest;
 
-public class BrewingStandGameTest implements QuiltGameTest {
+public class BrewingStandGameTest implements FabricGameTest {
 	private static final int BREWING_TIME = 800;
 	private static final BlockPos POS = new BlockPos(0, 1, 0);
 
 	@GameTest(templateName = EMPTY_STRUCTURE)
-	public void basicBrewing(QuiltTestContext context) {
+	public void basicBrewing(TestContext context) {
 		context.setBlockState(POS, Blocks.BREWING_STAND);
 		BrewingStandBlockEntity blockEntity = (BrewingStandBlockEntity) Objects.requireNonNull(context.getBlockEntity(POS));
 
@@ -59,7 +58,7 @@ public class BrewingStandGameTest implements QuiltGameTest {
 	}
 
 	@GameTest(templateName = EMPTY_STRUCTURE)
-	public void vanillaRemainderTest(QuiltTestContext context) {
+	public void vanillaRemainderTest(TestContext context) {
 		context.setBlockState(POS, Blocks.BREWING_STAND);
 		BrewingStandBlockEntity blockEntity = (BrewingStandBlockEntity) Objects.requireNonNull(context.getBlockEntity(POS));
 
@@ -81,7 +80,7 @@ public class BrewingStandGameTest implements QuiltGameTest {
 
 	//@GameTest(templateName = EMPTY_STRUCTURE)
 	// Skip see: https://github.com/FabricMC/fabric/pull/2874
-	public void fabricRemainderTest(QuiltTestContext context) {
+	public void fabricRemainderTest(TestContext context) {
 		context.setBlockState(POS, Blocks.BREWING_STAND);
 		BrewingStandBlockEntity blockEntity = (BrewingStandBlockEntity) Objects.requireNonNull(context.getBlockEntity(POS));
 
@@ -139,12 +138,12 @@ public class BrewingStandGameTest implements QuiltGameTest {
 		}
 	}
 
-	private void loadFuel(BrewingStandBlockEntity blockEntity, QuiltTestContext context) {
+	private void loadFuel(BrewingStandBlockEntity blockEntity, TestContext context) {
 		blockEntity.setStack(4, new ItemStack(Items.BLAZE_POWDER));
 		BrewingStandBlockEntity.tick(context.getWorld(), POS, context.getBlockState(POS), blockEntity);
 	}
 
-	private void brew(BrewingStandBlockEntity blockEntity, QuiltTestContext context) {
+	private void brew(BrewingStandBlockEntity blockEntity, TestContext context) {
 		for (int i = 0; i < BREWING_TIME; i++) {
 			BrewingStandBlockEntity.tick(context.getWorld(), POS, context.getBlockState(POS), blockEntity);
 		}

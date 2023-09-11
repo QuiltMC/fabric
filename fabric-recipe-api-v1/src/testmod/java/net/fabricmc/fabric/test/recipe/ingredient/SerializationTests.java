@@ -19,19 +19,20 @@ package net.fabricmc.fabric.test.recipe.ingredient;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import org.quiltmc.qsl.testing.api.game.QuiltGameTest;
-import org.quiltmc.qsl.testing.api.game.QuiltTestContext;
 
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.test.GameTest;
 import net.minecraft.test.GameTestException;
+import net.minecraft.test.TestContext;
+
+import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 
 public class SerializationTests {
 	/**
 	 * Check that trying to use a custom ingredient inside an array ingredient fails.
 	 */
-	@GameTest(templateName = QuiltGameTest.EMPTY_STRUCTURE)
-	public void testArrayDeserialization(QuiltTestContext context) {
+	@GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+	public void testArrayDeserialization(TestContext context) {
 		String ingredientJson = """
 [
 	{

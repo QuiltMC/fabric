@@ -15,7 +15,7 @@
     "server": [
       "net.fabricmc.fabric.test.base.FabricApiAutoTestServer"
     ],
-    "quilt:game_test" : [
+    "fabric-gametest" : [
       "net.fabricmc.fabric.test.base.FabricApiBaseGameTest"
     ]
   },

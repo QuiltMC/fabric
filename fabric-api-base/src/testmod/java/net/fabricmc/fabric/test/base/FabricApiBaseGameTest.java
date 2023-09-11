@@ -17,15 +17,16 @@
 
 package net.fabricmc.fabric.test.base;
 
-import org.quiltmc.qsl.testing.api.game.QuiltGameTest;
-import org.quiltmc.qsl.testing.api.game.QuiltTestContext;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 
 import net.minecraft.test.GameTest;
+import net.minecraft.test.TestContext;
+
+import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 
 public class FabricApiBaseGameTest {
-	@GameTest(templateName = QuiltGameTest.EMPTY_STRUCTURE)
-	public void auditMixins(QuiltTestContext context) {
+	@GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+	public void auditMixins(TestContext context) {
 		MixinEnvironment.getCurrentEnvironment().audit();
 
 		context.complete();

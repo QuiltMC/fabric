@@ -18,8 +18,6 @@
 package net.fabricmc.fabric.test.transfer.gametests;
 
 import org.apache.commons.lang3.mutable.MutableInt;
-import org.quiltmc.qsl.testing.api.game.QuiltGameTest;
-import org.quiltmc.qsl.testing.api.game.QuiltTestContext;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -37,10 +35,12 @@ import net.minecraft.item.Items;
 import net.minecraft.state.property.Properties;
 import net.minecraft.test.GameTest;
 import net.minecraft.test.GameTestException;
+import net.minecraft.test.TestContext;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
+import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
@@ -54,8 +54,8 @@ public class VanillaStorageTests {
 	 * Regression test for https://github.com/FabricMC/fabric/issues/1972.
 	 * Ensures that furnace cook time is only reset when extraction is actually committed.
 	 */
-	@GameTest(templateName = QuiltGameTest.EMPTY_STRUCTURE)
-	public void testFurnaceCookTime(QuiltTestContext context) {
+	@GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+	public void testFurnaceCookTime(TestContext context) {
 		BlockPos pos = new BlockPos(0, 1, 0);
 		context.setBlockState(pos, Blocks.FURNACE.getDefaultState());
 		FurnaceBlockEntity furnace = (FurnaceBlockEntity) context.getBlockEntity(pos);
@@ -103,7 +103,7 @@ public class VanillaStorageTests {
 	 * @param block A block with an Inventory block entity.
 	 * @param variant The variant to try to insert (needs to be supported by the Inventory).
 	 */
-	private static void testComparatorOnInventory(QuiltTestContext context, Block block, ItemVariant variant) {
+	private static void testComparatorOnInventory(TestContext context, Block block, ItemVariant variant) {
 		World world = context.getWorld();
 
 		BlockPos pos = new BlockPos(0, 2, 0);
@@ -139,24 +139,24 @@ public class VanillaStorageTests {
 	/**
 	 * Tests that containers such as chests don't update adjacent comparators until the very end of a committed transaction.
 	 */
-	@GameTest(templateName = QuiltGameTest.EMPTY_STRUCTURE)
-	public void testChestComparator(QuiltTestContext context) {
+	@GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+	public void testChestComparator(TestContext context) {
 		testComparatorOnInventory(context, Blocks.CHEST, ItemVariant.of(Items.DIAMOND));
 	}
 
 	/**
 	 * Same as {@link #testChestComparator} but for chiseled bookshelves, because their implementation is very... strange.
 	 */
-	@GameTest(templateName = QuiltGameTest.EMPTY_STRUCTURE)
-	public void testChiseledBookshelfComparator(QuiltTestContext context) {
+	@GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+	public void testChiseledBookshelfComparator(TestContext context) {
 		testComparatorOnInventory(context, Blocks.CHISELED_BOOKSHELF, ItemVariant.of(Items.BOOK));
 	}
 
 	/**
 	 * Test for chiseled bookshelves, because their implementation is very... strange.
 	 */
-	@GameTest(templateName = QuiltGameTest.EMPTY_STRUCTURE)
-	public void testChiseledBookshelf(QuiltTestContext context) {
+	@GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+	public void testChiseledBookshelf(TestContext context) {
 		ItemVariant book = ItemVariant.of(Items.BOOK);
 
 		BlockPos pos = new BlockPos(0, 1, 0);
@@ -218,8 +218,8 @@ public class VanillaStorageTests {
 	/**
 	 * Tests that shulker boxes cannot be inserted into other shulker boxes.
 	 */
-	@GameTest(templateName = QuiltGameTest.EMPTY_STRUCTURE)
-	public void testShulkerNoInsert(QuiltTestContext context) {
+	@GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+	public void testShulkerNoInsert(TestContext context) {
 		BlockPos pos = new BlockPos(0, 2, 0);
 		context.setBlockState(pos, Blocks.SHULKER_BOX);
 		ShulkerBoxBlockEntity shulker = (ShulkerBoxBlockEntity) context.getBlockEntity(pos);
@@ -237,8 +237,8 @@ public class VanillaStorageTests {
 	 * However, to limit some stackable inputs to a size of 1, brewing stands and furnaces don't follow this rule in all cases.
 	 * This test ensures that the Transfer API works around this issue for furnaces.
 	 */
-	@GameTest(templateName = QuiltGameTest.EMPTY_STRUCTURE)
-	public void testBadFurnaceIsValid(QuiltTestContext context) {
+	@GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+	public void testBadFurnaceIsValid(TestContext context) {
 		BlockPos pos = new BlockPos(0, 1, 0);
 		context.setBlockState(pos, Blocks.FURNACE.getDefaultState());
 		FurnaceBlockEntity furnace = (FurnaceBlockEntity) context.getBlockEntity(pos);
@@ -254,10 +254,10 @@ public class VanillaStorageTests {
 	}
 
 	/**
-	 * Same as {@link #testBadFurnaceIsValid(QuiltTestContext)}, but for brewing stands.
+	 * Same as {@link #testBadFurnaceIsValid(TestContext)}, but for brewing stands.
 	 */
-	@GameTest(templateName = QuiltGameTest.EMPTY_STRUCTURE)
-	public void testBadBrewingStandIsValid(QuiltTestContext context) {
+	@GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+	public void testBadBrewingStandIsValid(TestContext context) {
 		BlockPos pos = new BlockPos(0, 1, 0);
 		context.setBlockState(pos, Blocks.BREWING_STAND.getDefaultState());
 		BrewingStandBlockEntity brewingStand = (BrewingStandBlockEntity) context.getBlockEntity(pos);
@@ -282,7 +282,7 @@ public class VanillaStorageTests {
 	 * Regression test for <a href="https://github.com/FabricMC/fabric/issues/2810">double chest wrapper only updating modified halves</a>.
 	 */
 	@GameTest(templateName = "fabric-transfer-api-v1-testmod:double_chest_comparators")
-	public void testDoubleChestComparator(QuiltTestContext context) {
+	public void testDoubleChestComparator(TestContext context) {
 		BlockPos chestPos = new BlockPos(2, 2, 2);
 		Storage<ItemVariant> storage = ItemStorage.SIDED.find(context.getWorld(), context.getAbsolutePos(chestPos), Direction.UP);
 		context.assertTrue(storage != null, "Storage must not be null");
@@ -333,8 +333,8 @@ public class VanillaStorageTests {
 	/**
 	 * Regression test for <a href="https://github.com/FabricMC/fabric/issues/3017">composters not always incrementing their level on the first insert</a>.
 	 */
-	@GameTest(templateName = QuiltGameTest.EMPTY_STRUCTURE)
-	public void testComposterFirstInsert(QuiltTestContext context) {
+	@GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+	public void testComposterFirstInsert(TestContext context) {
 		BlockPos pos = new BlockPos(0, 1, 0);
 
 		ItemVariant carrot = ItemVariant.of(Items.CARROT);

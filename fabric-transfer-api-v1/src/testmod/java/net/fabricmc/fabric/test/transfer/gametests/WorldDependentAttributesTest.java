@@ -19,20 +19,19 @@ package net.fabricmc.fabric.test.transfer.gametests;
 
 import static net.fabricmc.fabric.test.transfer.unittests.TestUtil.assertEquals;
 
-import org.quiltmc.qsl.testing.api.game.QuiltGameTest;
-import org.quiltmc.qsl.testing.api.game.QuiltTestContext;
-
 import net.minecraft.fluid.Fluids;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.test.GameTest;
+import net.minecraft.test.TestContext;
 
+import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariantAttributes;
 
 public class WorldDependentAttributesTest {
-	@GameTest(templateName = QuiltGameTest.EMPTY_STRUCTURE)
-	public void testViscosity(QuiltTestContext context) {
+	@GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+	public void testViscosity(TestContext context) {
 		ServerWorld overworld = context.getWorld();
 		ServerWorld nether = overworld.getServer().getWorld(ServerWorld.NETHER);
 		FluidVariant lava = FluidVariant.of(Fluids.LAVA);

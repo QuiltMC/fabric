@@ -30,6 +30,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockRenderView;
 
 import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
+import net.fabricmc.fabric.impl.renderer.VanillaModelEncoder;
 
 /**
  * Interface for baked models that output meshes with enhanced rendering features.
@@ -93,9 +94,8 @@ public interface FabricBakedModel {
 	 * Will not be thread-safe. Do not cache or retain a reference.
 	 * @param context Accepts model output.
 	 */
-	@SuppressWarnings("deprecation")
 	default void emitBlockQuads(BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<Random> randomSupplier, RenderContext context) {
-		context.bakedModelConsumer().accept((BakedModel) this, state);
+		VanillaModelEncoder.emitBlockQuads((BakedModel) this, state, randomSupplier, context, context.getEmitter());
 	}
 
 	/**
@@ -125,9 +125,7 @@ public interface FabricBakedModel {
 	 * logic here, instead of returning every possible shape from {@link BakedModel#getOverrides}
 	 * as vanilla baked models.
 	 */
-	@SuppressWarnings("deprecation")
 	default void emitItemQuads(ItemStack stack, Supplier<Random> randomSupplier, RenderContext context) {
-		// Pass null state to enforce item quads in block render contexts
-		context.bakedModelConsumer().accept((BakedModel) this, null);
+		VanillaModelEncoder.emitItemQuads((BakedModel) this, null, randomSupplier, context);
 	}
 }

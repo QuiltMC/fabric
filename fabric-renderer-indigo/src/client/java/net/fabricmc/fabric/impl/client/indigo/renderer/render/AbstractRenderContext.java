@@ -62,7 +62,8 @@ abstract class AbstractRenderContext implements RenderContext {
 		return activeTransform.transform(q);
 	}
 
-	protected boolean hasTransform() {
+	@Override
+	public boolean hasTransform() {
 		return activeTransform != NO_TRANSFORM;
 	}
 

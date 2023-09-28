@@ -48,5 +48,10 @@
 			"library"
 		],
 		"parent": "quilted_fabric_api"
+	},
+	"quilt_loom": {
+		"injected_interfaces": {
+			"net/minecraft/class_1087": ["net/fabricmc/fabric/api/renderer/v1/model/FabricBakedModel"]
+		}
 	}
 }

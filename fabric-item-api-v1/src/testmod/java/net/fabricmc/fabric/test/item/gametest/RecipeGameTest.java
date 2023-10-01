@@ -17,6 +17,9 @@
 
 package net.fabricmc.fabric.test.item.gametest;
 
+import org.quiltmc.qsl.testing.api.game.QuiltGameTest;
+import org.quiltmc.qsl.testing.api.game.QuiltTestContext;
+
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -25,18 +28,16 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.test.GameTest;
-import net.minecraft.test.TestContext;
 import net.minecraft.test.GameTestException;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
-import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.fabricmc.fabric.test.item.CustomDamageTest;
 
-public class RecipeGameTest implements FabricGameTest {
+public class RecipeGameTest implements QuiltGameTest {
 	@GameTest(templateName = EMPTY_STRUCTURE)
-	public void vanillaRemainderTest(TestContext context) {
+	public void vanillaRemainderTest(QuiltTestContext context) {
 		Recipe<SimpleInventory> testRecipe = createTestingRecipeInstance();
 
 		SimpleInventory inventory = new SimpleInventory(
@@ -53,7 +54,7 @@ public class RecipeGameTest implements FabricGameTest {
 	}
 
 	@GameTest(templateName = EMPTY_STRUCTURE)
-	public void fabricRemainderTest(TestContext context) {
+	public void fabricRemainderTest(QuiltTestContext context) {
 		Recipe<SimpleInventory> testRecipe = createTestingRecipeInstance();
 
 		SimpleInventory inventory = new SimpleInventory(

@@ -9,7 +9,8 @@ loom {
 moduleDependencies(project, ['fabric-api-base'])
 
 testDependencies(project, [
-	':fabric-command-api-v2'
+	'fabric-command-api-v2',
+	'fabric-rendering-v1'
 ])
 
 validateMixinNames {

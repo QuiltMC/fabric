@@ -15,7 +15,7 @@
       "net.fabricmc.fabric.test.event.interaction.PlayerPickBlockTests",
       "net.fabricmc.fabric.test.event.interaction.UseEntityTests"
     ],
-    "quilt:game_test": [
+    "fabric-gametest": [
       "net.fabricmc.fabric.test.event.interaction.FakePlayerTests"
     ],
     "client": [

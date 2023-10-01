@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-
 package net.fabricmc.fabric.mixin.event.interaction;
 
 import java.util.List;

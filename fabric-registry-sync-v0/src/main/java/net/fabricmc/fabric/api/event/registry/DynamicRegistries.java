@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016, 2017, 2018, 2019 FabricMC
+ * Copyright 2016, 2017, 2018, 2019 FabricMC
+ * Copyright 2023 The Quilt Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,7 +70,10 @@ import net.fabricmc.fabric.impl.registry.sync.DynamicRegistriesImpl;
  * // @link substring=registerSynced target="#registerSynced(RegistryKey, Codec, Codec, SyncOption...)":
  * DynamicRegistries.registerSynced(MY_DATA_KEY, MyData.CODEC, MyData.NETWORK_CODEC);
  * }
+ *
+ * @deprecated Use Quilt Registry API's {@link org.quiltmc.qsl.registry.api.dynamic.DynamicMetaRegistry} instead.
  */
+@Deprecated
 public final class DynamicRegistries {
 	private DynamicRegistries() {
 	}
@@ -136,8 +140,7 @@ public final class DynamicRegistries {
 	 * @param <T>          the entry type of the registry
 	 */
 	public static <T> void registerSynced(RegistryKey<? extends Registry<T>> key, Codec<T> dataCodec, Codec<T> networkCodec, SyncOption... options) {
-		DynamicRegistriesImpl.register(key, dataCodec);
-		DynamicRegistriesImpl.addSyncedRegistry(key, networkCodec, options);
+		DynamicRegistriesImpl.registerSynced(key, dataCodec, networkCodec, options);
 	}
 
 	/**

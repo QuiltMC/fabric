@@ -3,8 +3,6 @@
   "package": "net.fabricmc.fabric.mixin.registry.sync",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "quilt.DynamicRegistryManagerSetupContextImplMixin",
-    "quilt.workaround.DynamicRegistryManagerSetupContextImplMixin",
     "BootstrapMixin",
     "ChunkSerializerMixin",
     "DebugChunkGeneratorAccessor",
@@ -13,7 +11,9 @@
     "RegistriesAccessor",
     "RegistriesMixin",
     "SimpleRegistryMixin",
-    "StructuresToConfiguredStructuresFixMixin"
+    "StructuresToConfiguredStructuresFixMixin",
+    "quilt.DynamicRegistryManagerSetupContextImplMixin",
+    "quilt.workaround.DynamicRegistryManagerSetupContextImplMixin"
   ],
   "injectors": {
     "defaultRequire": 1

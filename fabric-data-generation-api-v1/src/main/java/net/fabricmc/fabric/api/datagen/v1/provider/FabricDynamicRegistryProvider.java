@@ -32,6 +32,7 @@ import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.Encoder;
 import com.mojang.serialization.JsonOps;
 import org.jetbrains.annotations.ApiStatus;
+import org.quiltmc.qsl.registry.impl.dynamic.DynamicMetaRegistryImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -221,7 +222,10 @@ public abstract class FabricDynamicRegistryProvider implements DataProvider {
 
 	private <T> CompletableFuture<?> writeRegistryEntries(DataWriter writer, RegistryOps<JsonElement> ops, RegistryEntries<T> entries) {
 		final RegistryKey<? extends Registry<T>> registry = entries.registry;
-		final DataOutput.PathResolver pathResolver = output.getResolver(DataOutput.OutputType.DATA_PACK, registry.getValue().getPath());
+		final boolean shouldOmitNamespace = registry.getValue().getNamespace().equals(Identifier.DEFAULT_NAMESPACE)
+				|| !DynamicMetaRegistryImpl.isModdedRegistryId(registry.getValue());
+		final String directoryName = shouldOmitNamespace ? registry.getValue().getPath() : registry.getValue().getNamespace() + "/" + registry.getValue().getPath();
+		final DataOutput.PathResolver pathResolver = output.getResolver(DataOutput.OutputType.DATA_PACK, directoryName);
 		final List<CompletableFuture<?>> futures = new ArrayList<>();
 
 		for (Map.Entry<RegistryKey<T>, T> entry : entries.entries.entrySet()) {

@@ -642,9 +642,6 @@ publishing {
 						return
 					}
 
-					// Do not depend on Quilted Fabric GameTest API v1
-					if (it.name == 'fabric-gametest-api-v1') return
-
 					def depNode = depsNode.appendNode("dependency")
 					depNode.appendNode("groupId", it.group)
 					depNode.appendNode("artifactId", it.name)

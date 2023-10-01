@@ -17,12 +17,13 @@
 
 package net.fabricmc.fabric.test.resource.conditions;
 
-import org.quiltmc.qsl.testing.api.game.QuiltGameTest;
-import org.quiltmc.qsl.testing.api.game.QuiltTestContext;
-
+import net.minecraft.test.TestContext;
 import net.minecraft.recipe.RecipeManager;
 import net.minecraft.test.GameTest;
 import net.minecraft.util.Identifier;
+
+import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
+
 
 public class ConditionalResourcesTest {
 	private static final String MOD_ID = "fabric-resource-conditions-api-v1-testmod";
@@ -31,8 +32,8 @@ public class ConditionalResourcesTest {
 		return new Identifier(MOD_ID, path);
 	}
 
-	@GameTest(templateName = QuiltGameTest.EMPTY_STRUCTURE)
-	public void conditionalRecipes(QuiltTestContext context) {
+	@GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+	public void conditionalRecipes(TestContext context) {
 		RecipeManager manager = context.getWorld().getRecipeManager();
 
 		if (manager.get(id("not_loaded")).isPresent()) {

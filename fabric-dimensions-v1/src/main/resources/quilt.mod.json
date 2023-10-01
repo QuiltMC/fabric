@@ -39,6 +39,7 @@
 			}
 		]
 	},
+	"mixin": "quilted_fabric_dimensions_v1.mixins.json",
 	"fabric-api:module-lifecycle": "deprecated",
 	"modmenu": {
 		"badges": [

@@ -8,6 +8,9 @@ loom {
 
 moduleDependencies(project, ['fabric-api-base'])
 
+testDependencies(project, [
+	':fabric-command-api-v2'
+])
 
 validateMixinNames {
 	// Loom needs to handle inner mixins better

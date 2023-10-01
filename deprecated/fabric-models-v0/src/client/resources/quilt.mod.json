@@ -34,7 +34,6 @@
 	"minecraft": {
 		"environment": "client"
 	},
-	"mixin": "quilted_fabric_models_v0.mixins.json",
 	"fabric-api:module-lifecycle": "deprecated",
 	"modmenu": {
 		"badges": [

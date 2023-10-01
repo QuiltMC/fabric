@@ -24,7 +24,6 @@ import net.minecraft.util.Identifier;
 
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 
-
 public class ConditionalResourcesTest {
 	private static final String MOD_ID = "fabric-resource-conditions-api-v1-testmod";
 

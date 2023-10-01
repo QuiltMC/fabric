@@ -68,8 +68,8 @@ public class FakePlayerTests {
 	/**
 	 * Try breaking a beehive with a fake player (see {@code BeehiveBlockMixin}).
 	 */
-	@GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
-	public void testFakePlayerBreakBeehive(TestContext context) {
+	@GameTest(templateName = QuiltGameTest.EMPTY_STRUCTURE)
+	public void testFakePlayerBreakBeehive(QuiltTestContext context) {
 		BlockPos basePos = new BlockPos(0, 1, 0);
 		context.setBlockState(basePos, Blocks.BEEHIVE);
 		context.spawnEntity(EntityType.BEE, basePos.up());

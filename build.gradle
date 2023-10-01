@@ -403,9 +403,9 @@ loom {
 			name "Game Test"
 
 			// Enable the gametest runner
-			property "fabric-api.gametest"
-			property "fabric-api.gametest.report-file=${project.buildDir}/junit.xml"
-			runDir "build/gametest"
+			property "quilt.game_test", "true"
+			property "quilt.game_test.report-file", "${project.buildDir}/report.xml"
+			runDir "build/game_test"
 		}
 		autoTestServer {
 			inherit testmodServer
@@ -551,15 +551,26 @@ subprojects {
 		return
 	}
 
+	loom {
+		// Quilt: We need this in order to add Quilt Testing API to all testmods
+		createRemapConfigurations sourceSets.testmod
+	}
+
 	dependencies {
 		testmodImplementation sourceSets.main.output
 
 		// Make all modules depend on the gametest api (and thus res loader) to try and promote its usage.
+		/*
 		if (project.name != "fabric-gametest-api-v1") {
 			testmodImplementation project(path: ':fabric-gametest-api-v1', configuration: 'namedElements')
 			testmodClientImplementation project(":fabric-gametest-api-v1").sourceSets.client.output
 			testmodImplementation project(path: ':fabric-resource-loader-v0', configuration: 'namedElements')
 			testmodClientImplementation project(":fabric-resource-loader-v0").sourceSets.client.output
+		}
+		*/
+		// Quilt: This is our way of doing things!
+		modTestmodImplementation(getQslModule('core', 'testing')) {
+			exclude group: 'org.quiltmc', module: 'quilt-loader'
 		}
 
 		// Make all testmods run with registry-sync-v0 as it is required to register new objects.
@@ -691,9 +702,7 @@ subprojects.each {
 }
 
 // These modules are not included in the fat jar, maven will resolve them via the pom.
-def devOnlyModules = [
-		"fabric-gametest-api-v1",
-]
+def devOnlyModules = []
 
 configurations {
 	qsl

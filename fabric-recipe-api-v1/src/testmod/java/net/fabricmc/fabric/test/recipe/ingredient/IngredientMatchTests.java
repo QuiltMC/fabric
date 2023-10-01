@@ -20,21 +20,22 @@ package net.fabricmc.fabric.test.recipe.ingredient;
 import java.util.List;
 import java.util.Objects;
 
+import org.quiltmc.qsl.testing.api.game.QuiltGameTest;
+import org.quiltmc.qsl.testing.api.game.QuiltTestContext;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.test.GameTest;
 import net.minecraft.test.GameTestException;
-import net.minecraft.test.TestContext;
 import net.minecraft.text.Text;
 
-import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.fabricmc.fabric.api.recipe.v1.ingredient.DefaultCustomIngredients;
 
 public class IngredientMatchTests {
-	@GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
-	public void testAllIngredient(TestContext context) {
+	@GameTest(templateName = QuiltGameTest.EMPTY_STRUCTURE)
+	public void testAllIngredient(QuiltTestContext context) {
 		Ingredient allIngredient = DefaultCustomIngredients.all(Ingredient.ofItems(Items.APPLE, Items.CARROT), Ingredient.ofItems(Items.STICK, Items.CARROT));
 
 		assertEquals(1, allIngredient.getMatchingStacks().length);
@@ -56,8 +57,8 @@ public class IngredientMatchTests {
 		context.complete();
 	}
 
-	@GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
-	public void testAnyIngredient(TestContext context) {
+	@GameTest(templateName = QuiltGameTest.EMPTY_STRUCTURE)
+	public void testAnyIngredient(QuiltTestContext context) {
 		Ingredient anyIngredient = DefaultCustomIngredients.any(Ingredient.ofItems(Items.APPLE, Items.CARROT), Ingredient.ofItems(Items.STICK, Items.CARROT));
 
 		assertEquals(4, anyIngredient.getMatchingStacks().length);
@@ -74,8 +75,8 @@ public class IngredientMatchTests {
 		context.complete();
 	}
 
-	@GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
-	public void testDifferenceIngredient(TestContext context) {
+	@GameTest(templateName = QuiltGameTest.EMPTY_STRUCTURE)
+	public void testDifferenceIngredient(QuiltTestContext context) {
 		Ingredient differenceIngredient = DefaultCustomIngredients.difference(Ingredient.ofItems(Items.APPLE, Items.CARROT), Ingredient.ofItems(Items.STICK, Items.CARROT));
 
 		assertEquals(1, differenceIngredient.getMatchingStacks().length);
@@ -89,8 +90,8 @@ public class IngredientMatchTests {
 		context.complete();
 	}
 
-	@GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
-	public void testNbtIngredient(TestContext context) {
+	@GameTest(templateName = QuiltGameTest.EMPTY_STRUCTURE)
+	public void testNbtIngredient(QuiltTestContext context) {
 		for (boolean strict : List.of(true, false)) {
 			NbtCompound undamagedNbt = new NbtCompound();
 			undamagedNbt.putInt(ItemStack.DAMAGE_KEY, 0);

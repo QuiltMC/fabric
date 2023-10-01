@@ -9,7 +9,7 @@
     "fabric-resource-conditions-api-v1": "*"
   },
   "entrypoints": {
-    "fabric-gametest": [
+    "quilt:game_test": [
       "net.fabricmc.fabric.test.resource.conditions.ConditionalResourcesTest"
     ]
   }

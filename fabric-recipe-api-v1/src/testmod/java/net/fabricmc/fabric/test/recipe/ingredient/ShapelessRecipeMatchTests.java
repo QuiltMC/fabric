@@ -17,6 +17,9 @@
 
 package net.fabricmc.fabric.test.recipe.ingredient;
 
+import org.quiltmc.qsl.testing.api.game.QuiltGameTest;
+import org.quiltmc.qsl.testing.api.game.QuiltTestContext;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
@@ -25,17 +28,14 @@ import net.minecraft.recipe.ShapelessRecipe;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.test.GameTest;
 import net.minecraft.test.GameTestException;
-import net.minecraft.test.TestContext;
 import net.minecraft.util.Identifier;
-
-import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 
 public class ShapelessRecipeMatchTests {
 	/**
 	 * The recipe requires at least one undamaged pickaxe.
 	 */
-	@GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
-	public void testShapelessMatch(TestContext context) {
+	@GameTest(templateName = QuiltGameTest.EMPTY_STRUCTURE)
+	public void testShapelessMatch(QuiltTestContext context) {
 		Identifier recipeId = new Identifier("fabric-recipe-api-v1-testmod", "test_shapeless_match");
 		ShapelessRecipe recipe = (ShapelessRecipe) context.getWorld().getRecipeManager().get(recipeId).get();
 

@@ -9,7 +9,7 @@
     "fabric-recipe-api-v1":"*"
   },
   "entrypoints": {
-    "fabric-gametest": [
+    "quilt:game_test": [
       "net.fabricmc.fabric.test.recipe.ingredient.IngredientMatchTests",
       "net.fabricmc.fabric.test.recipe.ingredient.SerializationTests",
       "net.fabricmc.fabric.test.recipe.ingredient.ShapelessRecipeMatchTests"

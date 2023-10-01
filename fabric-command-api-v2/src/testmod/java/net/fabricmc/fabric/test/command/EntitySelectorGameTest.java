@@ -19,24 +19,24 @@ package net.fabricmc.fabric.test.command;
 
 import java.util.Locale;
 
+import org.quiltmc.qsl.testing.api.game.QuiltGameTest;
+import org.quiltmc.qsl.testing.api.game.QuiltTestContext;
+
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.test.GameTest;
-import net.minecraft.test.TestContext;
 import net.minecraft.util.math.BlockPos;
 
-import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
-
 public class EntitySelectorGameTest {
-	private void spawn(TestContext context, float health) {
+	private void spawn(QuiltTestContext context, float health) {
 		MobEntity entity = context.spawnMob(EntityType.CREEPER, BlockPos.ORIGIN);
 		entity.setAiDisabled(true);
 		entity.setHealth(health);
 	}
 
-	@GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
-	public void testEntitySelector(TestContext context) {
+	@GameTest(templateName = QuiltGameTest.EMPTY_STRUCTURE)
+	public void testEntitySelector(QuiltTestContext context) {
 		BlockPos absolute = context.getAbsolutePos(BlockPos.ORIGIN);
 
 		spawn(context, 1.0f);

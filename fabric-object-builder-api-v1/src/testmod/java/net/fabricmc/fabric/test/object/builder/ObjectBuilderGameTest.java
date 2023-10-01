@@ -19,16 +19,16 @@ package net.fabricmc.fabric.test.object.builder;
 
 import java.util.List;
 
+import org.quiltmc.qsl.testing.api.game.QuiltGameTest;
+import org.quiltmc.qsl.testing.api.game.QuiltTestContext;
+
 import net.minecraft.block.Block;
 import net.minecraft.test.GameTest;
-import net.minecraft.test.TestContext;
 import net.minecraft.util.math.BlockPos;
 
-import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
-
 public class ObjectBuilderGameTest {
-	@GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
-	public void testBlockUse(TestContext context) {
+	@GameTest(templateName = QuiltGameTest.EMPTY_STRUCTURE)
+	public void testBlockUse(QuiltTestContext context) {
 		List<Block> blocks = List.of(BlockEntityTypeBuilderTest.INITIAL_BETRAYAL_BLOCK, BlockEntityTypeBuilderTest.ADDED_BETRAYAL_BLOCK, BlockEntityTypeBuilderTest.FIRST_MULTI_BETRAYAL_BLOCK, BlockEntityTypeBuilderTest.SECOND_MULTI_BETRAYAL_BLOCK);
 		BlockPos.Mutable pos = BlockPos.ORIGIN.mutableCopy();
 

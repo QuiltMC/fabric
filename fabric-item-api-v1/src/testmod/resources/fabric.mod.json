@@ -19,7 +19,7 @@
     "client": [
       "net.fabricmc.fabric.test.item.client.TooltipTests"
     ],
-    "fabric-gametest" : [
+    "quilt:game_test" : [
       "net.fabricmc.fabric.test.item.gametest.BrewingStandGameTest",
       "net.fabricmc.fabric.test.item.gametest.FurnaceGameTest",
       "net.fabricmc.fabric.test.item.gametest.RecipeGameTest"

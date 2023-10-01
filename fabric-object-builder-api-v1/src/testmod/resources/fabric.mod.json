@@ -38,7 +38,7 @@
     "client": [
       "net.fabricmc.fabric.test.object.builder.client.TealSignClientTest"
     ],
-    "fabric-gametest": [
+    "quilt:game-test": [
       "net.fabricmc.fabric.test.object.builder.ObjectBuilderGameTest"
     ]
   }

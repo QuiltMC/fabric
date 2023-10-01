@@ -16,7 +16,7 @@
     "client": [
       "net.fabricmc.fabric.test.transfer.ingame.client.FluidVariantRenderTest"
     ],
-    "fabric-gametest": [
+    "quilt:game_test": [
       "net.fabricmc.fabric.test.transfer.gametests.VanillaStorageTests",
       "net.fabricmc.fabric.test.transfer.gametests.WorldDependentAttributesTest"
     ]

@@ -1,0 +1,11 @@
+archivesBaseName = "quilted_fabric_model_loading_api_v1"
+version = getSubprojectVersion(project)
+upstream_version = getSubprojectUpstreamVersion(project)
+
+moduleDependencies(project, ['fabric-api-base'])
+
+testDependencies(project, [
+	':fabric-renderer-api-v1',
+	':fabric-rendering-v1',
+	':fabric-resource-loader-v0'
+])

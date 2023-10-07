@@ -1,6 +1,5 @@
 /*
- * Copyright 2016, 2017, 2018, 2019 FabricMC
- * Copyright 2022 The Quilt Project
+ * Copyright (c) 2016, 2017, 2018, 2019 FabricMC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,60 +16,111 @@
 
 package net.fabricmc.fabric.impl.content.registry;
 
-import org.quiltmc.qsl.block.content.registry.api.BlockContentRegistries;
-import org.quiltmc.qsl.block.content.registry.api.FlammableBlockEntry;
-import org.quiltmc.quilted_fabric_api.impl.content.registry.util.QuiltDeferringQueues;
+import java.util.HashMap;
+import java.util.IdentityHashMap;
+import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.entry.RegistryEntry;
 
+import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 
 public class FlammableBlockRegistryImpl implements FlammableBlockRegistry {
-	private FlammableBlockRegistryImpl(Block key) { }
+	private static final FlammableBlockRegistry.Entry REMOVED = new FlammableBlockRegistry.Entry(0, 0);
+	private static final Map<Block, FlammableBlockRegistryImpl> REGISTRIES = new HashMap<>();
+
+	private final Map<Block, FlammableBlockRegistry.Entry> registeredEntriesBlock = new HashMap<>();
+	private final Map<TagKey<Block>, FlammableBlockRegistry.Entry> registeredEntriesTag = new HashMap<>();
+	private volatile Map<Block, FlammableBlockRegistry.Entry> computedEntries = null;
+	private final Block key;
+
+	private FlammableBlockRegistryImpl(Block key) {
+		this.key = key;
+
+		// Reset computed values after tags change since they depends on tags.
+		CommonLifecycleEvents.TAGS_LOADED.register((registries, client) -> {
+			computedEntries = null;
+		});
+	}
+
+	private Map<Block, FlammableBlockRegistry.Entry> getEntryMap() {
+		Map<Block, FlammableBlockRegistry.Entry> ret = computedEntries;
+
+		if (ret == null) {
+			ret = new IdentityHashMap<>();
+
+			// tags take precedence over blocks
+			for (TagKey<Block> tag : registeredEntriesTag.keySet()) {
+				FlammableBlockRegistry.Entry entry = registeredEntriesTag.get(tag);
+
+				for (RegistryEntry<Block> block : Registries.BLOCK.iterateEntries(tag)) {
+					ret.put(block.value(), entry);
+				}
+			}
+
+			ret.putAll(registeredEntriesBlock);
+
+			computedEntries = ret;
+		}
+
+		return ret;
+	}
 
 	// User-facing fire registry interface - queries vanilla fire block
 	@Override
 	public Entry get(Block block) {
-		return Entry.fromQuilt(BlockContentRegistries.FLAMMABLE.get(block).orElse(new FlammableBlockEntry(0, 0)));
+		Entry entry = getEntryMap().get(block);
+
+		if (entry != null) {
+			return entry;
+		} else {
+			return ((FireBlockHooks) key).fabric_getVanillaEntry(block.getDefaultState());
+		}
 	}
 
-	// This is an implementation detail
-	/*
 	public Entry getFabric(Block block) {
 		return getEntryMap().get(block);
 	}
 
-	*/
-
 	@Override
 	public void add(Block block, Entry value) {
-		QuiltDeferringQueues.addEntry(BlockContentRegistries.FLAMMABLE, block, value.toQuilt());
+		registeredEntriesBlock.put(block, value);
+
+		computedEntries = null;
 	}
 
 	@Override
 	public void add(TagKey<Block> tag, Entry value) {
-		BlockContentRegistries.FLAMMABLE.put(tag, value.toQuilt());
+		registeredEntriesTag.put(tag, value);
+
+		computedEntries = null;
 	}
 
 	@Override
 	public void remove(Block block) {
-		BlockContentRegistries.FLAMMABLE.put(block, new FlammableBlockEntry(0, 0));
+		add(block, REMOVED);
 	}
 
 	@Override
 	public void remove(TagKey<Block> tag) {
-		BlockContentRegistries.FLAMMABLE.put(tag, new FlammableBlockEntry(0, 0));
+		add(tag, REMOVED);
 	}
 
 	@Override
 	public void clear(Block block) {
-		BlockContentRegistries.FLAMMABLE.remove(block);
+		registeredEntriesBlock.remove(block);
+
+		computedEntries = null;
 	}
 
 	@Override
 	public void clear(TagKey<Block> tag) {
-		BlockContentRegistries.FLAMMABLE.remove(tag);
+		registeredEntriesTag.remove(tag);
+
+		computedEntries = null;
 	}
 
 	public static FlammableBlockRegistryImpl getInstance(Block block) {
@@ -78,6 +128,6 @@ public class FlammableBlockRegistryImpl implements FlammableBlockRegistry {
 			throw new RuntimeException("Not a hookable fire block: " + block);
 		}
 
-		return new FlammableBlockRegistryImpl(block);
+		return REGISTRIES.computeIfAbsent(block, FlammableBlockRegistryImpl::new);
 	}
 }

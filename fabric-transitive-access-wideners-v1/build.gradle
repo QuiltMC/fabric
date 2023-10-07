@@ -10,8 +10,7 @@ dependencies {
 	modApi(getQslModule('block', 'block_entity'))
 	modApi(getQslModule('block', 'block_extensions'))
 	modApi(getQslModule('data', 'advancement'))
-	modApi(getQslModule('entity', 'entity'))
-	modApi(getQslModule('entity', 'villager'))
+	modApi(getQslModule('entity', 'entity_extensions'))
 }
 
 testDependencies(project, [

@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 
+<<<<<<<< HEAD:fabric-registry-sync-v0/src/testmod/java/net/fabricmc/fabric/test/registry/sync/mixin/StatusEffectAccessor.java
 package net.fabricmc.fabric.test.registry.sync.mixin;
+========
+package net.fabricmc.fabric.mixin.blockview;
+>>>>>>>> Fabric/1.20.2:fabric-block-view-api-v2/src/main/java/net/fabricmc/fabric/mixin/blockview/BlockViewMixin.java
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Invoker;
 
+<<<<<<<< HEAD:fabric-registry-sync-v0/src/testmod/java/net/fabricmc/fabric/test/registry/sync/mixin/StatusEffectAccessor.java
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 
@@ -28,4 +32,12 @@ public interface StatusEffectAccessor {
 	static StatusEffect createNewStatusEffect(StatusEffectCategory category, int color) {
 		throw new IllegalStateException("Mixin injection failed.");
 	}
+========
+import net.minecraft.world.BlockView;
+
+import net.fabricmc.fabric.api.blockview.v2.FabricBlockView;
+
+@Mixin(BlockView.class)
+public interface BlockViewMixin extends FabricBlockView {
+>>>>>>>> Fabric/1.20.2:fabric-block-view-api-v2/src/main/java/net/fabricmc/fabric/mixin/blockview/BlockViewMixin.java
 }

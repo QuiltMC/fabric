@@ -9,11 +9,11 @@ plugins {
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
-	id "org.quiltmc.loom" version "1.2.+" apply false
+	id "org.quiltmc.loom" version "1.4.+" apply false
 	id "org.quiltmc.gradle.licenser" version "2.0.+"
-	id "net.kyori.indra.git" version "3.1.1"
+	id "net.kyori.indra.git" version "3.1.3"
 	id "com.matthewprenger.cursegradle" version "1.4.0"
-	id "com.modrinth.minotaur" version "2.8.0"
+	id "com.modrinth.minotaur" version "2.8.4"
 	id "me.modmuss50.remotesign" version "0.4.0" apply false
 	id "io.github.p03w.machete" version "2.0.1"
 }
@@ -200,6 +200,10 @@ allprojects {
 		}
 	}
 
+	loom.runs.configureEach {
+		vmArg("-enableassertions")
+	}
+
 	allprojects.each { p ->
 		if (project.name == "deprecated") {
 			return
@@ -228,6 +232,7 @@ allprojects {
 
 		testImplementation "org.quiltmc:quilt-loader-junit:$project.loader_version"
 		testImplementation sourceSets.testmodClient.output
+		testImplementation 'org.mockito:mockito-core:5.4.0'
 	}
 
 	test {
@@ -265,7 +270,7 @@ allprojects {
 
 	checkstyle {
 		configFile = rootProject.file("codeformat/checkstyle.xml")
-		toolVersion = "10.11.0"
+		toolVersion = "10.12.1"
 	}
 
 	tasks.withType(AbstractArchiveTask).configureEach {
@@ -409,7 +414,7 @@ loom {
 		}
 		autoTestServer {
 			inherit testmodServer
-			name "Auto Test Server"
+			name  "Auto Test Server"
 			vmArg "-Dfabric.autoTest"
 		}
 		autoTestClient {
@@ -465,7 +470,8 @@ tasks.register('runProductionAutoTestClient', JavaExec) {
 
 		jvmArgs(
 				"-Dfabric.addMods=${remapJar.archiveFile.get().asFile.absolutePath}${File.pathSeparator}${remapTestmodJar.archiveFile.get().asFile.absolutePath}",
-				"-Dfabric.autoTest"
+				"-Dfabric.autoTest",
+				"-enableassertions"
 				)
 	}
 }
@@ -496,7 +502,8 @@ tasks.register('runProductionAutoTestServer', JavaExec) {
 
 		jvmArgs(
 				"-Dfabric.addMods=${remapJar.archiveFile.get().asFile.absolutePath}${File.pathSeparator}${remapTestmodJar.archiveFile.get().asFile.absolutePath}",
-				"-Dfabric.autoTest"
+				"-Dfabric.autoTest",
+				"-enableassertions"
 				)
 
 		args("nogui")
@@ -549,6 +556,10 @@ def addPomMetadataInformation(Project project, MavenPom pom) {
 subprojects {
 	if (it.name == 'deprecated') {
 		return
+	}
+
+	base {
+		archivesName = project.name
 	}
 
 	dependencies {
@@ -850,3 +861,13 @@ github.mustRunAfter checkVersion
 project.tasks.modrinth.mustRunAfter checkVersion
 publish.dependsOn checkVersion
 project.tasks.curseforge.mustRunAfter checkVersion
+
+// Temporary for snapshots
+allprojects {
+	repositories {
+		maven {
+			name = "Quilt"
+			url = "https://maven.quiltmc.org/repository/snapshot"
+		}
+	}
+}

@@ -1,6 +1,5 @@
 /*
- * Copyright 2016, 2017, 2018, 2019 FabricMC
- * Copyright 2022 The Quilt Project
+ * Copyright (c) 2016, 2017, 2018, 2019 FabricMC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,9 +45,8 @@ public final class NetworkingPlayPacketTest implements ModInitializer {
 	public static final Identifier TEST_CHANNEL = NetworkingTestmods.id("test_channel");
 
 	public static void sendToTestChannel(ServerPlayerEntity player, String stuff) {
-		ServerPlayNetworking.getSender(player).sendPacket(new OverlayPacket(Text.literal(stuff)), future -> {
-			NetworkingTestmods.LOGGER.info("Sent custom payload packet in {}", TEST_CHANNEL);
-		});
+		ServerPlayNetworking.send(player, new OverlayPacket(Text.literal(stuff)));
+		NetworkingTestmods.LOGGER.info("Sent custom payload packet in {}", TEST_CHANNEL);
 	}
 
 	public static void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher) {

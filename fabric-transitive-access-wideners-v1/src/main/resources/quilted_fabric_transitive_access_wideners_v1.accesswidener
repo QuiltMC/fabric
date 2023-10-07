@@ -8,6 +8,9 @@ transitive-accessible method net/minecraft/client/item/ModelPredicateProviderReg
 transitive-accessible method net/minecraft/client/item/ModelPredicateProviderRegistry register (Lnet/minecraft/util/Identifier;Lnet/minecraft/client/item/ClampedModelPredicateProvider;)Lnet/minecraft/client/item/ClampedModelPredicateProvider;
 transitive-accessible method net/minecraft/client/item/ModelPredicateProviderRegistry registerCustomModelData (Lnet/minecraft/client/item/ModelPredicateProvider;)V
 
+# Registering custom advancement criteria
+transitive-accessible method net/minecraft/advancement/criterion/Criteria register (Ljava/lang/String;Lnet/minecraft/advancement/criterion/Criterion;)Lnet/minecraft/advancement/criterion/Criterion;
+
 # Creating custom screen handler types
 transitive-accessible class net/minecraft/screen/ScreenHandlerType$Factory
 transitive-accessible method net/minecraft/screen/ScreenHandlerType <init> (Lnet/minecraft/screen/ScreenHandlerType$Factory;Lnet/minecraft/resource/featuretoggle/FeatureSet;)V
@@ -17,13 +20,27 @@ transitive-accessible class net/minecraft/client/gui/screen/ingame/HandledScreen
 transitive-accessible method net/minecraft/client/gui/screen/ingame/HandledScreens register (Lnet/minecraft/screen/ScreenHandlerType;Lnet/minecraft/client/gui/screen/ingame/HandledScreens$Provider;)V
 
 # Data contained in loot tables and pools
-transitive-accessible field net/minecraft/loot/LootPool entries [Lnet/minecraft/loot/entry/LootPoolEntry;
-transitive-accessible field net/minecraft/loot/LootPool conditions [Lnet/minecraft/loot/condition/LootCondition;
-transitive-accessible field net/minecraft/loot/LootPool functions [Lnet/minecraft/loot/function/LootFunction;
+transitive-accessible field net/minecraft/loot/LootPool entries Ljava/util/List;
+transitive-accessible field net/minecraft/loot/LootPool conditions Ljava/util/List;
+transitive-accessible field net/minecraft/loot/LootPool functions Ljava/util/List;
 transitive-accessible field net/minecraft/loot/LootPool rolls Lnet/minecraft/loot/provider/number/LootNumberProvider;
 transitive-accessible field net/minecraft/loot/LootPool bonusRolls Lnet/minecraft/loot/provider/number/LootNumberProvider;
-transitive-accessible field net/minecraft/loot/LootTable pools [Lnet/minecraft/loot/LootPool;
-transitive-accessible field net/minecraft/loot/LootTable functions [Lnet/minecraft/loot/function/LootFunction;
+
+# Villager trade factories
+transitive-accessible class net/minecraft/village/TradeOffers$TypedWrapperFactory
+transitive-accessible class net/minecraft/village/TradeOffers$EnchantBookFactory
+transitive-accessible class net/minecraft/village/TradeOffers$BuyItemFactory
+transitive-accessible class net/minecraft/village/TradeOffers$SellItemFactory
+transitive-accessible class net/minecraft/village/TradeOffers$SellSuspiciousStewFactory
+transitive-accessible class net/minecraft/village/TradeOffers$ProcessItemFactory
+transitive-accessible class net/minecraft/village/TradeOffers$SellEnchantedToolFactory
+transitive-accessible class net/minecraft/village/TradeOffers$TypeAwareBuyForOneEmeraldFactory
+transitive-accessible class net/minecraft/village/TradeOffers$SellPotionHoldingItemFactory
+transitive-accessible class net/minecraft/village/TradeOffers$SellMapFactory
+transitive-accessible class net/minecraft/village/TradeOffers$SellDyedArmorFactory
+
+# Registering custom entity spawn restrictions
+transitive-accessible method net/minecraft/entity/SpawnRestriction register (Lnet/minecraft/entity/EntityType;Lnet/minecraft/entity/SpawnRestriction$Location;Lnet/minecraft/world/Heightmap$Type;Lnet/minecraft/entity/SpawnRestriction$SpawnPredicate;)V
 
 # Item usage context constructors
 transitive-accessible method net/minecraft/item/ItemUsageContext <init> (Lnet/minecraft/world/World;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;Lnet/minecraft/item/ItemStack;Lnet/minecraft/util/hit/BlockHitResult;)V

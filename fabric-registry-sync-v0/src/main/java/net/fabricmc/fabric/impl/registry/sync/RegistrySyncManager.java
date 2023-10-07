@@ -1,6 +1,5 @@
 /*
- * Copyright 2016, 2017, 2018, 2019 FabricMC
- * Copyright 2022 The Quilt Project
+ * Copyright (c) 2016, 2017, 2018, 2019 FabricMC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -84,6 +83,11 @@ public final class RegistrySyncManager {
 	}
 
 	private static void sendPacket(ServerPlayerEntity player, RegistryPacketHandler handler) {
+		Map<Identifier, Object2IntMap<Identifier>> map = RegistrySyncManager.createAndPopulateRegistryMap(true, null);
+
+		if (map != null) {
+			handler.sendPacket(player, map);
+		}
 	}
 
 	public static void receivePacket(ThreadExecutor<?> executor, RegistryPacketHandler handler, PacketByteBuf buf, boolean accept, Consumer<Exception> errorHandler) {

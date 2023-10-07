@@ -1,6 +1,9 @@
 {
   "required": true,
+<<<<<<<< HEAD:fabric-block-view-api-v2/src/client/resources/quilted_fabric_block_view_api_v2.client.mixins.json
   "environment": "client",
+========
+>>>>>>>> Fabric/1.20.2:fabric-block-view-api-v2/src/client/resources/fabric-block-view-api-v2.client.mixins.json
   "package": "net.fabricmc.fabric.mixin.blockview.client",
   "compatibilityLevel": "JAVA_17",
   "client": [

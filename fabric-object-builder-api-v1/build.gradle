@@ -6,10 +6,7 @@ dependencies {
 	modApi(getQslModule('block', 'block_entity'))
 	modApi(getQslModule('block', 'block_extensions'))
 	modApi(getQslModule('data', 'advancement'))
-	modApi(getQslModule('entity', 'entity'))
-	modApi(getQslModule('entity', 'point_of_interest'))
-	modApi(getQslModule('entity', 'vehicle'))
-	modApi(getQslModule('entity', 'villager'))
+	modApi(getQslModule('entity', 'entity_extensions'))
 }
 
 moduleDependencies(project, [
@@ -18,7 +15,10 @@ moduleDependencies(project, [
 	'fabric-transitive-access-wideners-v1'
 ])
 
-testDependencies(project, [':fabric-command-api-v2'])
+testDependencies(project, [
+	':fabric-command-api-v2',
+	':fabric-lifecycle-events-v1'
+])
 
 loom {
 	accessWidenerPath = file('src/main/resources/quilted_fabric_object_builder_api_v1.accesswidener')

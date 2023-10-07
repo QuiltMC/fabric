@@ -39,12 +39,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.minecraft.advancement.Advancement;
+import net.minecraft.advancement.AdvancementEntry;
 import net.minecraft.advancement.AdvancementFrame;
 import net.minecraft.advancement.criterion.OnKilledCriterion;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.client.BlockStateModelGenerator;
 import net.minecraft.data.client.ItemModelGenerator;
-import net.minecraft.data.server.recipe.RecipeJsonProvider;
+import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -146,7 +147,7 @@ public class DataGeneratorTestEntrypoint implements DataGeneratorEntrypoint {
 		}
 
 		@Override
-		public void generate(Consumer<RecipeJsonProvider> exporter) {
+		public void generate(RecipeExporter exporter) {
 			offerPlanksRecipe2(exporter, SIMPLE_BLOCK, ItemTags.ACACIA_LOGS, 1);
 
 			ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, Items.LEATHER, 4).input(Items.ITEM_FRAME)
@@ -336,8 +337,8 @@ public class DataGeneratorTestEntrypoint implements DataGeneratorEntrypoint {
 		}
 
 		@Override
-		public void generateAdvancement(Consumer<Advancement> consumer) {
-			Advancement root = Advancement.Builder.create()
+		public void generateAdvancement(Consumer<AdvancementEntry> consumer) {
+			AdvancementEntry root = Advancement.Builder.create()
 					.display(
 							SIMPLE_BLOCK,
 							Text.translatable("advancements.test.root.title"),
@@ -347,7 +348,7 @@ public class DataGeneratorTestEntrypoint implements DataGeneratorEntrypoint {
 							false, false, false)
 					.criterion("killed_something", OnKilledCriterion.Conditions.createPlayerKilledEntity())
 					.build(consumer, MOD_ID + ":test/root");
-			Advancement rootNotLoaded = Advancement.Builder.create()
+			AdvancementEntry rootNotLoaded = Advancement.Builder.create()
 					.display(
 							SIMPLE_BLOCK,
 							Text.translatable("advancements.test.root_not_loaded.title"),

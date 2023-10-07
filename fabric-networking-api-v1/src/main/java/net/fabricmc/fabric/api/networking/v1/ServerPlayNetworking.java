@@ -1,6 +1,5 @@
 /*
- * Copyright 2016, 2017, 2018, 2019 FabricMC
- * Copyright 2022 The Quilt Project
+ * Copyright (c) 2016, 2017, 2018, 2019 FabricMC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +20,6 @@ import java.util.Objects;
 import java.util.Set;
 
 import org.jetbrains.annotations.Nullable;
-import org.quiltmc.qsl.networking.impl.server.ServerNetworkingImpl;
 
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.PacketByteBuf;
@@ -32,7 +30,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.thread.ThreadExecutor;
 
-import net.fabricmc.fabric.impl.networking.QuiltPacketSender;
+import net.fabricmc.fabric.impl.networking.server.ServerNetworkingImpl;
 
 /**
  * Offers access to play stage server-side networking functionalities.
@@ -62,9 +60,7 @@ import net.fabricmc.fabric.impl.networking.QuiltPacketSender;
  * <p>See the documentation on each class for more information.
  *
  * @see ServerLoginNetworking
- * @deprecated Use Quilt Networking's {@link org.quiltmc.qsl.networking.api.ServerPlayNetworking} instead.
  */
-@Deprecated
 public final class ServerPlayNetworking {
 	/**
 	 * Registers a handler to a channel.
@@ -86,7 +82,7 @@ public final class ServerPlayNetworking {
 	 * @see ServerPlayNetworking#registerReceiver(ServerPlayNetworkHandler, Identifier, PlayChannelHandler)
 	 */
 	public static boolean registerGlobalReceiver(Identifier channelName, PlayChannelHandler channelHandler) {
-		return org.quiltmc.qsl.networking.api.ServerPlayNetworking.registerGlobalReceiver(channelName, channelHandler);
+		return ServerNetworkingImpl.PLAY.registerGlobalReceiver(channelName, channelHandler);
 	}
 
 	/**
@@ -141,15 +137,7 @@ public final class ServerPlayNetworking {
 	 */
 	@Nullable
 	public static PlayChannelHandler unregisterGlobalReceiver(Identifier channelName) {
-		var old = org.quiltmc.qsl.networking.api.ServerPlayNetworking.unregisterGlobalReceiver(channelName);
-
-		if (old instanceof PlayChannelHandler fabric) {
-			return fabric;
-		} else if (old != null) {
-			return old::receive;
-		} else {
-			return null;
-		}
+		return ServerNetworkingImpl.PLAY.unregisterGlobalReceiver(channelName);
 	}
 
 	/**
@@ -167,7 +155,7 @@ public final class ServerPlayNetworking {
 	@Nullable
 	@SuppressWarnings("unchecked")
 	public static <T extends FabricPacket> PlayPacketHandler<T> unregisterGlobalReceiver(PacketType<T> type) {
-		PlayChannelHandler handler = (PlayChannelHandler) ServerNetworkingImpl.PLAY.unregisterGlobalReceiver(type.getId());
+		PlayChannelHandler handler = ServerNetworkingImpl.PLAY.unregisterGlobalReceiver(type.getId());
 		return handler instanceof PlayChannelHandlerProxy<?> proxy ? (PlayPacketHandler<T>) proxy.getOriginalHandler() : null;
 	}
 
@@ -178,7 +166,7 @@ public final class ServerPlayNetworking {
 	 * @return all channel names which global receivers are registered for.
 	 */
 	public static Set<Identifier> getGlobalReceivers() {
-		return org.quiltmc.qsl.networking.api.ServerPlayNetworking.getGlobalReceivers();
+		return ServerNetworkingImpl.PLAY.getChannels();
 	}
 
 	/**
@@ -205,7 +193,9 @@ public final class ServerPlayNetworking {
 	 * @see ServerPlayConnectionEvents#INIT
 	 */
 	public static boolean registerReceiver(ServerPlayNetworkHandler networkHandler, Identifier channelName, PlayChannelHandler channelHandler) {
-		return org.quiltmc.qsl.networking.api.ServerPlayNetworking.registerReceiver(networkHandler, channelName, channelHandler);
+		Objects.requireNonNull(networkHandler, "Network handler cannot be null");
+
+		return ServerNetworkingImpl.getAddon(networkHandler).registerChannel(channelName, channelHandler);
 	}
 
 	/**
@@ -261,15 +251,9 @@ public final class ServerPlayNetworking {
 	 */
 	@Nullable
 	public static PlayChannelHandler unregisterReceiver(ServerPlayNetworkHandler networkHandler, Identifier channelName) {
-		var old = org.quiltmc.qsl.networking.api.ServerPlayNetworking.unregisterReceiver(networkHandler, channelName);
+		Objects.requireNonNull(networkHandler, "Network handler cannot be null");
 
-		if (old instanceof PlayChannelHandler fabric) {
-			return fabric;
-		} else if (old != null) {
-			return old::receive;
-		} else {
-			return null;
-		}
+		return ServerNetworkingImpl.getAddon(networkHandler).unregisterChannel(channelName);
 	}
 
 	/**
@@ -295,7 +279,9 @@ public final class ServerPlayNetworking {
 	 * @return All the channel names that the server can receive packets on
 	 */
 	public static Set<Identifier> getReceived(ServerPlayerEntity player) {
-		return org.quiltmc.qsl.networking.api.ServerPlayNetworking.getReceived(player);
+		Objects.requireNonNull(player, "Server player entity cannot be null");
+
+		return getReceived(player.networkHandler);
 	}
 
 	/**
@@ -305,7 +291,9 @@ public final class ServerPlayNetworking {
 	 * @return All the channel names that the server can receive packets on
 	 */
 	public static Set<Identifier> getReceived(ServerPlayNetworkHandler handler) {
-		return org.quiltmc.qsl.networking.api.ServerPlayNetworking.getReceived(handler);
+		Objects.requireNonNull(handler, "Server play network handler cannot be null");
+
+		return ServerNetworkingImpl.getAddon(handler).getReceivableChannels();
 	}
 
 	/**
@@ -315,7 +303,9 @@ public final class ServerPlayNetworking {
 	 * @return All the channel names the connected client declared the ability to receive a packets on
 	 */
 	public static Set<Identifier> getSendable(ServerPlayerEntity player) {
-		return org.quiltmc.qsl.networking.api.ServerPlayNetworking.getSendable(player);
+		Objects.requireNonNull(player, "Server player entity cannot be null");
+
+		return getSendable(player.networkHandler);
 	}
 
 	/**
@@ -325,7 +315,9 @@ public final class ServerPlayNetworking {
 	 * @return {@code true} if the connected client has declared the ability to receive a packet on the specified channel
 	 */
 	public static Set<Identifier> getSendable(ServerPlayNetworkHandler handler) {
-		return org.quiltmc.qsl.networking.api.ServerPlayNetworking.getSendable(handler);
+		Objects.requireNonNull(handler, "Server play network handler cannot be null");
+
+		return ServerNetworkingImpl.getAddon(handler).getSendableChannels();
 	}
 
 	/**
@@ -336,7 +328,9 @@ public final class ServerPlayNetworking {
 	 * @return {@code true} if the connected client has declared the ability to receive a packet on the specified channel
 	 */
 	public static boolean canSend(ServerPlayerEntity player, Identifier channelName) {
-		return org.quiltmc.qsl.networking.api.ServerPlayNetworking.canSend(player, channelName);
+		Objects.requireNonNull(player, "Server player entity cannot be null");
+
+		return canSend(player.networkHandler, channelName);
 	}
 
 	/**
@@ -360,7 +354,10 @@ public final class ServerPlayNetworking {
 	 * @return {@code true} if the connected client has declared the ability to receive a packet on the specified channel
 	 */
 	public static boolean canSend(ServerPlayNetworkHandler handler, Identifier channelName) {
-		return org.quiltmc.qsl.networking.api.ServerPlayNetworking.canSend(handler, channelName);
+		Objects.requireNonNull(handler, "Server play network handler cannot be null");
+		Objects.requireNonNull(channelName, "Channel name cannot be null");
+
+		return ServerNetworkingImpl.getAddon(handler).getSendableChannels().contains(channelName);
 	}
 
 	/**
@@ -384,9 +381,11 @@ public final class ServerPlayNetworking {
 	 * @param buf the packet byte buf which represents the payload of the packet
 	 * @return a new packet
 	 */
-	@SuppressWarnings("unchecked")
 	public static Packet<ClientPlayPacketListener> createS2CPacket(Identifier channelName, PacketByteBuf buf) {
-		return org.quiltmc.qsl.networking.api.ServerPlayNetworking.createS2CPacket(channelName, buf);
+		Objects.requireNonNull(channelName, "Channel cannot be null");
+		Objects.requireNonNull(buf, "Buf cannot be null");
+
+		return ServerNetworkingImpl.createPlayC2SPacket(channelName, buf);
 	}
 
 	/**
@@ -396,7 +395,9 @@ public final class ServerPlayNetworking {
 	 * @return the packet sender
 	 */
 	public static PacketSender getSender(ServerPlayerEntity player) {
-		return new QuiltPacketSender(org.quiltmc.qsl.networking.api.ServerPlayNetworking.getSender(player));
+		Objects.requireNonNull(player, "Server player entity cannot be null");
+
+		return getSender(player.networkHandler);
 	}
 
 	/**
@@ -406,7 +407,9 @@ public final class ServerPlayNetworking {
 	 * @return the packet sender
 	 */
 	public static PacketSender getSender(ServerPlayNetworkHandler handler) {
-		return new QuiltPacketSender(org.quiltmc.qsl.networking.api.ServerPlayNetworking.getSender(handler));
+		Objects.requireNonNull(handler, "Server play network handler cannot be null");
+
+		return ServerNetworkingImpl.getAddon(handler);
 	}
 
 	/**
@@ -417,7 +420,11 @@ public final class ServerPlayNetworking {
 	 * @param buf the payload of the packet.
 	 */
 	public static void send(ServerPlayerEntity player, Identifier channelName, PacketByteBuf buf) {
-		org.quiltmc.qsl.networking.api.ServerPlayNetworking.send(player, channelName, buf);
+		Objects.requireNonNull(player, "Server player entity cannot be null");
+		Objects.requireNonNull(channelName, "Channel name cannot be null");
+		Objects.requireNonNull(buf, "Packet byte buf cannot be null");
+
+		player.networkHandler.sendPacket(createS2CPacket(channelName, buf));
 	}
 
 	/**
@@ -444,20 +451,16 @@ public final class ServerPlayNetworking {
 	 * @param handler the server play network handler
 	 */
 	public static MinecraftServer getServer(ServerPlayNetworkHandler handler) {
-		return org.quiltmc.qsl.networking.api.ServerPlayNetworking.getServer(handler);
+		Objects.requireNonNull(handler, "Network handler cannot be null");
+
+		return handler.player.server;
 	}
 
 	private ServerPlayNetworking() {
 	}
 
-	@Deprecated
 	@FunctionalInterface
-	public interface PlayChannelHandler extends org.quiltmc.qsl.networking.api.ServerPlayNetworking.ChannelReceiver {
-		@Override
-		default void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, org.quiltmc.qsl.networking.api.PacketSender responseSender) {
-			this.receive(server, player, handler, buf, new QuiltPacketSender(responseSender));
-		}
-
+	public interface PlayChannelHandler {
 		/**
 		 * Handles an incoming packet.
 		 *

@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2016, 2017, 2018, 2019 FabricMC
+ * Copyright 2023 The Quilt Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +15,16 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.networking.accessor;
+package net.fabricmc.fabric.impl.networking;
 
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Accessor;
+import java.util.Collection;
 
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
+import net.minecraft.network.NetworkState;
 import net.minecraft.util.Identifier;
 
-@Mixin(CustomPayloadC2SPacket.class)
-public interface CustomPayloadC2SPacketAccessor {
-	@Accessor
-	Identifier getChannel();
-
-	@Accessor
-	PacketByteBuf getData();
+public interface ChannelInfoHolder {
+	/**
+	 * @return Channels which are declared as receivable by the other side but have not been declared yet.
+	 */
+	Collection<Identifier> getPendingChannelsNames(NetworkState state);
 }

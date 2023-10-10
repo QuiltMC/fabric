@@ -1,6 +1,6 @@
 /*
 <<<<<<< HEAD
- * Copyright 2016, 2017, 2018, 2019 FabricMC
+ * Copyright (c) 2016, 2017, 2018, 2019 FabricMC
  * Copyright 2023 The Quilt Project
 =======
  * Copyright (c) 2016, 2017, 2018, 2019 FabricMC

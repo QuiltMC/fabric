@@ -58,7 +58,7 @@
 			"quilted_fabric_loot_api_v2",
 			"quilted_fabric_message_api_v1",
 			"quilted_fabric_mining_level_api_v1",
-			"quilted_fabric_models_v0",
+			"quilted_fabric_model_loading_api-v1",
 			"quilted_fabric_networking_api_v1",
 			"quilted_fabric_object_builder_api_v1",
 			"quilted_fabric_particles_v1",
@@ -110,6 +110,10 @@
 			},
 			{
 				"id": "quilted_fabric_rendering_v0",
+				"optional": true
+			},
+			{
+				"id": "quilted_fabric_models_v0",
 				"optional": true
 			},
 			"quilt_advancement",

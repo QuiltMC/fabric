@@ -1,6 +1,6 @@
 /*
  * Copyright 2016, 2017, 2018, 2019 FabricMC
- * Copyright 2022 QuiltMC
+ * Copyright 2022-2023 QuiltMC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,8 +43,9 @@ public final class NetworkingPlayPacketTest implements ModInitializer {
 	public static void sendToTestChannel(ServerPlayerEntity player, String stuff) {
 		PacketByteBuf buf = PacketByteBufs.create();
 		buf.writeText(Text.literal(stuff));
-		ServerPlayNetworking.send(player, TEST_CHANNEL, buf);
-		NetworkingTestmods.LOGGER.info("Sent custom payload packet in {}", TEST_CHANNEL);
+		ServerPlayNetworking.getSender(player).sendPacket(TEST_CHANNEL, buf, future -> {
+			NetworkingTestmods.LOGGER.info("Sent custom payload packet in {}", TEST_CHANNEL);
+		});
 	}
 
 	public static void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher) {

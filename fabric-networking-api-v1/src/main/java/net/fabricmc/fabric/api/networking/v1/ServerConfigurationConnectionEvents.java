@@ -60,9 +60,9 @@ public final class ServerConfigurationConnectionEvents {
 	 * }</pre>
 	 */
 	public static final Event<Configure> CONFIGURE = QuiltCompatEvent.fromQuilt(
-			org.quiltmc.qsl.networking.api.ServerConfigurationConnectionEvents.READY,
-			configure -> (handler, sender, server) -> configure.onSendConfiguration(handler, server),
-			invokerGetter -> (handler, server) -> invokerGetter.get().onConfigurationReady(handler, org.quiltmc.qsl.networking.impl.server.ServerNetworkingImpl.getAddon(handler), server));
+			org.quiltmc.qsl.networking.api.ServerConfigurationConnectionEvents.ADD_TASKS,
+			configure -> configure::onSendConfiguration,
+			invokerGetter -> invokerGetter.get()::onAddTasks);
 
 	/**
 	 * An event for the disconnection of the server configuration network handler.

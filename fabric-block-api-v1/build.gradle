@@ -1,3 +1,2 @@
-base.archivesName = "quilted_fabric_block_api_v1"
 version = getSubprojectVersion(project)
 upstream_version = getSubprojectUpstreamVersion(project)

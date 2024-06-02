@@ -576,6 +576,10 @@ subprojects {
 		return
 	}
 
+	base {
+		archivesName = "quilted_${project.name.replaceAll("-", "_")}"
+	}
+
 	dependencies {
 		testmodImplementation sourceSets.main.output
 

@@ -523,7 +523,7 @@ tasks.register('runProductionAutoTestClient', JavaExec) {
 		}
 
 		jvmArgs(
-				"-Dfabric.addMods=${remapJar.archiveFile.get().asFile.absolutePath}${File.pathSeparator}${remapTestmodJar.archiveFile.get().asFile.absolutePath}",
+				"-Dloader.addMods=${remapJar.archiveFile.get().asFile.absolutePath}${File.pathSeparator}${remapTestmodJar.archiveFile.get().asFile.absolutePath}",
 				"-Dfabric.autoTest",
 				"-enableassertions"
 				)

@@ -772,7 +772,7 @@ tasks.register('renameJar', Jar) {
 }
 
 publishMods {
-	file = signRemapJar.output
+	file = renameJar.archiveFile
 	changelog = "Provides Fabric API ${project.upstream_version}\n" + providers.environmentVariable("CHANGELOG").getOrElse("No changelog provided")
 	type = project.prerelease == "true" ? BETA : STABLE
 	displayName = "[$project.minecraft_version] QFAPI " + project.version.split('\\+')[0] + " and QSL " + project.qsl_version.split('\\+')[0]

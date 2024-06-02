@@ -19,6 +19,9 @@ package net.fabricmc.fabric.mixin.entity.event;
 
 import java.util.Optional;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -28,7 +31,6 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import net.minecraft.block.BedBlock;
 import net.minecraft.block.BlockState;
@@ -42,6 +44,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.CollisionView;
 import net.minecraft.world.World;
 
@@ -57,11 +60,11 @@ abstract class LivingEntityMixin {
 	@Shadow
 	public abstract Optional<BlockPos> getSleepingPosition();
 
-	@Inject(method = "onDeath", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;onKilledOther(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/LivingEntity;)Z", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILEXCEPTION)
-	private void onEntityKilledOther(DamageSource source, CallbackInfo ci, Entity attacker) {
-		// FIXME: Cannot use shadowed fields from supermixins - needs a fix so people can use fabric api in a dev environment even though this is fine in this repo and prod.
-		//  A temporary fix is to just cast the mixin to LivingEntity and access the world field with a few ugly casts.
-		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.invoker().afterKilledOtherEntity((ServerWorld) ((LivingEntity) (Object) this).getWorld(), attacker, (LivingEntity) (Object) this);
+	@WrapOperation(method = "onDeath", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;onKilledOther(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/LivingEntity;)Z"))
+	private boolean onEntityKilledOther(Entity entity, ServerWorld serverWorld, @Nullable LivingEntity attacker, Operation<Boolean> original) {
+		boolean result = original.call(entity, serverWorld, attacker);
+		ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.invoker().afterKilledOtherEntity(serverWorld, entity, attacker);
+		return result;
 	}
 
 	@Inject(method = "damage", at = @At(value = "INVOKE", target = "net/minecraft/entity/LivingEntity.isSleeping()Z"), cancellable = true)
@@ -97,14 +100,10 @@ abstract class LivingEntityMixin {
 		}
 	}
 
-	@Inject(method = "getSleepingDirection", at = @At("RETURN"), cancellable = true)
-	private void onGetSleepingDirection(CallbackInfoReturnable<Direction> info) {
-		// TODO - Ideally, this would have been grabbed from the locals, however, something went terribly wrong, I guess
-		BlockPos sleepingPos = (BlockPos) this.getSleepingPosition().orElse(null);
-
-		if (sleepingPos != null) {
-			info.setReturnValue(EntitySleepEvents.MODIFY_SLEEPING_DIRECTION.invoker().modifySleepDirection((LivingEntity) (Object) this, sleepingPos, info.getReturnValue()));
-		}
+	@WrapOperation(method = "getSleepingDirection", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BedBlock;getDirection(Lnet/minecraft/world/BlockView;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/util/math/Direction;"))
+	private Direction onGetSleepingDirection(BlockView world, BlockPos sleepingPos, Operation<Direction> operation) {
+		final Direction sleepingDirection = operation.call(world, sleepingPos);
+		return EntitySleepEvents.MODIFY_SLEEPING_DIRECTION.invoker().modifySleepDirection((LivingEntity) (Object) this, sleepingPos, sleepingDirection);
 	}
 
 	// This is needed 1) so that the vanilla logic in wakeUp runs for modded beds and 2) for the injector below.

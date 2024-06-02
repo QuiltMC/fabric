@@ -491,7 +491,7 @@ configurations {
 }
 
 dependencies {
-	productionRuntime "net.fabricmc:fabric-loader:${project.loader_version}"
+	productionRuntime "org.quiltmc:quilt-loader:${project.loader_version}"
 	productionRuntime "net.fabricmc:intermediary:${project.minecraft_version}"
 
 	productionRuntimeServer "net.fabricmc:fabric-installer:${project.installer_version}:server"

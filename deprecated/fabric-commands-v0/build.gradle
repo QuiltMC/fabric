@@ -6,10 +6,3 @@ moduleDependencies(project, [
 	'fabric-api-base',
 	'fabric-command-api-v2'
 ])
-
-/*
-loom {
-	// workaround for lack of cross-project taw propagation in loom
-	accessWidenerPath = file("quilted_fabric_commands_v0.accesswidener")
-}
-*/

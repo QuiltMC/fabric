@@ -45,15 +45,15 @@ def getBranch() {
 	def ENV = System.getenv()
 	if (ENV.GITHUB_REF) {
 		def branch = ENV.GITHUB_REF
-		return branch.substring(branch.lastIndexOf('/') + 1)
+		return branch.substring(branch.lastIndexOf("/") + 1)
 	}
 
 	if (!indraGit.isPresent()) {
-		return 'unknown'
+		return "unknown"
 	}
 
 	def branch = indraGit.branchName()
-	return branch.substring(branch.lastIndexOf('/') + 1)
+	return branch.substring(branch.lastIndexOf("/") + 1)
 }
 
 def moduleDependencies(project, List<String> depNames) {

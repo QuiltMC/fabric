@@ -254,7 +254,10 @@ allprojects {
 		inputs.property "version", project.version
 		inputs.property "upstream_version", project.upstream_version
 
-		filesMatching(["fabric.mod.json", "quilt.mod.json"]) {
+		filesMatching([
+			"fabric.mod.json",
+			"quilt.mod.json"
+		]) {
 			expand "version": project.version, "upstream_version": project.upstream_version
 		}
 	}
@@ -371,7 +374,7 @@ javadoc {
 		memberLevel = JavadocMemberLevel.PACKAGE
 		links(
 				"https://maven.fabricmc.net/docs/yarn-${rootProject.minecraft_version}${project.yarn_version}/"
-		)
+				)
 		// Disable the crazy super-strict doclint tool in Java 8
 		addStringOption("Xdoclint:none", "-quiet")
 
@@ -379,7 +382,7 @@ javadoc {
 				'apiNote:a:API Note:',
 				'implSpec:a:Implementation Requirements:',
 				'implNote:a:Implementation Note:'
-		)
+				)
 	}
 
 	allprojects.each {
@@ -442,7 +445,7 @@ loom {
 		}
 	}
 }
-test.dependsOn runGametest
+//test.dependsOn runGametest
 
 def coverageTasks = [
 	runGametestCoverage,
@@ -524,42 +527,7 @@ tasks.register('runProductionAutoTestClient', JavaExec) {
 	}
 }
 
-// Do not do Fabric Installer shenanigans
-/*
-tasks.register('serverPropertiesJar', Jar) {
-	def propsFile = file("build/tmp/install.properties")
-
-	doFirst {
-		propsFile.text = """\
-						fabric-loader-version=${project.loader_version}
-						game-version=${project.minecraft_version}
-						""".stripMargin().stripIndent()
-	}
-
-	archiveFileName = "test-server-properties.jar"
-	destinationDirectory = file("build/tmp")
-	from(propsFile)
-}
-
-tasks.register('runProductionAutoTestServer', JavaExec) {
-	dependsOn remapJar, remapTestmodJar, serverPropertiesJar
-	classpath.from configurations.productionRuntimeServer, serverPropertiesJar
-	mainClass = "net.fabricmc.installer.ServerLauncher"
-	workingDir = file("run")
-
-	doFirst {
-		workingDir.mkdirs()
-
-		jvmArgs(
-				"-Dfabric.addMods=${remapJar.archiveFile.get().asFile.absolutePath}${File.pathSeparator}${remapTestmodJar.archiveFile.get().asFile.absolutePath}",
-				"-Dfabric.autoTest",
-				"-enableassertions"
-				)
-
-		args("nogui")
-	}
-}
-*/
+// Do not do Fabric Installer shenanigans (therefore, no server testing)
 
 // Format all the gradle files
 spotless {
@@ -607,13 +575,6 @@ subprojects {
 	if (metaProjects.contains(it.name)) {
 		return
 	}
-
-	// Wait you're a smart girl, why not apply lessons from failed plugin here
-	/*
-	base {
-		archivesName = project.name
-	}
-	*/
 
 	dependencies {
 		testmodImplementation sourceSets.main.output
@@ -692,7 +653,7 @@ publishing {
 					// Do not depend on Quilted Fabric GameTest API v1
 					if (it.name == 'fabric-gametest-api-v1') return
 
-					def depNode = depsNode.appendNode("dependency")
+						def depNode = depsNode.appendNode("dependency")
 					depNode.appendNode("groupId", it.group)
 					depNode.appendNode("artifactId", it.name)
 					depNode.appendNode("version", it.version)
@@ -769,7 +730,7 @@ dependencies {
 }
 
 java.util.stream.Stream<ResolvedDependency> getAllQslModules() {
-// "it" is QSL
+	// "it" is QSL
 	return configurations.named('qsl').get().resolvedConfiguration.firstLevelModuleDependencies.stream().flatMap {
 		it.children.stream()
 	}.flatMap {

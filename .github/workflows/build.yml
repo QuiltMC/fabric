@@ -13,14 +13,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-java-${{ matrix.java }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-java-${{ matrix.java }}-gradle-
       - uses: gradle/wrapper-validation-action@v1
       # TODO - Go back to "--warning-mode=fail"
       - run: ./gradlew check build publishToMavenLocal --stacktrace --warning-mode=all -Porg.gradle.parallel.threads=4

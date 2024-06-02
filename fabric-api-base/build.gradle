@@ -1,4 +1,4 @@
-archivesBaseName = "quilted_fabric_api_base"
+base.archivesName = "quilted_fabric_api_base"
 version = getSubprojectVersion(project)
 upstream_version = getSubprojectUpstreamVersion(project)
 

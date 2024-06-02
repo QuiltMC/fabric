@@ -1,29 +1,23 @@
-buildscript {
-	dependencies {
-		classpath 'org.kohsuke:github-api:1.315'
-	}
-}
-
 plugins {
 	id "java-library"
 	id "eclipse"
 	id "idea"
 	id "maven-publish"
-	id "org.quiltmc.loom" version "1.2.+" apply false
-	id "org.quiltmc.gradle.licenser" version "2.0.+"
-	id "net.kyori.indra.git" version "3.1.1"
-	id "com.matthewprenger.cursegradle" version "1.4.0"
-	id "com.modrinth.minotaur" version "2.8.0"
+	id "jacoco"
+	id "org.quiltmc.loom" version "1.5.8" apply false
+	id "org.quiltmc.gradle.licenser" version "2.0.1"
+	id "com.diffplug.spotless" version "6.20.0"
+	id "net.kyori.indra.git" version "3.1.3"
 	id "me.modmuss50.remotesign" version "0.4.0" apply false
-	id "io.github.p03w.machete" version "2.0.1"
+	id "me.modmuss50.mod-publish-plugin" version "0.4.5"
 }
 
 def ENV = System.getenv()
-def signingEnabled = ENV.SIGNING_SERVER
 
 version = "$project.version+${ENV.GITHUB_RUN_NUMBER ? '' : 'local-'}$project.upstream_version-${getBranch()}${ENV.SNAPSHOTS_URL ? '-SNAPSHOT' : ''}"
 logger.lifecycle("Building Quilted Fabric API: $version")
 
+def metaProjects = ['deprecated']
 
 import net.fabricmc.loom.util.gradle.SourceSetHelper
 import groovy.json.JsonSlurper
@@ -120,16 +114,16 @@ allprojects {
 		enabled = false
 	}
 
-	if (signingEnabled) {
-		remoteSign {
-			requestUrl = ENV.SIGNING_SERVER
-			pgpAuthKey = ENV.SIGNING_PGP_KEY
-			jarAuthKey = ENV.SIGNING_JAR_KEY
+	remoteSign {
+		requestUrl = ENV.SIGNING_SERVER
+		pgpAuthKey = ENV.SIGNING_PGP_KEY
+		jarAuthKey = ENV.SIGNING_JAR_KEY
 
-			afterEvaluate {
-				// PGP sign all maven publications.
-				sign publishing.publications.mavenJava
-			}
+		useDummyForTesting = ENV.SIGNING_SERVER == null
+
+		afterEvaluate {
+			// PGP sign all maven publications.
+			sign publishing.publications.mavenJava
 		}
 	}
 
@@ -137,7 +131,7 @@ allprojects {
 		setupRepositories(repositories)
 	}
 
-	if (it.name == "deprecated") {
+	if (metaProjects.contains(it.name)) {
 		return
 	}
 
@@ -145,6 +139,7 @@ allprojects {
 	apply plugin: "checkstyle"
 	apply plugin: "org.quiltmc.loom"
 	apply plugin: "org.quiltmc.gradle.licenser"
+	apply plugin: "com.diffplug.spotless"
 
 	tasks.withType(JavaCompile).configureEach {
 		it.options.release = 17
@@ -157,6 +152,9 @@ allprojects {
 
 	loom {
 		splitEnvironmentSourceSets()
+		mixin {
+			useLegacyMixinAp = true
+		}
 	}
 
 	sourceSets {
@@ -200,8 +198,12 @@ allprojects {
 		}
 	}
 
+	loom.runs.configureEach {
+		vmArg("-enableassertions")
+	}
+
 	allprojects.each { p ->
-		if (project.name == "deprecated") {
+		if (metaProjects.contains(project.name)) {
 			return
 		}
 
@@ -228,6 +230,7 @@ allprojects {
 
 		testImplementation "org.quiltmc:quilt-loader-junit:$project.loader_version"
 		testImplementation sourceSets.testmodClient.output
+		testImplementation 'org.mockito:mockito-core:5.4.0'
 	}
 
 	test {
@@ -263,9 +266,17 @@ allprojects {
 		include '**/*.java'
 	}
 
+	spotless {
+		java {
+			removeUnusedImports()
+			indentWithTabs()
+			trimTrailingWhitespace()
+		}
+	}
+
 	checkstyle {
 		configFile = rootProject.file("codeformat/checkstyle.xml")
-		toolVersion = "10.11.0"
+		toolVersion = "10.12.1"
 	}
 
 	tasks.withType(AbstractArchiveTask).configureEach {
@@ -273,10 +284,8 @@ allprojects {
 		reproducibleFileOrder = true
 	}
 
-	if (signingEnabled) {
-		remoteSign {
-			sign remapJar
-		}
+	remoteSign {
+		sign remapJar
 	}
 
 	// Run this task after updating minecraft to regenerate any required resources
@@ -332,7 +341,7 @@ remapTestmodJar {
 	def testModJarTasks = []
 
 	subprojects {
-		if (it.name == "deprecated" || !(it.file("src/testmod").exists() || it.file("src/testmodClient").exists())) {
+		if (metaProjects.contains(it.name) || !(it.file("src/testmod").exists() || it.file("src/testmodClient").exists())) {
 			return
 		}
 
@@ -347,10 +356,11 @@ remapTestmodJar {
 // Apply auxiliary buildscripts to submodules
 // This must be done after all plugins are applied to subprojects
 apply from: "gradle/module-validation.gradle"
+//apply from: "gradle/module-versioning.gradle"
 
 loom {
 	// Required as the item-group API uses access widened classes in its API, without this the javadoc generation fails.
-	accessWidenerPath = file('fabric-item-group-api-v1/src/main/resources/quilted_fabric_item_group_api_v1.accesswidener')
+	accessWidenerPath = file("fabric-item-group-api-v1/src/main/resources/quilted_fabric_item_group_api_v1.accesswidener")
 }
 
 javadoc {
@@ -373,7 +383,7 @@ javadoc {
 	}
 
 	allprojects.each {
-		if (it.name == "deprecated") {
+		if (metaProjects.contains(it.name)) {
 			return
 		}
 
@@ -409,17 +419,61 @@ loom {
 		}
 		autoTestServer {
 			inherit testmodServer
-			name "Auto Test Server"
-			vmArg "-Dfabric.autoTest"
+			name  "Auto Test Server"
+			property "fabric.autoTest"
 		}
 		autoTestClient {
 			inherit testmodClient
 			name "Auto Test Client"
-			vmArg "-Dfabric.autoTest"
+			property "fabric.autoTest"
+		}
+
+		// Create duplicate tasks for this, as jacoco slows things down a bit
+		gametestCoverage {
+			inherit gametest
+			name "Game Test Coverage"
+			ideConfigGenerated = false
+		}
+
+		autoTestClientCoverage {
+			inherit autoTestClient
+			name "Auto Test Client Coverage"
+			ideConfigGenerated = false
 		}
 	}
 }
-// test.dependsOn runGametest
+test.dependsOn runGametest
+
+def coverageTasks = [
+	runGametestCoverage,
+	runAutoTestClientCoverage
+]
+
+jacoco {
+	coverageTasks.forEach {
+		applyTo it
+	}
+}
+
+tasks.register('coverage', JacocoReport) {
+	dependsOn coverageTasks
+	coverageTasks.forEach {
+		executionData it
+	}
+
+	// Add all source as input
+	allprojects { p ->
+		if (p.path.startsWith(":deprecated")) {
+			return
+		}
+		sourceSets p.sourceSets.main, p.sourceSets.client, p.sourceSets.testmod, p.sourceSets.testmodClient
+	}
+
+	// Exclude mixins
+	classDirectories.setFrom(files(classDirectories.files.collect {
+		fileTree(dir: it, exclude: '**/mixin/**')
+	}))
+}
 
 configurations {
 	productionRuntime {
@@ -439,12 +493,11 @@ dependencies {
 
 import net.fabricmc.loom.util.Platform
 
-/*
 // This is very far beyond loom's API if you copy this, you're on your own.
 tasks.register('runProductionAutoTestClient', JavaExec) {
 	dependsOn remapJar, remapTestmodJar, downloadAssets
 	classpath.from configurations.productionRuntime
-	mainClass = "net.fabricmc.loader.impl.launch.knot.KnotClient"
+	mainClass = "org.quiltmc.loader.impl.launch.knot.KnotClient"
 	workingDir = file("run")
 
 	doFirst {
@@ -465,11 +518,14 @@ tasks.register('runProductionAutoTestClient', JavaExec) {
 
 		jvmArgs(
 				"-Dfabric.addMods=${remapJar.archiveFile.get().asFile.absolutePath}${File.pathSeparator}${remapTestmodJar.archiveFile.get().asFile.absolutePath}",
-				"-Dfabric.autoTest"
+				"-Dfabric.autoTest",
+				"-enableassertions"
 				)
 	}
 }
 
+// Do not do Fabric Installer shenanigans
+/*
 tasks.register('serverPropertiesJar', Jar) {
 	def propsFile = file("build/tmp/install.properties")
 
@@ -496,7 +552,8 @@ tasks.register('runProductionAutoTestServer', JavaExec) {
 
 		jvmArgs(
 				"-Dfabric.addMods=${remapJar.archiveFile.get().asFile.absolutePath}${File.pathSeparator}${remapTestmodJar.archiveFile.get().asFile.absolutePath}",
-				"-Dfabric.autoTest"
+				"-Dfabric.autoTest",
+				"-enableassertions"
 				)
 
 		args("nogui")
@@ -505,12 +562,12 @@ tasks.register('runProductionAutoTestServer', JavaExec) {
 */
 
 // Format all the gradle files
-//spotless {
-//	groovyGradle {
-//		target 'src/**/*.gradle', '*.gradle', 'gradle/*.gradle'
-//		greclipse()
-//	}
-//}
+spotless {
+	groovyGradle {
+		target 'src/**/*.gradle', '*.gradle', 'gradle/*.gradle'
+		greclipse()
+	}
+}
 
 def addPomMetadataInformation(Project project, MavenPom pom) {
 	def modJsonFile = project.file("src/main/resources/quilt.mod.json")
@@ -547,9 +604,16 @@ def addPomMetadataInformation(Project project, MavenPom pom) {
 }
 
 subprojects {
-	if (it.name == 'deprecated') {
+	if (metaProjects.contains(it.name)) {
 		return
 	}
+
+	// Wait you're a smart girl, why not apply lessons from failed plugin here
+	/*
+	base {
+		archivesName = project.name
+	}
+	*/
 
 	dependencies {
 		testmodImplementation sourceSets.main.output
@@ -575,8 +639,8 @@ subprojects {
 				pom {
 					addPomMetadataInformation(project, pom)
 				}
-				artifact(signingEnabled ? signRemapJar.output : remapJar) {
-					builtBy(signingEnabled ? signRemapJar : remapJar)
+				artifact(signRemapJar.output) {
+					builtBy(signRemapJar)
 				}
 
 				artifact(remapSourcesJar) {
@@ -592,28 +656,11 @@ subprojects {
 	javadoc.enabled = false
 }
 
-machete {
-	// JSON minification isn't effective on this scale and sacrifices readability
-	json.enabled = false
-	finalizeAfter = ""
-	ignoredTasks.add("jar")
-	additionalTasks.add("remapJar")
-}
-if (signingEnabled) {
-	tasks.signRemapJar.finalizedBy('optimizeOutputsOfRemapJar')
-} else {
-	tasks.remapJar.finalizedBy('optimizeOutputsOfRemapJar')
-}
-
-tasks.register('optimizedJar') {
-	dependsOn 'optimizeOutputsOfRemapJar'
-}
-
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
-			artifact(signingEnabled ? signRemapJar.output : remapJar) {
-				builtBy(tasks.named('optimizedJar'))
+			artifact(signRemapJar.output) {
+				builtBy(signRemapJar)
 			}
 
 			artifact(sourcesJar) {
@@ -637,8 +684,8 @@ publishing {
 					depNode.appendNode("scope", "compile")
 				}
 				subprojects.each {
-					// Dont depend on the deprecated modules in the main artifact.
-					if (it.path.startsWith(":deprecated")) {
+					// The maven BOM containing all of the deprecated modules is added manually below.
+					if (it.path.startsWith(":deprecated") || metaProjects.contains(it.name)) {
 						return
 					}
 
@@ -686,7 +733,7 @@ void setupRepositories(RepositoryHandler repositories) {
 }
 
 subprojects.each {
-	if (it.name == "deprecated") {
+	if (metaProjects.contains(it.name)) {
 		return
 	}
 
@@ -694,9 +741,7 @@ subprojects.each {
 }
 
 // These modules are not included in the fat jar, maven will resolve them via the pom.
-def devOnlyModules = [
-		"fabric-gametest-api-v1",
-]
+def devOnlyModules = ["fabric-gametest-api-v1",]
 
 configurations {
 	qsl
@@ -710,7 +755,7 @@ dependencies {
 			include "$it.moduleGroup:$it.moduleName:$it.moduleVersion"
 		}
 		subprojects.each {
-			if (it.name == "deprecated") {
+			if (metaProjects.contains(it.name)) {
 				return
 			}
 
@@ -744,109 +789,68 @@ java.util.stream.Stream<ResolvedDependency> getAllQslModules() {
 remapJar {
 	afterEvaluate {
 		subprojects.each {
-			if (it.name in devOnlyModules || it.name == "deprecated") {
+			if (it.name in devOnlyModules || metaProjects.contains(it.name)) {
 				return
 			}
 
 			// Include the signed or none signed jar from the sub project.
-			nestedJars.from project("${it.path}").tasks.getByName(signingEnabled ? "signRemapJar" : "remapJar")
+			nestedJars.from project("${it.path}").tasks.getByName("signRemapJar")
 		}
 	}
 }
 
 tasks.register('renameJar', Jar) {
-	dependsOn 'optimizedJar'
+	dependsOn 'signRemapJar'
 
 	with remapJar
-	from zipTree(remapJar.archiveFile)
+	from zipTree(signRemapJar.output)
 	def qsl_version_normalized = project.qsl_version.substring(0, project.qsl_version.indexOf('+'))
 	def qfapi_version_normalized = project.version.substring(0, project.version.indexOf('+'))
 	def upstream_fapi_version_normalized = project.upstream_version
 	archiveFileName.set("qfapi-${qfapi_version_normalized}_qsl-${qsl_version_normalized}_fapi-${upstream_fapi_version_normalized}_mc-${project.minecraft_version}.jar")
 }
 
-curseforge {
-	if (ENV.CURSEFORGE_TOKEN) {
-		apiKey = ENV.CURSEFORGE_TOKEN
+publishMods {
+	file = signRemapJar.output
+	changelog = "Provides Fabric API ${project.upstream_version}\n" + providers.environmentVariable("CHANGELOG").getOrElse("No changelog provided")
+	type = project.prerelease == "true" ? BETA : STABLE
+	displayName = "[$project.minecraft_version] QFAPI " + project.version.split('\\+')[0] + " and QSL " + project.qsl_version.split('\\+')[0]
+	modLoaders.add("quilt")
+	dryRun = providers.environmentVariable("CURSEFORGE_TOKEN").getOrNull() == null
+
+	curseforge {
+		accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
+		projectId = "306612"
+		minecraftVersions.add(project.curseforge_minecraft_version)
 	}
-
-	project {
-		id = '634179'
-		changelog = ENV.CHANGELOG ?: 'No changelog provided'
-		releaseType = project.prerelease == 'true' ? 'beta' : 'release'
-		addGameVersion '1.20.1'
-		addGameVersion '1.20'
-		addGameVersion 'Quilt'
-
-		mainArtifact(renameJar) {
-			displayName = "[$project.minecraft_version] QFAPI " + project.version.split('\\+')[0] + " and QSL " + project.qsl_version.split('\\+')[0]
-		}
-
-		afterEvaluate {
-			uploadTask.dependsOn('renameJar')
-		}
+	modrinth {
+		accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+		projectId = "P7dR8mSH"
+		minecraftVersions.add(project.minecraft_version)
 	}
-
-	options {
-		forgeGradleIntegration = false
+	github {
+		accessToken = providers.environmentVariable("GITHUB_TOKEN")
+		repository = providers.environmentVariable("GITHUB_REPOSITORY").getOrElse("FabricMC/dryrun")
+		commitish = providers.environmentVariable("GITHUB_REF_NAME").getOrElse("dryrun")
 	}
 }
-tasks.curseforge.dependsOn renameJar
-tasks.build.dependsOn optimizedJar
 
-import org.kohsuke.github.GHReleaseBuilder
-import org.kohsuke.github.GitHub
+tasks.publishMods.dependsOn renameJar
+tasks.assemble.dependsOn signRemapJar
 
 import java.util.stream.Collectors
 
-tasks.register('github') {
-	dependsOn renameJar
-	onlyIf {
-		ENV.GITHUB_TOKEN
-	}
-
-	doLast {
-		def github = GitHub.connectUsingOAuth(ENV.GITHUB_TOKEN as String)
-		def repository = github.getRepository(ENV.GITHUB_REPOSITORY)
-
-		def releaseBuilder = new GHReleaseBuilder(repository, version as String)
-		releaseBuilder.name("[$project.minecraft_version] QFAPI " + project.version.split('\\+')[0] + " and QSL " + project.qsl_version.split('\\+')[0])
-		releaseBuilder.body("Provides Fabric API ${project.upstream_version}\n" + ENV.CHANGELOG ?: "No changelog provided")
-		releaseBuilder.commitish(getBranch())
-		releaseBuilder.prerelease(project.prerelease == 'true')
-
-		def ghRelease = releaseBuilder.create()
-		ghRelease.uploadAsset(renameJar.archiveFile.get().getAsFile(), 'application/java-archive');
-	}
-}
-
-modrinth {
-	projectId = 'qsl'
-	versionName = "[$project.minecraft_version] QFAPI " + project.version.split('\\+')[0] + " and QSL " + project.qsl_version.split('\\+')[0]
-	versionType = project.prerelease == "true" ? "beta" : "release"
-	changelog = "Provides Fabric API $project.upstream_version\n" + (ENV.CHANGELOG ?: "No changelog provided")
-	dependencies {
-		embedded.project 'fabric-api'
-	}
-
-	file = signingEnabled ? signRemapJar.output : renameJar.archiveFile
-}
-
-tasks.modrinth.dependsOn renameJar
-
 // A task to ensure that the version being released has not already been released.
-def checkVersion = tasks.register('checkVersion') {
+tasks.register('checkVersion') {
 	doFirst {
-		def xml = new URL('https://maven.quiltmc.org/repository/release/org/quiltmc/quilted-fabric-api/quilted-fabric-api/maven-metadata.xml').text
+		def xml = new URL("https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api/maven-metadata.xml").text
 		def metadata = new XmlSlurper().parseText(xml)
-		def versions = metadata.versioning.versions.version*.text()
+		def versions = metadata.versioning.versions.version*.text();
 		if (versions.contains(version)) {
-			throw new RuntimeException("$version has already been released!")
+			throw new RuntimeException("${version} has already been released!")
 		}
 	}
 }
 
-github.mustRunAfter checkVersion
-project.tasks.modrinth.mustRunAfter checkVersion
-publish.dependsOn checkVersion
-project.tasks.curseforge.mustRunAfter checkVersion
+tasks.publishMods.dependsOn checkVersion
+publish.mustRunAfter checkVersion

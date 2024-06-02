@@ -37,7 +37,10 @@
 	"minecraft": {
 		"environment": "client"
 	},
-	"mixin": "quilted_fabric_sound_api_v1.client.mixins.json",
+	"mixin": {
+		"config": "quilted_fabric_sound_api_v1.client.mixins.json",
+		"environment": "client"
+	},
 	"quilt_loom": {
 		"injected_interfaces": {
 			"net/minecraft/class_1113": ["net/fabricmc/fabric/api/client/sound/v1/FabricSoundInstance"]

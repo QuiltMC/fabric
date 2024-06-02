@@ -32,7 +32,10 @@
 	},
 	"mixin": [
 		"quilted_fabric_block_view_api_v2.mixins.json",
-		"quilted_fabric_block_view_api_v2.client.mixins.json"
+		{
+			"config": "quilted_fabric_block_view_api_v2.client.mixins.json",
+			"environment": "client"
+		}
 	],
 	"access_widener": "quilted_fabric_block_view_api_v2.accesswidener",
 	"fabric-api:module-lifecycle": "stable",

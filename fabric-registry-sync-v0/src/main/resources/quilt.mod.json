@@ -39,7 +39,10 @@
 	},
 	"mixin": [
 		"quilted_fabric_registry_sync_v0.mixins.json",
-		"quilted_fabric_registry_sync_v0.client.mixins.json"
+		{
+			"config": "quilted_fabric_registry_sync_v0.client.mixins.json",
+			"environment": "client"
+		}
 	],
 	"access_widener": "quilted_fabric_registry_sync_v0.accesswidener",
 	"fabric-api:module-lifecycle": "deprecated",

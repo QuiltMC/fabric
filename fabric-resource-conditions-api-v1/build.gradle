@@ -1,7 +1,4 @@
-archivesBaseName = "quilted_fabric_resource_conditions_api_v1"
 version = getSubprojectVersion(project)
 upstream_version = getSubprojectUpstreamVersion(project)
 
-testDependencies(project, [
-	':fabric-gametest-api-v1'
-])
+testDependencies(project, [':fabric-gametest-api-v1'])

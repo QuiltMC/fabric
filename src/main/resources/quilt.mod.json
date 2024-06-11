@@ -23,7 +23,7 @@
 		"depends": [
 			{
 				"id": "quilt_loader",
-				"versions": ">=0.19.2"
+				"versions": ">=0.25.0"
 			},
 			{
 				"id": "java",
@@ -49,6 +49,7 @@
 			"quilted_fabric_content_registries_v0",
 			"quilted_fabric_convention_tags_api_v1",
 			"quilted_fabric_crash_report_info_v1",
+			"quilted_fabric_data_attachment_api_v1",
 			"quilted_fabric_data_generation_api_v1",
 			"quilted_fabric_dimensions_v1",
 			"quilted_fabric_entity_events_v1",

@@ -30,7 +30,12 @@
 			}
 		]
 	},
-	"mixin": "quilted_fabric_particles_v1.client.mixins.json",
+	"mixin": [
+		{
+			"config": "quilted_fabric_particles_v1.client.mixins.json",
+			"environment": "client"
+		}
+	],
 	"access_widener": "quilted_fabric_particles_v1.accesswidener",
 	"fabric-api:module-lifecycle": "stable",
 	"modmenu": {

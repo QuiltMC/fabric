@@ -1,6 +1,5 @@
 {
   "required": true,
-  "environment": "client",
   "package": "net.fabricmc.fabric.mixin.client.particle",
   "compatibilityLevel": "JAVA_17",
   "client": [

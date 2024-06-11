@@ -75,11 +75,11 @@ class ValidateModuleTask extends DefaultTask {
 			case "experimental":
 				break
 			case "deprecated":
-				/* Quilted Fabric API considers all Quilted modules as deprecated, therefore, we don't want this exception
-				if (!project.path.startsWith(":deprecated")) {
-					throw new GradleException("Deprecated module ${project} must be in the deprecated sub directory.")
-				}
-				*/
+			/* Quilted Fabric API considers all Quilted modules as deprecated, therefore, we don't want this exception
+			 if (!project.path.startsWith(":deprecated")) {
+			 throw new GradleException("Deprecated module ${project} must be in the deprecated sub directory.")
+			 }
+			 */
 				break
 			default:
 				throw new GradleException("Module ${project} has an invalid module lifecycle ${json.custom.get('fabric-api:module-lifecycle')}")

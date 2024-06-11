@@ -41,7 +41,10 @@
 	},
 	"mixin": [
 		"quilted_fabric_events_interaction_v0.mixins.json",
-		"quilted_fabric_events_interaction_v0.client.mixins.json"
+		{
+			"config": "quilted_fabric_events_interaction_v0.client.mixins.json",
+			"environment": "client"
+		}
 	],
 	"fabric-api:module-lifecycle": "stable",
 	"modmenu": {

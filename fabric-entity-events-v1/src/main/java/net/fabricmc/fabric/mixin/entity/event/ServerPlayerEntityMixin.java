@@ -52,7 +52,7 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
 @Mixin(ServerPlayerEntity.class)
 abstract class ServerPlayerEntityMixin extends LivingEntityMixin {
 	@Shadow
-	public abstract ServerWorld method_51469();
+	public abstract ServerWorld getServerWorld();
 
 	/**
 	 * Minecraft by default does not call Entity#onKilledOther for a ServerPlayerEntity being killed.
@@ -65,8 +65,8 @@ abstract class ServerPlayerEntityMixin extends LivingEntityMixin {
 
 		// If the damage source that killed the player was an entity, then fire the event.
 		if (attacker != null) {
-			attacker.onKilledOther(this.method_51469(), (ServerPlayerEntity) (Object) this);
-			ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.invoker().afterKilledOtherEntity(this.method_51469(), attacker, (ServerPlayerEntity) (Object) this);
+			attacker.onKilledOther(this.getServerWorld(), (ServerPlayerEntity) (Object) this);
+			ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.invoker().afterKilledOtherEntity(this.getServerWorld(), attacker, (ServerPlayerEntity) (Object) this);
 		}
 	}
 

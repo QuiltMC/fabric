@@ -12,7 +12,7 @@ jobs:
       options: --user root
     steps:
       - run: apt update && apt install git -y && git --version
-      - run: git config --global --add safe.directory /__w/fabric/fabric
+      - run: git config --global --add safe.directory /__w/quilted-fabric-api/quilted-fabric-api
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0

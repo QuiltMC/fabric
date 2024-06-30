@@ -36,8 +36,15 @@ public abstract class SystemDetailsMixin {
 	@Shadow
 	public abstract void addSection(String string, Supplier<String> supplier);
 
+	@Shadow
+	public abstract void addSection(String name, String value);
+
 	@Inject(at = @At("RETURN"), method = "<init>")
 	private void fillSystemDetails(CallbackInfo info) {
+		addSection("Quilted Fabric API", "!! WARNING !! This instance is using Fabric API modules "
+				+ "re-implemented by QSL. If the issue comes from Quilted Fabric API, "
+				+ "DO NOT report to Fabric; report them to Quilt instead!");
+		if (true) return; // Quilt: we already add the mods
 		addSection("Fabric Mods", () -> {
 			ArrayList<ModContainer> topLevelMods = new ArrayList<>();
 

@@ -7,7 +7,6 @@ plugins {
 	id "org.quiltmc.loom" version "1.7.3" apply false
 	id "com.diffplug.spotless" version "6.20.0"
 	id "org.ajoberstar.grgit" version "3.1.0"
-	id "me.modmuss50.remotesign" version "0.4.0" apply false
 	id "me.modmuss50.mod-publish-plugin" version "0.4.5"
 }
 
@@ -129,23 +128,9 @@ allprojects {
 	group = "org.quiltmc.quilted-fabric-api"
 
 	apply plugin: "maven-publish"
-	apply plugin: "me.modmuss50.remotesign"
 
 	tasks.withType(GenerateModuleMetadata) {
 		enabled = false
-	}
-
-	remoteSign {
-		requestUrl = ENV.SIGNING_SERVER
-		pgpAuthKey = ENV.SIGNING_PGP_KEY
-		jarAuthKey = ENV.SIGNING_JAR_KEY
-
-		useDummyForTesting = ENV.SIGNING_SERVER == null
-
-		afterEvaluate {
-			// PGP sign all maven publications.
-			sign publishing.publications.mavenJava
-		}
 	}
 
 	publishing {
@@ -300,10 +285,6 @@ allprojects {
 	tasks.withType(AbstractArchiveTask).configureEach {
 		preserveFileTimestamps = false
 		reproducibleFileOrder = true
-	}
-
-	remoteSign {
-		sign remapJar
 	}
 
 	// Run this task after updating minecraft to regenerate any required resources
@@ -642,8 +623,8 @@ subprojects {
 				pom {
 					addPomMetadataInformation(project, pom)
 				}
-				artifact(signRemapJar.output) {
-					builtBy(signRemapJar)
+				artifact(remapJar.output) {
+					builtBy(remapJar)
 				}
 
 				artifact(remapSourcesJar) {
@@ -662,8 +643,8 @@ subprojects {
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
-			artifact(signRemapJar.output) {
-				builtBy(signRemapJar)
+			artifact(remapJar.output) {
+				builtBy(remapJar)
 			}
 
 			artifact(sourcesJar) {
@@ -786,14 +767,13 @@ remapJar {
 				return
 			}
 
-			// Include the signed or none signed jar from the sub project.
-			nestedJars.from project("${it.path}").tasks.getByName("signRemapJar")
+			nestedJars.from project("${it.path}").tasks.getByName("remapJar")
 		}
 	}
 }
 
 publishMods {
-	file = signRemapJar.output
+	file = remapJar.output
 	changelog = "Provides Fabric API ${project.upstream_version}\n" + providers.environmentVariable("CHANGELOG").getOrElse("No changelog provided")
 	type = project.prerelease == "true" ? BETA : STABLE
 	displayName = "[$project.minecraft_version] QFAPI " + project.version.split('\\+')[0] + " and QSL " + project.qsl_version.split('\\+')[0]
@@ -817,7 +797,7 @@ publishMods {
 	}
 }
 
-assemble.dependsOn signRemapJar
+
 
 import java.util.stream.Collectors
 

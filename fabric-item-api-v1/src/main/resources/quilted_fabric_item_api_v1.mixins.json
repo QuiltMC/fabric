@@ -3,9 +3,9 @@
   "package": "net.fabricmc.fabric.mixin.item",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "CustomItemSettingImplAccessor",
     "ItemMixin",
-    "ItemStackMixin"
+    "ItemStackMixin",
+    "RecipeRemainderLogicHandlerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

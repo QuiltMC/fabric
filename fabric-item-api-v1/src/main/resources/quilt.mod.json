@@ -20,9 +20,6 @@
 			"icon": "assets/quilted_fabric_item_api_v1/icon.png"
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
-		"entrypoints": {
-			"init": "net.fabricmc.fabric.impl.qsl.item.v1.QuiltItemCompatMod"
-		},
 		"depends": [
 			"quilt_loader",
 			"quilted_fabric_api_base",

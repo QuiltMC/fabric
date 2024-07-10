@@ -14,8 +14,7 @@ jobs:
         with:
           fetch-depth: 0
       - uses: gradle/wrapper-validation-action@v1
-      # TODO - Go back to "--warning-mode=fail"
-      - run: ./gradlew check build publishToMavenLocal --stacktrace --warning-mode=all -Porg.gradle.parallel.threads=4
+      - run: ./gradlew check build publishToMavenLocal --stacktrace --warning-mode=fail -Porg.gradle.parallel.threads=4
       - uses: Juuxel/publish-checkstyle-report@v1
         if: ${{ failure() }}
         with:
@@ -53,8 +52,7 @@ jobs:
       - name: Run Auto test Client
         uses: modmuss50/xvfb-action@v1
         with:
-          # TODO - Go back to "--warning-mode=fail"
-          run: ./gradlew runProductionAutoTestClient --stacktrace --warning-mode=all
+          run: ./gradlew runProductionAutoTestClient --stacktrace --warning-mode=fail
       - uses: actions/upload-artifact@v3
         if: always()
         with:

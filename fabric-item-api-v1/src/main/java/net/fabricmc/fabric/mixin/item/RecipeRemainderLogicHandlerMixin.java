@@ -14,19 +14,17 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.impl.qsl.item.v1;
+package net.fabricmc.fabric.mixin.item;
 
-import org.quiltmc.loader.api.ModContainer;
-import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
 import org.quiltmc.qsl.item.setting.api.RecipeRemainderProvider;
-import org.quiltmc.qsl.item.setting.impl.CustomItemSettingImpl;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-import net.fabricmc.fabric.mixin.item.CustomItemSettingImplAccessor;
-
-public class QuiltItemCompatMod implements ModInitializer {
-	@Override
-	public void onInitialize(ModContainer mod) {
-		var accessor = ((CustomItemSettingImplAccessor<RecipeRemainderProvider>) CustomItemSettingImpl.RECIPE_REMAINDER_PROVIDER);
-		accessor.setDefaultValue(() -> (original, recipe) -> original.getItem().getRecipeRemainder(original));
+@Mixin(org.quiltmc.qsl.item.setting.api.RecipeRemainderLogicHandler.class)
+public interface RecipeRemainderLogicHandlerMixin {
+	@ModifyVariable(method = "getRemainder", index = 4, at = @At(value = "INVOKE", target = "Ljava/util/Set;contains(Ljava/lang/Object;)Z"))
+	private static RecipeRemainderProvider setDefaultProvider(RecipeRemainderProvider value) {
+		return (original, recipe) -> original.getItem().getRecipeRemainder(original);
 	}
 }

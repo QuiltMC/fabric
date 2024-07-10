@@ -4,7 +4,7 @@ plugins {
 	id "idea"
 	id "maven-publish"
 	id "jacoco"
-	id "org.quiltmc.loom" version "1.6.8" apply false
+	id "org.quiltmc.loom" version "1.7.3" apply false
 	id "org.quiltmc.gradle.licenser" version "2.0.1"
 	id "com.diffplug.spotless" version "6.20.0"
 	id "net.kyori.indra.git" version "3.1.3"

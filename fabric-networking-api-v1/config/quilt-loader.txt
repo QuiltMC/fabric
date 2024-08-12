@@ -1,0 +1,5 @@
+#Quilt-loader configuration: https://github.com/QuiltMC/quilt-loader/wiki/Configuration-options
+#Mon Aug 12 13:20:28 PDT 2024
+always_show_mod_state_window=false
+load_sub_folders=true
+restrict_game_versions=true

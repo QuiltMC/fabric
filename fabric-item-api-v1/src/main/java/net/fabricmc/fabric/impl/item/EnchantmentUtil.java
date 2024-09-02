@@ -18,6 +18,8 @@ package net.fabricmc.fabric.impl.item;
 
 import java.util.List;
 
+import org.quiltmc.qsl.resource.loader.impl.QuiltBuiltinPackProfile;
+
 import net.minecraft.component.ComponentType;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.registry.RegistryKey;
@@ -26,9 +28,7 @@ import net.minecraft.resource.ResourcePackSource;
 
 import net.fabricmc.fabric.api.item.v1.EnchantmentEvents;
 import net.fabricmc.fabric.api.item.v1.EnchantmentSource;
-import net.fabricmc.fabric.impl.resource.loader.BuiltinModResourcePackSource;
 import net.fabricmc.fabric.impl.resource.loader.FabricResource;
-import net.fabricmc.fabric.impl.resource.loader.ModResourcePackCreator;
 import net.fabricmc.fabric.mixin.item.EnchantmentBuilderAccessor;
 
 public class EnchantmentUtil {
@@ -65,7 +65,7 @@ public class EnchantmentUtil {
 
 			if (packSource == ResourcePackSource.BUILTIN) {
 				return EnchantmentSource.VANILLA;
-			} else if (packSource == ModResourcePackCreator.RESOURCE_PACK_SOURCE || packSource instanceof BuiltinModResourcePackSource) {
+			} else if (packSource instanceof QuiltBuiltinPackProfile.BuiltinPackSource) {
 				return EnchantmentSource.MOD;
 			}
 		}

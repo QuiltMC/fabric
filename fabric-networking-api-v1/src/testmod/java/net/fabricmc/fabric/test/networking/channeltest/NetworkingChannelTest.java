@@ -32,6 +32,7 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.mojang.brigadier.tree.ArgumentCommandNode;
 import com.mojang.brigadier.tree.LiteralCommandNode;
+import org.quiltmc.qsl.networking.impl.PayloadTypeRegistryImpl;
 
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.EntitySelector;
@@ -45,7 +46,6 @@ import net.minecraft.util.Identifier;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.fabricmc.fabric.impl.networking.PayloadTypeRegistryImpl;
 
 public final class NetworkingChannelTest implements ModInitializer {
 	@Override

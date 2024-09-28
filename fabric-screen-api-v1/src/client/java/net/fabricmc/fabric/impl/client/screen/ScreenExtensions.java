@@ -31,8 +31,6 @@ public interface ScreenExtensions {
 		return (ScreenExtensions) screen;
 	}
 
-	List<ClickableWidget> fabric_getButtons();
-
 	Event<ScreenEvents.Remove> fabric_getRemoveEvent();
 
 	Event<ScreenEvents.BeforeTick> fabric_getBeforeTickEvent();

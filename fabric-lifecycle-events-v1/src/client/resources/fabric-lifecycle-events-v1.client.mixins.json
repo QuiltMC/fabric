@@ -6,9 +6,6 @@
     "ClientChunkManagerMixin",
     "ClientPlayNetworkHandlerMixin",
     "ClientTagLoaderMixin",
-    "ClientWorldClientEntityHandlerMixin",
-    "ClientWorldMixin",
-    "MinecraftClientMixin",
     "WorldChunkMixin"
   ],
   "injectors": {

@@ -20,6 +20,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 import io.netty.channel.ChannelHandler;
+import org.quiltmc.qsl.networking.mixin.accessor.AbstractServerPacketHandlerAccessor;
 
 import net.minecraft.network.handler.EncoderHandler;
 import net.minecraft.network.packet.Packet;
@@ -30,7 +31,6 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerConfigurationConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerConfigurationNetworking;
-import net.fabricmc.fabric.mixin.networking.accessor.ServerCommonNetworkHandlerAccessor;
 import net.fabricmc.fabric.mixin.recipe.ingredient.EncoderHandlerMixin;
 
 /**
@@ -90,7 +90,7 @@ public class CustomIngredientSync implements ModInitializer {
 
 		ServerConfigurationNetworking.registerGlobalReceiver(CustomIngredientPayloadC2S.ID, (payload, context) -> {
 			Set<Identifier> supportedCustomIngredients = decodeResponsePayload(payload);
-			ChannelHandler packetEncoder = ((ServerCommonNetworkHandlerAccessor) context.networkHandler()).getConnection().channel.pipeline().get("encoder");
+			ChannelHandler packetEncoder = ((AbstractServerPacketHandlerAccessor) context.networkHandler()).getConnection().channel.pipeline().get("encoder");
 
 			if (packetEncoder != null) { // Null in singleplayer
 				((SupportedIngredientsPacketEncoder) packetEncoder).fabric_setSupportedCustomIngredients(supportedCustomIngredients);

@@ -72,24 +72,6 @@ abstract class ServerPlayerEntityMixin extends LivingEntityMixin {
 		}
 	}
 
-	@Inject(method = "onDeath", at = @At("TAIL"))
-	private void notifyDeath(DamageSource source, CallbackInfo ci) {
-		ServerLivingEntityEvents.AFTER_DEATH.invoker().afterDeath((ServerPlayerEntity) (Object) this, source);
-	}
-
-	/**
-	 * This is called by {@code teleportTo}.
-	 */
-	@Inject(method = "worldChanged(Lnet/minecraft/server/world/ServerWorld;)V", at = @At("TAIL"))
-	private void afterWorldChanged(ServerWorld origin, CallbackInfo ci) {
-		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.invoker().afterChangeWorld((ServerPlayerEntity) (Object) this, origin, this.getServerWorld());
-	}
-
-	@Inject(method = "copyFrom", at = @At("TAIL"))
-	private void onCopyFrom(ServerPlayerEntity oldPlayer, boolean alive, CallbackInfo ci) {
-		ServerPlayerEvents.COPY_FROM.invoker().copyFromPlayer(oldPlayer, (ServerPlayerEntity) (Object) this, alive);
-	}
-
 	@Redirect(method = "trySleep", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/BlockState;get(Lnet/minecraft/state/property/Property;)Ljava/lang/Comparable;"))
 	private Comparable<?> redirectSleepDirection(BlockState state, Property<?> property, BlockPos pos) {
 		Direction initial = state.contains(property) ? (Direction) state.get(property) : null;

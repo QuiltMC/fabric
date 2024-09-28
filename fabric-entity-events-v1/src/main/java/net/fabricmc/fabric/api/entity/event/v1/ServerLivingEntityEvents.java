@@ -22,6 +22,8 @@ import net.minecraft.entity.mob.MobEntity;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.fabricmc.fabric.impl.base.event.QuiltCompatEvent;
+import net.fabricmc.fabric.mixin.entity.event.quilt.LivingEntityAccessor;
 
 /**
  * Various server-side only events related to living entities.
@@ -43,6 +45,22 @@ public final class ServerLivingEntityEvents {
 	});
 
 	/**
+	 * An event that is called after an entity is damaged. This is fired from {@link LivingEntity#damage} after damage
+	 * is applied, or after that damage was blocked by a shield.
+	 *
+	 * <p>The base damage taken is the damage initially applied to the entity. Damage taken is the amount of damage the
+	 * entity actually took, after effects such as shields and extra freezing damage are applied. Damage taken does NOT
+	 * include damage reduction from armor and enchantments.
+	 *
+	 * <p>This event is not fired if the entity was killed by the damage.
+	 */
+	public static final Event<AfterDamage> AFTER_DAMAGE = EventFactory.createArrayBacked(AfterDamage.class, callbacks -> (entity, source, baseDamageTaken, damageTaken, blocked) -> {
+		for (AfterDamage callback : callbacks) {
+			callback.afterDamage(entity, source, baseDamageTaken, damageTaken, blocked);
+		}
+	});
+
+	/**
 	 * An event that is called when an entity takes fatal damage.
 	 *
 	 * <p>Mods can cancel this to keep the entity alive.
@@ -54,25 +72,27 @@ public final class ServerLivingEntityEvents {
 	 *     <li>a minigame mod teleporting the player into a 'respawn room' and setting their health to 20.0</li>
 	 *     <li>a mod that changes death mechanics switching the player over to the mod's play-mode, where death doesn't apply</li>
 	 * </ul>
+	 *
+	 * @deprecated see {@link org.quiltmc.qsl.entity.event.api.EntityReviveEvents.BEFORE_TOTEM EntityReviveEvents#BEFORE_TOTEM}
 	 */
-	public static final Event<AllowDeath> ALLOW_DEATH = EventFactory.createArrayBacked(AllowDeath.class, callbacks -> (entity, damageSource, damageAmount) -> {
-		for (AllowDeath callback : callbacks) {
-			if (!callback.allowDeath(entity, damageSource, damageAmount)) {
-				return false;
-			}
-		}
-
-		return true;
-	});
+	@Deprecated
+	public static final Event<AllowDeath> ALLOW_DEATH = QuiltCompatEvent.fromQuilt(
+			org.quiltmc.qsl.entity.event.api.EntityReviveEvents.BEFORE_TOTEM,
+			beforeTotemCallback -> (entity, damageSource) -> !beforeTotemCallback.allowDeath(entity, damageSource, ((LivingEntityAccessor) entity).getLastDamageTaken()),
+			invokerGetter -> (entity, damageSource, damageAmount) -> invokerGetter.get().tryReviveBeforeTotem(entity, damageSource)
+	);
 
 	/**
 	 * An event that is called when a living entity dies.
+	 *
+	 * @deprecated see {@link org.quiltmc.qsl.entity.event.api.LivingEntityDeathCallback LivingEntityDeathCallback}
 	 */
-	public static final Event<AfterDeath> AFTER_DEATH = EventFactory.createArrayBacked(AfterDeath.class, callbacks -> (entity, damageSource) -> {
-		for (AfterDeath callback : callbacks) {
-			callback.afterDeath(entity, damageSource);
-		}
-	});
+	@Deprecated
+	public static final Event<AfterDeath> AFTER_DEATH = QuiltCompatEvent.fromQuilt(
+			org.quiltmc.qsl.entity.event.api.LivingEntityDeathCallback.EVENT,
+			afterDeathCallback -> afterDeathCallback::afterDeath,
+			invokerGetter -> invokerGetter.get()::onDeath
+	);
 
 	/**
 	 * An event that is called when a mob has been converted to another type.
@@ -102,6 +122,21 @@ public final class ServerLivingEntityEvents {
 		 * @return true if the damage should go ahead, false to cancel the damage.
 		 */
 		boolean allowDamage(LivingEntity entity, DamageSource source, float amount);
+	}
+
+	@FunctionalInterface
+	public interface AfterDamage {
+		/**
+		 * Called after a living entity took damage, unless they were killed. The base damage taken is given as damage
+		 * taken before armor or enchantments are applied, but after other effects like shields are applied.
+		 *
+		 * @param entity the entity that was damaged
+		 * @param source the source of the damage
+		 * @param baseDamageTaken the amount of damage initially dealt
+		 * @param damageTaken the amount of damage actually taken by the entity, before armor and enchantment effects
+		 * @param blocked whether the damage was blocked by a shield
+		 */
+		void afterDamage(LivingEntity entity, DamageSource source, float baseDamageTaken, float damageTaken, boolean blocked);
 	}
 
 	@FunctionalInterface

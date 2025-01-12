@@ -1,0 +1,43 @@
+name: QFAPI/FAPI Behavior Divergence Report
+description: Create a report to help us fix behavior divergences between Quilted Fabric API and Fabric API.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking your time to report QFAPI behavioral divergences! If you need real-time help, join us on [Discord](https://discord.quiltmc.org).
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the behavior divergence
+      description: "Describe the divergence as clearly as possible. The more detail you provide means the sooner the divergence can be fixed! This includes: steps to reproduce or situation you encountered the divergence in, recent changes you made to your mods list, or any additional context that could be helpful."
+    validations:
+      required: true
+
+  - type: textarea
+    id: where-in-qsl
+    attributes:
+      label: How did QFAPI's behavior diverge from FAPI's behavior?
+      description: "If possible, please provide a GitHub link to the section of QFAPI that diverged from FAPI?"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Which environment did you encounter this divergence in?
+      options:
+        - Client
+        - Server
+        - Both
+    validations:
+      required: true
+
+  - type: input
+    id: logs
+    attributes:
+      label: Logs
+      description: |
+        If applicable, please provide your crash report or latest.log
+        To upload logs, use [MCLogs](https://mclo.gs/) to upload your latest.log. If you are unsure of how to obtain a log, read [here](https://minecraft.wiki/w/Tutorials/Obtaining_a_crash_report).

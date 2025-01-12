@@ -1,5 +1,5 @@
 name: Game Issue
-description: Create a "game issue" report to receive support for a non-crashing issue.
+description: Create a report for a non-crashing issue.
 labels: [support, bug]
 body:
   - type: markdown
